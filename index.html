@@ -3,24 +3,25 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>亲智聊 - 孩子行为翻译器 Demo</title>
+  <title>亲智聊 - 孩子行为翻译器 2.0</title>
   <style>
     :root {
-      --bg: #f7f5f0;
+      --bg: #f6f3ec;
       --phone: #fffdf8;
       --ink: #26322f;
       --muted: #6d7b77;
-      --line: #e6ded0;
-      --teal: #16796f;
-      --teal-soft: #e8f4f0;
-      --coral: #d96b55;
-      --coral-soft: #fff0ea;
-      --sage: #7b9a6d;
-      --sage-soft: #edf5e8;
-      --gold: #bc8c37;
-      --gold-soft: #fff6dc;
-      --blue-soft: #eef4ff;
-      --shadow: 0 22px 70px rgba(45, 50, 45, .18);
+      --line: #e6dece;
+      --teal: #15766d;
+      --teal-2: #e6f3ef;
+      --rose: #d96b55;
+      --rose-2: #fff0ea;
+      --leaf: #7b9a6d;
+      --leaf-2: #edf5e8;
+      --gold: #b88734;
+      --gold-2: #fff5d8;
+      --blue-2: #eef4ff;
+      --white: #ffffff;
+      --shadow: 0 24px 80px rgba(38, 50, 47, .18);
     }
 
     * {
@@ -33,8 +34,8 @@
       color: var(--ink);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
       background:
-        linear-gradient(120deg, rgba(22, 121, 111, .11), transparent 34%),
-        linear-gradient(240deg, rgba(217, 107, 85, .10), transparent 38%),
+        linear-gradient(130deg, rgba(21, 118, 109, .12), transparent 34%),
+        linear-gradient(240deg, rgba(217, 107, 85, .11), transparent 38%),
         var(--bg);
     }
 
@@ -44,22 +45,26 @@
       font: inherit;
     }
 
+    button {
+      cursor: pointer;
+    }
+
     .stage {
-      width: min(1120px, 100%);
+      width: min(1180px, 100%);
       min-height: 100vh;
       margin: 0 auto;
-      padding: 28px;
+      padding: 26px;
       display: grid;
-      grid-template-columns: minmax(320px, 420px) 1fr;
-      gap: 28px;
+      grid-template-columns: minmax(340px, 430px) 1fr;
+      gap: 30px;
       align-items: center;
     }
 
     .phone {
-      height: min(860px, calc(100vh - 56px));
-      min-height: 680px;
-      border: 1px solid rgba(38, 50, 47, .12);
-      border-radius: 36px;
+      height: min(880px, calc(100vh - 52px));
+      min-height: 700px;
+      border: 1px solid rgba(38, 50, 47, .14);
+      border-radius: 34px;
       background: var(--phone);
       box-shadow: var(--shadow);
       overflow: hidden;
@@ -83,19 +88,20 @@
       align-items: center;
     }
 
-    .bar {
+    .signal i {
       width: 4px;
-      border-radius: 6px;
+      border-radius: 8px;
       background: #43514e;
+      display: block;
     }
 
-    .bar:nth-child(1) { height: 5px; }
-    .bar:nth-child(2) { height: 8px; }
-    .bar:nth-child(3) { height: 11px; }
+    .signal i:nth-child(1) { height: 5px; }
+    .signal i:nth-child(2) { height: 8px; }
+    .signal i:nth-child(3) { height: 11px; }
 
     .screen {
-      overflow: auto;
       flex: 1;
+      overflow: auto;
       padding: 12px 18px 92px;
       scroll-behavior: smooth;
     }
@@ -105,7 +111,7 @@
       justify-content: space-between;
       align-items: flex-start;
       gap: 12px;
-      margin-bottom: 18px;
+      margin-bottom: 14px;
     }
 
     .brand {
@@ -118,10 +124,10 @@
       width: 42px;
       height: 42px;
       border-radius: 14px;
-      background: linear-gradient(140deg, #16796f, #8ea65d);
+      color: #fff;
+      background: linear-gradient(135deg, var(--teal), var(--leaf));
       display: grid;
       place-items: center;
-      color: white;
       font-weight: 800;
     }
 
@@ -130,62 +136,63 @@
     h3,
     p {
       margin: 0;
+      letter-spacing: 0;
     }
 
     h1 {
       font-size: 22px;
       line-height: 1.25;
-      letter-spacing: 0;
     }
 
     .subtitle {
+      margin-top: 4px;
       color: var(--muted);
       font-size: 13px;
-      margin-top: 4px;
     }
 
     .pill {
       border: 1px solid var(--line);
-      background: #fffaf1;
-      color: #5e665f;
+      background: #fff8e7;
+      color: #656058;
       border-radius: 999px;
-      padding: 8px 10px;
+      padding: 7px 10px;
       font-size: 12px;
       white-space: nowrap;
     }
 
-    .hero {
-      background: linear-gradient(135deg, #f3fbf7, #fff5ec);
-      border: 1px solid var(--line);
+    .daily {
+      border: 1px solid #d8e9e4;
+      background: linear-gradient(135deg, #eaf7f2, #fff8ec);
       border-radius: 8px;
-      padding: 16px;
+      padding: 14px;
+      margin-bottom: 12px;
       display: grid;
-      grid-template-columns: 1fr 82px;
+      grid-template-columns: 1fr 56px;
       gap: 12px;
       align-items: center;
-      margin-bottom: 14px;
     }
 
-    .hero strong {
+    .daily small {
       display: block;
-      font-size: 17px;
-      line-height: 1.35;
-      margin-bottom: 8px;
+      color: var(--teal);
+      font-weight: 800;
+      margin-bottom: 6px;
+      font-size: 12px;
     }
 
-    .hero span {
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.6;
+    .daily p {
+      font-size: 16px;
+      line-height: 1.45;
+      font-weight: 750;
     }
 
-    .mini-art {
-      width: 82px;
-      height: 82px;
+    .sun {
+      width: 56px;
+      height: 56px;
     }
 
     .panel {
-      background: white;
+      background: var(--white);
       border: 1px solid var(--line);
       border-radius: 8px;
       padding: 14px;
@@ -202,35 +209,104 @@
 
     .panel-title h2 {
       font-size: 15px;
+      line-height: 1.35;
     }
 
     .panel-title small {
       color: var(--muted);
       font-size: 12px;
+      white-space: nowrap;
     }
 
-    .chips {
-      display: flex;
-      flex-wrap: wrap;
+    .emotion-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
       gap: 8px;
     }
 
-    .chip {
-      border: 1px solid #d9e7e2;
-      color: #275f59;
-      background: var(--teal-soft);
-      border-radius: 999px;
-      padding: 8px 10px;
-      cursor: pointer;
+    .emotion,
+    .scene-card {
+      border: 1px solid #eadfce;
+      border-radius: 8px;
+      background: #fffbf3;
+      color: #44504d;
+      text-align: left;
       transition: .18s ease;
+    }
+
+    .emotion {
+      min-height: 44px;
+      padding: 9px 10px;
       font-size: 13px;
     }
 
-    .chip.active,
-    .chip:hover {
+    .emotion.active,
+    .scene-card.active,
+    .emotion:hover,
+    .scene-card:hover {
       border-color: var(--teal);
-      background: #d6eee8;
+      background: var(--teal-2);
+      color: #245e58;
       transform: translateY(-1px);
+    }
+
+    .regret {
+      margin-top: 10px;
+      border: 1px solid #f0cfc4;
+      background: var(--rose-2);
+      border-radius: 8px;
+      padding: 12px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .regret b {
+      font-size: 14px;
+    }
+
+    .regret span {
+      color: #72534c;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .link-btn {
+      justify-self: start;
+      border: 0;
+      color: var(--rose);
+      background: transparent;
+      padding: 0;
+      font-weight: 800;
+      font-size: 13px;
+    }
+
+    .scenes {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: minmax(150px, 74%);
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scroll-snap-type: x mandatory;
+    }
+
+    .scene-card {
+      padding: 12px;
+      min-height: 88px;
+      scroll-snap-align: start;
+    }
+
+    .scene-card b {
+      display: block;
+      font-size: 14px;
+      line-height: 1.4;
+      margin-bottom: 8px;
+    }
+
+    .scene-card span {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
     }
 
     .input-row {
@@ -244,49 +320,76 @@
       flex: 1;
       border: 1px solid var(--line);
       border-radius: 8px;
-      padding: 12px;
-      color: var(--ink);
       background: #fffdf8;
+      color: var(--ink);
       outline: none;
+      padding: 12px;
     }
 
     .primary {
       border: 0;
       border-radius: 8px;
+      min-width: 86px;
+      padding: 0 14px;
       background: var(--teal);
       color: white;
-      padding: 0 14px;
-      min-width: 88px;
-      cursor: pointer;
-      font-weight: 700;
+      font-weight: 800;
     }
 
     .primary:hover {
-      background: #126a61;
+      background: #12675f;
+    }
+
+    .mode {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      border: 1px solid var(--line);
+      background: #faf4e8;
+      border-radius: 8px;
+      padding: 4px;
+      margin-bottom: 12px;
+    }
+
+    .mode button {
+      border: 0;
+      border-radius: 7px;
+      background: transparent;
+      color: var(--muted);
+      padding: 9px;
+      font-weight: 800;
+      font-size: 13px;
+    }
+
+    .mode button.active {
+      background: white;
+      color: var(--teal);
+      box-shadow: 0 4px 16px rgba(38, 50, 47, .08);
     }
 
     .progress {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 6px;
-      margin: 14px 0 12px;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 5px;
+      margin: 12px 0;
     }
 
     .step {
       height: 5px;
-      border-radius: 20px;
+      border-radius: 30px;
       background: #eadfce;
       overflow: hidden;
     }
 
     .step span {
-      display: block;
       width: 0;
       height: 100%;
+      display: block;
       background: var(--teal);
       transition: width .45s ease;
     }
 
+    .share-card,
     .result-card {
       border-radius: 8px;
       padding: 14px;
@@ -297,24 +400,58 @@
       transition: .35s ease;
     }
 
+    .share-card.show,
     .result-card.show {
       opacity: 1;
       transform: translateY(0);
     }
 
+    .share-card {
+      background: linear-gradient(135deg, #f2fbf7, #fff3e8);
+      border-color: #d8e9e4;
+    }
+
+    .share-card small {
+      color: var(--teal);
+      font-weight: 800;
+      font-size: 12px;
+    }
+
+    .share-card h3 {
+      margin: 8px 0 10px;
+      font-size: 21px;
+      line-height: 1.35;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .ghost {
+      border: 1px solid #d9e7e2;
+      background: rgba(255, 255, 255, .7);
+      color: #2d625c;
+      border-radius: 999px;
+      padding: 7px 10px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
     .result-card h3 {
-      font-size: 15px;
-      margin-bottom: 8px;
       display: flex;
       align-items: center;
       gap: 8px;
+      font-size: 15px;
+      margin-bottom: 8px;
     }
 
     .result-card p,
     .result-card li {
       color: #42504c;
       font-size: 13px;
-      line-height: 1.65;
+      line-height: 1.7;
     }
 
     .result-card ul {
@@ -322,61 +459,55 @@
       padding-left: 18px;
     }
 
-    .card-soft-teal {
-      background: var(--teal-soft);
-      border-color: #d3e7e2;
-    }
-
-    .card-soft-coral {
-      background: var(--coral-soft);
-      border-color: #f2d4ca;
-    }
-
-    .card-soft-sage {
-      background: var(--sage-soft);
-      border-color: #d8e7cf;
-    }
-
-    .card-soft-gold {
-      background: var(--gold-soft);
-      border-color: #efdfb0;
-    }
-
-    .compare {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      margin-top: 10px;
-    }
-
-    .compare-box {
-      border-radius: 8px;
-      background: rgba(255, 255, 255, .58);
-      padding: 10px;
-      min-height: 94px;
-    }
-
-    .compare-box b {
-      display: block;
-      font-size: 12px;
-      color: var(--muted);
-      margin-bottom: 6px;
-    }
+    .soft-teal { background: var(--teal-2); border-color: #d3e7e2; }
+    .soft-rose { background: var(--rose-2); border-color: #f2d4ca; }
+    .soft-leaf { background: var(--leaf-2); border-color: #d8e7cf; }
+    .soft-gold { background: var(--gold-2); border-color: #efdfb0; }
+    .soft-blue { background: var(--blue-2); border-color: #d9e4f5; }
 
     .quote {
       border-left: 3px solid var(--teal);
       padding-left: 10px;
       margin-top: 10px;
       color: #38504b;
-      font-weight: 700;
-      line-height: 1.55;
+      font-weight: 800;
+      line-height: 1.6;
+    }
+
+    .deep-only {
+      display: none;
+    }
+
+    body.deep-mode .deep-only {
+      display: block;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 28px;
+      transform: translateX(-50%) translateY(20px);
+      opacity: 0;
+      pointer-events: none;
+      color: white;
+      background: rgba(38, 50, 47, .9);
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-size: 13px;
+      transition: .25s ease;
+      z-index: 20;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
     }
 
     .bottom-nav {
       height: 74px;
       padding: 8px 18px 18px;
       border-top: 1px solid var(--line);
-      background: rgba(255, 253, 248, .92);
+      background: rgba(255, 253, 248, .94);
       backdrop-filter: blur(14px);
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -385,13 +516,12 @@
 
     .nav-item {
       border: 0;
+      border-radius: 8px;
       background: transparent;
       color: var(--muted);
-      border-radius: 8px;
       display: grid;
       place-items: center;
       gap: 3px;
-      cursor: pointer;
       font-size: 11px;
     }
 
@@ -402,8 +532,8 @@
     }
 
     .nav-item.active {
+      background: var(--teal-2);
       color: var(--teal);
-      background: var(--teal-soft);
       font-weight: 800;
     }
 
@@ -416,27 +546,26 @@
     }
 
     .story h2 {
-      font-size: clamp(28px, 4vw, 46px);
-      line-height: 1.15;
-      letter-spacing: 0;
+      font-size: clamp(30px, 4vw, 48px);
+      line-height: 1.12;
     }
 
     .story p {
+      max-width: 660px;
       color: #53615d;
-      line-height: 1.8;
-      max-width: 560px;
+      line-height: 1.78;
     }
 
-    .demo-notes {
+    .cards {
+      max-width: 760px;
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 12px;
-      max-width: 680px;
     }
 
     .note {
-      background: rgba(255, 255, 255, .66);
-      border: 1px solid rgba(230, 222, 208, .9);
+      background: rgba(255, 255, 255, .68);
+      border: 1px solid rgba(230, 222, 208, .95);
       border-radius: 8px;
       padding: 14px;
     }
@@ -452,70 +581,91 @@
       font-size: 14px;
     }
 
-    .talk {
-      max-width: 680px;
-      border: 1px solid rgba(22, 121, 111, .22);
+    .trigger {
+      max-width: 760px;
+      border: 1px solid rgba(21, 118, 109, .22);
       border-radius: 8px;
+      background: rgba(230, 243, 239, .72);
       padding: 16px;
-      background: rgba(232, 244, 240, .72);
-      color: #31524d;
-      line-height: 1.7;
+      display: grid;
+      gap: 10px;
     }
 
-    @media (max-width: 860px) {
+    .trigger textarea {
+      width: 100%;
+      min-height: 80px;
+      resize: vertical;
+      border: 1px solid #cadfd9;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, .76);
+      padding: 12px;
+      color: var(--ink);
+      outline: none;
+      line-height: 1.6;
+    }
+
+    .trigger-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .trigger-row span {
+      color: #42615b;
+      font-size: 13px;
+    }
+
+    @media (max-width: 900px) {
       .stage {
+        grid-template-columns: 1fr;
         min-height: auto;
         padding: 12px;
-        grid-template-columns: 1fr;
-      }
-
-      .phone {
-        width: min(430px, 100%);
-        margin: 0 auto;
-        height: 760px;
-        min-height: 680px;
-        border-radius: 28px;
       }
 
       .story {
         order: -1;
-        padding: 10px 2px 0;
+        padding: 8px 2px 0;
       }
 
       .story h2 {
         font-size: 30px;
       }
 
-      .demo-notes {
+      .phone {
+        width: min(430px, 100%);
+        margin: 0 auto;
+        min-height: 700px;
+        height: 790px;
+        border-radius: 28px;
+      }
+
+      .cards {
         grid-template-columns: 1fr;
       }
     }
 
     @media (max-width: 430px) {
-      .hero {
+      .emotion-grid {
         grid-template-columns: 1fr;
       }
 
-      .mini-art {
+      .daily {
+        grid-template-columns: 1fr;
+      }
+
+      .sun {
         display: none;
-      }
-
-      .compare {
-        grid-template-columns: 1fr;
       }
     }
   </style>
 </head>
 <body>
   <main class="stage">
-    <section class="phone" aria-label="亲智聊小程序页面演示">
+    <section class="phone" aria-label="亲智聊 2.0 小程序页面演示">
       <div class="status">
         <span>9:41</span>
-        <span class="signal" aria-hidden="true">
-          <i class="bar"></i>
-          <i class="bar"></i>
-          <i class="bar"></i>
-        </span>
+        <span class="signal" aria-hidden="true"><i></i><i></i><i></i></span>
       </div>
 
       <div class="screen" id="screen">
@@ -524,48 +674,70 @@
             <div class="mark">亲</div>
             <div>
               <h1>孩子行为翻译器</h1>
-              <p class="subtitle">把问题行为翻译成成长语言</p>
+              <p class="subtitle">情绪上头时，重新看懂孩子</p>
             </div>
           </div>
-          <span class="pill">P0 Demo</span>
+          <span class="pill">2.0</span>
         </header>
 
-        <section class="hero">
+        <section class="daily">
           <div>
-            <strong>先别急着定义孩子。</strong>
-            <span>输入一个让你头疼的行为，亲智聊会分四步帮你看见行为背后的信号。</span>
+            <small>每日成长翻译</small>
+            <p>孩子今天“不听话”，也可能是在试着成为自己。</p>
           </div>
-          <svg class="mini-art" viewBox="0 0 100 100" role="img" aria-label="亲子沟通插画">
-            <rect x="10" y="18" width="80" height="64" rx="18" fill="#fffaf1" stroke="#d9cbb5" stroke-width="2"></rect>
-            <circle cx="38" cy="44" r="12" fill="#d96b55"></circle>
-            <circle cx="64" cy="40" r="10" fill="#16796f"></circle>
-            <path d="M28 68c7-12 18-12 25 0M55 66c5-9 14-9 20 0" fill="none" stroke="#7b9a6d" stroke-width="4" stroke-linecap="round"></path>
-            <path d="M31 30c6-10 18-12 29-4" fill="none" stroke="#bc8c37" stroke-width="4" stroke-linecap="round"></path>
+          <svg class="sun" viewBox="0 0 100 100" role="img" aria-label="温和陪伴插画">
+            <circle cx="50" cy="50" r="25" fill="#ffd37d"></circle>
+            <path d="M50 8v14M50 78v14M8 50h14M78 50h14M20 20l10 10M70 70l10 10M80 20L70 30M30 70L20 80" stroke="#b88734" stroke-width="5" stroke-linecap="round"></path>
+            <path d="M39 50c4 5 18 5 22 0" stroke="#8b6228" stroke-width="4" fill="none" stroke-linecap="round"></path>
           </svg>
         </section>
 
         <section class="panel">
           <div class="panel-title">
-            <h2>你看到了什么行为？</h2>
-            <small>快捷标签</small>
+            <h2>你现在是什么状态？</h2>
+            <small>先接住你</small>
           </div>
-          <div class="chips" id="chips">
-            <button class="chip active" data-behavior="写作业拖拉">写作业拖拉</button>
-            <button class="chip" data-behavior="顶嘴">顶嘴</button>
-            <button class="chip" data-behavior="情绪爆发">情绪爆发</button>
-            <button class="chip" data-behavior="不专注">不专注</button>
-            <button class="chip" data-behavior="沉迷手机">沉迷手机</button>
-            <button class="chip" data-behavior="一说就哭">一说就哭</button>
-            <button class="chip" data-behavior="不愿沟通">不愿沟通</button>
-            <button class="chip" data-behavior="磨蹭">磨蹭</button>
+          <div class="emotion-grid" id="emotions">
+            <button class="emotion active" data-emotion="我快被气炸了">我快被气炸了</button>
+            <button class="emotion" data-emotion="我刚吼完孩子">我刚吼完孩子</button>
+            <button class="emotion" data-emotion="我很焦虑">我很焦虑</button>
+            <button class="emotion" data-emotion="我不知道怎么办">我不知道怎么办</button>
+            <button class="emotion" data-emotion="我开始怀疑孩子">我开始怀疑孩子</button>
+            <button class="emotion" data-emotion="我后悔刚刚的话">我后悔刚刚的话</button>
+          </div>
+          <div class="regret">
+            <b>后悔时刻入口</b>
+            <span>如果你刚刚吼了孩子、说了重话，可以先重新理解刚刚发生了什么。</span>
+            <button class="link-btn" id="regretBtn">重新理解刚刚发生了什么</button>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-title">
+            <h2>这次发生了什么？</h2>
+            <small>场景标签</small>
+          </div>
+          <div class="scenes" id="scenes">
+            <button class="scene-card active" data-scene="一催作业就发火"><b>一催作业就发火</b><span>一提醒学习，家里气氛马上变紧。</span></button>
+            <button class="scene-card" data-scene="越提醒越不听"><b>越提醒越不听</b><span>说得越多，孩子越像听不见。</span></button>
+            <button class="scene-card" data-scene="一到睡觉就磨蹭"><b>一到睡觉就磨蹭</b><span>洗漱、上床、关灯都要拉扯。</span></button>
+            <button class="scene-card" data-scene="说两句就哭"><b>说两句就哭</b><span>还没开始沟通，孩子已经崩了。</span></button>
+            <button class="scene-card" data-scene="在家脾气很差"><b>在家脾气很差</b><span>外面很乖，回家却像换了一个人。</span></button>
+            <button class="scene-card" data-scene="不愿意和父母沟通"><b>不愿意和父母沟通</b><span>问什么都不说，越问越沉默。</span></button>
           </div>
           <div class="input-row">
-            <input id="behaviorInput" value="写作业拖拉" aria-label="输入孩子行为">
+            <input id="sceneInput" value="一催作业就发火" aria-label="输入真实家庭场景">
             <button class="primary" id="translateBtn">翻译</button>
           </div>
         </section>
 
-        <div class="progress" aria-label="四段式输出进度">
+        <div class="mode" aria-label="阅读模式">
+          <button class="active" id="lightMode">轻模式 10秒看懂</button>
+          <button id="deepMode">深模式 展开理解</button>
+        </div>
+
+        <div class="progress" aria-label="AI 流式输出进度">
+          <div class="step"><span id="p0"></span></div>
           <div class="step"><span id="p1"></span></div>
           <div class="step"><span id="p2"></span></div>
           <div class="step"><span id="p3"></span></div>
@@ -597,144 +769,146 @@
 
     <aside class="story">
       <div>
-        <h2>《亲智聊》2.0<br>正面解读功能演示</h2>
-        <p>这个 demo 把你的功能文档收敛成一个 P0 页面：快捷标签输入、AI 四段式流式输出、行动建议和收藏入口。展示重点是“情绪缓冲 + 认知翻译 + 行动支持”。</p>
+        <h2>从行为分析工具<br>升级为情绪陪伴产品</h2>
+        <p>新版把流程前移到“家长情绪承接”：先回应我快被气炸了、我刚吼完孩子、我很焦虑，再进入孩子行为翻译。默认轻模式适合高频打开，深模式保留专业解释和长期陪伴价值。</p>
       </div>
 
-      <div class="demo-notes">
-        <div class="note">
-          <b>核心入口</b>
-          <span>首页或 AI 对话页一级入口，按钮文案使用“孩子行为翻译器”。</span>
-        </div>
-        <div class="note">
-          <b>P0 范围</b>
-          <span>快捷标签、输入框、四段式 AI 输出、一个当天可执行的小动作。</span>
-        </div>
-        <div class="note">
-          <b>体验节奏</b>
-          <span>分段呈现，先让家长松下来，再解释需求、优势和行动。</span>
-        </div>
-        <div class="note">
-          <b>后续留存</b>
-          <span>收藏行为卡片、每日成长翻译、孩子成长趋势报告。</span>
-        </div>
+      <div class="cards">
+        <div class="note"><b>P0 页面升级</b><span>情绪状态入口、场景化标签、一句话翻译结果、后悔时刻入口。</span></div>
+        <div class="note"><b>P0 交互升级</b><span>模拟 AI 流式输出，支持轻模式和深模式，让阅读压力更低。</span></div>
+        <div class="note"><b>P0 AI 结构</b><span>情绪承接、去标签化、需求翻译、优势重构、行动建议。</span></div>
+        <div class="note"><b>P1 留存方向</b><span>每日成长翻译、行为收藏夹、成长趋势分析，形成长期陪伴。</span></div>
       </div>
 
-      <div class="talk">
-        60 秒演示话术：家长输入“写作业拖拉”，系统不会立刻批评孩子，也不会教育家长，而是把拖拉翻译成压力、启动困难和害怕失败。随后给出未来优势视角，最后只给一个今晚能用的小动作。
-      </div>
+      <section class="trigger">
+        <b>AI 主动触发演示</b>
+        <textarea id="chatText">我真的崩溃了，孩子为什么这么不听话？</textarea>
+        <div class="trigger-row">
+          <span id="triggerHint">检测到高情绪表达，可开启行为翻译。</span>
+          <button class="primary" id="triggerBtn">开启行为翻译</button>
+        </div>
+      </section>
     </aside>
   </main>
 
+  <div class="toast" id="toast">已模拟保存</div>
+
   <script>
-    const translations = {
-      "写作业拖拉": {
-        seen: "孩子：不写作业，总是拖拉。",
-        reframe: "很多时候，拖拉不代表孩子懒。也可能是任务太大、压力太高，或者他不知道从哪里开始。",
-        needs: ["对任务有压力", "需要更清晰的开始步骤", "害怕做不好", "注意力已经耗尽"],
-        advantage: ["对困难更敏感", "需要找到自己的节奏", "被正确引导后更会规划"],
-        action: "今晚先不要催作业。试着问：你觉得最难开始的是哪一部分？我们只先做第一小步。"
+    const sceneData = {
+      "一催作业就发火": {
+        short: "孩子现在的“发火”，可能是在表达：我压力太大，不知道怎么开始。",
+        emotion: "你现在可能已经很累了。催作业催到最后，常常不是作业本身让人崩溃，而是那种“怎么又来了”的无力感。",
+        detag: "这不一定是孩子故意对抗你。很多时候，发火是在用很笨拙的方式说：我卡住了，我不想再被推着走。",
+        needs: ["需要任务被拆小", "需要先恢复一点掌控感", "害怕做不好", "需要你先帮他开始第一步"],
+        advantage: ["对压力有感知", "有自己的边界", "被正确引导后更容易学会规划"],
+        action: "今晚先不说“快点写”。只问一句：你觉得最难开始的是哪一题？我们只先看第一小步。"
       },
-      "顶嘴": {
-        seen: "孩子：一说就顶嘴，像是在故意对着干。",
-        reframe: "顶嘴不一定是在攻击家长，也可能是孩子正在用不成熟的方式争取表达权。",
-        needs: ["希望被尊重", "想争取自主感", "不想总被命令", "需要练习表达不满"],
-        advantage: ["有主见", "敢表达不同意见", "未来更不容易盲从"],
-        action: "先暂停争输赢。可以说：我听出来你不愿意，我们先把你的理由说完。"
+      "越提醒越不听": {
+        short: "孩子现在的“不听”，可能是在练习：我想自己决定。",
+        emotion: "你可能已经提醒到很烦了。一直重复同一句话，会让家长觉得自己像坏人，也让孩子越来越想躲。",
+        detag: "这不一定是孩子不尊重你。提醒越多，孩子越容易只听见命令，而听不见关心。",
+        needs: ["需要自主感", "需要更少指令", "需要选择空间", "需要被当成可以商量的人"],
+        advantage: ["有主见", "不轻易被推着走", "未来更可能独立判断"],
+        action: "把命令换成选择：你想先洗漱，还是先收拾书包？两个都可以，你来定。"
       },
-      "情绪爆发": {
-        seen: "孩子：突然大哭或发脾气，很难讲道理。",
-        reframe: "情绪爆发往往不是孩子故意失控，而是他的情绪调节能力暂时不够用了。",
-        needs: ["需要被接住", "需要安全感", "需要有人帮他命名情绪", "需要从刺激中缓下来"],
-        advantage: ["情感感受力强", "表达直接", "未来可能更敏锐地理解他人"],
-        action: "先少讲道理。靠近一点说：我知道你现在很难受，我们先一起安静一分钟。"
+      "一到睡觉就磨蹭": {
+        short: "孩子现在的“磨蹭”，可能是在表达：我还不想结束今天。",
+        emotion: "到晚上你已经消耗很多了。睡前拉扯最容易让人失控，因为你也真的需要休息。",
+        detag: "磨蹭不一定是故意拖延。有些孩子很难从玩、陪伴或兴奋状态切换到睡觉。",
+        needs: ["需要提前预告", "需要稳定仪式", "需要和父母再连接一下", "需要可视化时间"],
+        advantage: ["重视陪伴", "对转换敏感", "建立节奏后会很稳定"],
+        action: "睡前给一个固定仪式：还有十分钟，我们抱一下，然后选一本书，读完就关灯。"
       },
-      "不专注": {
-        seen: "孩子：坐不住，注意力很快跑掉。",
-        reframe: "不专注不一定是不自觉，可能是大脑已经疲劳，或者任务缺少清晰的边界。",
-        needs: ["需要短周期任务", "需要减少干扰", "需要明确目标", "需要身体活动释放能量"],
-        advantage: ["好奇心强", "切换快", "对新鲜信息敏感"],
-        action: "把任务切成 10 分钟。只说：我们先完成第一小段，结束后休息 3 分钟。"
-      },
-      "沉迷手机": {
-        seen: "孩子：一拿手机就停不下来。",
-        reframe: "沉迷手机背后常常不只是自控差，也可能是现实中缺少成就感、陪伴或放松出口。",
-        needs: ["需要放松", "需要即时反馈", "需要同伴连接", "需要替代性的成就感"],
-        advantage: ["对互动反馈敏感", "学习新工具快", "有数字世界探索力"],
-        action: "别先抢手机。先约定一个替代动作：再玩 10 分钟后，我们一起选一个线下活动。"
-      },
-      "一说就哭": {
-        seen: "孩子：刚说两句就哭。",
-        reframe: "爱哭不是玻璃心，可能是孩子还没有足够的语言来表达委屈、害怕和压力。",
-        needs: ["需要被理解", "需要情绪词汇", "需要降低羞耻感", "需要慢一点说"],
+      "说两句就哭": {
+        short: "孩子现在的“哭”，可能是在说：我还不会好好表达委屈。",
+        emotion: "你可能会觉得自己还没说重话，孩子怎么就哭了。这个瞬间很容易让大人也委屈。",
+        detag: "哭不一定是玻璃心。它可能是孩子的语言还没跟上情绪，只能先用眼泪表达。",
+        needs: ["需要被命名情绪", "需要降低羞耻感", "需要慢一点说", "需要知道哭也不会失去爱"],
         advantage: ["感受力细腻", "共情力强", "对关系变化敏感"],
-        action: "先停下评价。可以说：你哭不是错，我们先说一个词，你现在是委屈、害怕，还是着急？"
+        action: "先停十秒。轻声问：你现在是委屈、害怕，还是着急？你可以只选一个词。"
       },
-      "不愿沟通": {
-        seen: "孩子：问什么都不说。",
-        reframe: "不说话可能不是冷漠，而是他担心一开口就被否定、纠正或继续追问。",
-        needs: ["需要安全表达空间", "需要不被追问", "需要保留边界", "需要慢慢建立信任"],
-        advantage: ["有边界感", "会保护自己", "思考可能更深"],
-        action: "把问题变小。不要问为什么，可以说：你可以只告诉我，这件事有多烦，从 1 到 10 是几分？"
+      "在家脾气很差": {
+        short: "孩子在家“脾气差”，可能是在最安全的地方释放压力。",
+        emotion: "看到孩子把坏脾气都给家里，你会很受伤。你不是不够好，你只是承接了他最松的一面。",
+        detag: "这不一定代表孩子不爱家人。很多孩子在外面努力控制，回家后才把疲惫放出来。",
+        needs: ["需要安全释放", "需要安静过渡", "需要被允许先缓一会儿", "需要家里不是第二个战场"],
+        advantage: ["信任家庭", "对外部规则有适应力", "需要学会更好的释放方式"],
+        action: "放学回家先别问表现。给他十分钟空白时间，再问：今天哪一刻最累？"
       },
-      "磨蹭": {
-        seen: "孩子：出门、洗漱、收拾都很磨蹭。",
-        reframe: "磨蹭有时不是故意拖延，而是孩子缺少时间感，或者在切换任务时很困难。",
-        needs: ["需要可视化时间", "需要提前预告", "需要更少指令", "需要切换缓冲"],
-        advantage: ["节奏稳定", "不轻易被推着走", "对过程有自己的感受"],
-        action: "用一个具体提示替代催促：还有 5 分钟出门，你只需要先完成穿鞋这一件事。"
+      "不愿意和父母沟通": {
+        short: "孩子现在的“沉默”，可能是在保护自己不被否定。",
+        emotion: "孩子什么都不说时，家长会特别慌，好像你正在被推远。这个感觉很难受。",
+        detag: "沉默不一定是冷漠。有时孩子害怕一开口，就会被追问、纠正或讲道理。",
+        needs: ["需要安全表达空间", "需要少一点追问", "需要被允许保留边界", "需要重新建立信任"],
+        advantage: ["有边界感", "会保护自己", "可能思考更深"],
+        action: "别问“为什么不说”。试试：你不用解释，只要告诉我这件事烦不烦，从 1 到 10 是几分？"
       }
     };
 
-    const chips = document.querySelectorAll(".chip");
-    const input = document.getElementById("behaviorInput");
+    const emotions = document.querySelectorAll(".emotion");
+    const scenes = document.querySelectorAll(".scene-card");
+    const input = document.getElementById("sceneInput");
     const button = document.getElementById("translateBtn");
     const results = document.getElementById("results");
     const screen = document.getElementById("screen");
-    const progress = ["p1", "p2", "p3", "p4"].map(id => document.getElementById(id));
+    const lightMode = document.getElementById("lightMode");
+    const deepMode = document.getElementById("deepMode");
+    const regretBtn = document.getElementById("regretBtn");
+    const triggerBtn = document.getElementById("triggerBtn");
+    const chatText = document.getElementById("chatText");
+    const toast = document.getElementById("toast");
+    const progress = ["p0", "p1", "p2", "p3", "p4"].map(id => document.getElementById(id));
+    let currentEmotion = "我快被气炸了";
 
-    function pickBehavior(value) {
-      chips.forEach(chip => chip.classList.toggle("active", chip.dataset.behavior === value));
-      input.value = value;
-      runTranslation();
+    function setActive(list, value, key) {
+      list.forEach(item => item.classList.toggle("active", item.dataset[key] === value));
     }
 
-    function getTranslation(value) {
-      return translations[value] || {
-        seen: `孩子：${value || "不写作业，总是拖拉"}。`,
-        reframe: "先不急着给孩子贴标签。这个行为也可能是在表达压力、需要或发展中的能力。",
-        needs: ["需要被看见", "需要更清晰的规则", "需要降低压力", "需要练习表达"],
-        advantage: ["有自己的感受", "正在发展独立性", "被正确引导后会更会表达"],
-        action: "今天先只做一个小动作：把指责换成一个开放问题。问孩子：你现在最需要我帮你的是什么？"
+    function getData(value) {
+      return sceneData[value] || {
+        short: `孩子现在的“${value || "这个行为"}”，可能是在表达一个还说不清的需要。`,
+        emotion: "你现在可能已经很累了。先不用急着把这件事处理好，先让自己缓一下。",
+        detag: "这不一定是孩子故意和你作对。行为背后常常藏着压力、需要或还没发展好的能力。",
+        needs: ["需要被理解", "需要更清晰的边界", "需要降低压力", "需要练习表达"],
+        advantage: ["有自己的感受", "正在发展独立性", "被正确引导后更会表达"],
+        action: "今天先只做一个小动作：把指责换成一个开放问题，问孩子：你现在最需要我帮你的是什么？"
       };
     }
 
-    function cardTemplate(type, title, body) {
-      return `<article class="result-card ${type}">${title}${body}</article>`;
+    function setMode(mode) {
+      const isDeep = mode === "deep";
+      document.body.classList.toggle("deep-mode", isDeep);
+      lightMode.classList.toggle("active", !isDeep);
+      deepMode.classList.toggle("active", isDeep);
     }
 
-    function renderCards(data) {
+    function showToast(text) {
+      toast.textContent = text;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 1300);
+    }
+
+    function shareCard(data, scene) {
+      return `
+        <article class="share-card">
+          <small>一句话翻译结果</small>
+          <h3>${data.short}</h3>
+          <div class="actions">
+            <button class="ghost" data-toast="已模拟保存图片">保存图片</button>
+            <button class="ghost" data-toast="已加入理解库">收藏</button>
+            <button class="ghost" data-toast="已模拟分享">分享</button>
+          </div>
+        </article>
+      `;
+    }
+
+    function resultCards(data) {
       return [
-        cardTemplate(
-          "card-soft-teal",
-          "<h3>1. 不急着定义孩子</h3>",
-          `<p>${data.reframe}</p><div class="quote">${data.seen}</div>`
-        ),
-        cardTemplate(
-          "card-soft-coral",
-          "<h3>2. 孩子真正想表达什么</h3>",
-          `<div class="compare"><div class="compare-box"><b>表面行为</b><p>${input.value}</p></div><div class="compare-box"><b>深层需求</b><ul>${data.needs.map(item => `<li>${item}</li>`).join("")}</ul></div></div><p class="quote">孩子的问题行为，很多时候是在表达，而不是攻击。</p>`
-        ),
-        cardTemplate(
-          "card-soft-sage",
-          "<h3>3. 这个特质未来可能的优势</h3>",
-          `<p>换个角度，这个特质如果被正确引导，未来可能发展成：</p><ul>${data.advantage.map(item => `<li>${item}</li>`).join("")}</ul>`
-        ),
-        cardTemplate(
-          "card-soft-gold",
-          "<h3>4. 今天你可以这样做</h3>",
-          `<p>${data.action}</p><div class="quote">只做一个小动作，先让冲突降下来。</div>`
-        )
+        `<article class="result-card soft-blue"><h3>1. 情绪承接</h3><p>${currentEmotion}，这不是小事。${data.emotion}</p></article>`,
+        `<article class="result-card soft-teal"><h3>2. 去标签化</h3><p>${data.detag}</p><div class="quote">先让冲突降下来，再看见孩子真正想表达什么。</div></article>`,
+        `<article class="result-card soft-rose"><h3>3. 孩子真正想表达什么</h3><p>这个场景背后，孩子可能在表达：</p><ul>${data.needs.slice(0, document.body.classList.contains("deep-mode") ? 4 : 2).map(item => `<li>${item}</li>`).join("")}</ul><div class="deep-only quote">深模式：这里不是替孩子找借口，而是找到更有效的沟通入口。</div></article>`,
+        `<article class="result-card soft-leaf deep-only"><h3>4. 这个特质未来可能的优势</h3><p>如果被正确引导，它未来可能变成：</p><ul>${data.advantage.map(item => `<li>${item}</li>`).join("")}</ul></article>`,
+        `<article class="result-card soft-gold"><h3>5. 今晚你可以先这样做</h3><p>${data.action}</p><div class="quote">只给一个小动作，当天就能用。</div></article>`
       ];
     }
 
@@ -742,9 +916,10 @@
       progress.forEach(item => item.style.width = "0");
     }
 
-    function runTranslation() {
-      const data = getTranslation(input.value.trim());
-      const cards = renderCards(data);
+    function renderFlow() {
+      const scene = input.value.trim();
+      const data = getData(scene);
+      const cards = [shareCard(data, scene), ...resultCards(data)];
       results.innerHTML = "";
       resetProgress();
       button.textContent = "生成中";
@@ -752,26 +927,68 @@
 
       cards.forEach((html, index) => {
         setTimeout(() => {
-          progress[index].style.width = "100%";
+          if (index > 0 && progress[index - 1]) progress[index - 1].style.width = "100%";
           results.insertAdjacentHTML("beforeend", html);
-          const card = results.lastElementChild;
-          requestAnimationFrame(() => card.classList.add("show"));
+          const el = results.lastElementChild;
+          requestAnimationFrame(() => el.classList.add("show"));
           screen.scrollTop = screen.scrollHeight;
           if (index === cards.length - 1) {
             button.textContent = "重新翻译";
             button.disabled = false;
           }
-        }, 420 + index * 760);
+        }, 260 + index * 620);
       });
     }
 
-    chips.forEach(chip => chip.addEventListener("click", () => pickBehavior(chip.dataset.behavior)));
-    button.addEventListener("click", runTranslation);
-    input.addEventListener("keydown", event => {
-      if (event.key === "Enter") runTranslation();
+    emotions.forEach(item => {
+      item.addEventListener("click", () => {
+        currentEmotion = item.dataset.emotion;
+        setActive(emotions, currentEmotion, "emotion");
+      });
     });
 
-    runTranslation();
+    scenes.forEach(item => {
+      item.addEventListener("click", () => {
+        input.value = item.dataset.scene;
+        setActive(scenes, item.dataset.scene, "scene");
+        renderFlow();
+      });
+    });
+
+    input.addEventListener("input", () => setActive(scenes, input.value.trim(), "scene"));
+    input.addEventListener("keydown", event => {
+      if (event.key === "Enter") renderFlow();
+    });
+    button.addEventListener("click", renderFlow);
+    lightMode.addEventListener("click", () => {
+      setMode("light");
+      renderFlow();
+    });
+    deepMode.addEventListener("click", () => {
+      setMode("deep");
+      renderFlow();
+    });
+    regretBtn.addEventListener("click", () => {
+      currentEmotion = "我刚吼完孩子";
+      input.value = "说两句就哭";
+      setActive(emotions, currentEmotion, "emotion");
+      setActive(scenes, input.value, "scene");
+      renderFlow();
+    });
+    triggerBtn.addEventListener("click", () => {
+      currentEmotion = chatText.value.includes("崩溃") ? "我不知道怎么办" : "我很焦虑";
+      input.value = "越提醒越不听";
+      setActive(emotions, currentEmotion, "emotion");
+      setActive(scenes, input.value, "scene");
+      renderFlow();
+      screen.scrollTop = 0;
+    });
+    results.addEventListener("click", event => {
+      const target = event.target.closest("[data-toast]");
+      if (target) showToast(target.dataset.toast);
+    });
+
+    renderFlow();
   </script>
 </body>
 </html>
