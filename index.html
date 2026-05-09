@@ -1,0 +1,777 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>亲智聊 - 孩子行为翻译器 Demo</title>
+  <style>
+    :root {
+      --bg: #f7f5f0;
+      --phone: #fffdf8;
+      --ink: #26322f;
+      --muted: #6d7b77;
+      --line: #e6ded0;
+      --teal: #16796f;
+      --teal-soft: #e8f4f0;
+      --coral: #d96b55;
+      --coral-soft: #fff0ea;
+      --sage: #7b9a6d;
+      --sage-soft: #edf5e8;
+      --gold: #bc8c37;
+      --gold-soft: #fff6dc;
+      --blue-soft: #eef4ff;
+      --shadow: 0 22px 70px rgba(45, 50, 45, .18);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
+      background:
+        linear-gradient(120deg, rgba(22, 121, 111, .11), transparent 34%),
+        linear-gradient(240deg, rgba(217, 107, 85, .10), transparent 38%),
+        var(--bg);
+    }
+
+    button,
+    input,
+    textarea {
+      font: inherit;
+    }
+
+    .stage {
+      width: min(1120px, 100%);
+      min-height: 100vh;
+      margin: 0 auto;
+      padding: 28px;
+      display: grid;
+      grid-template-columns: minmax(320px, 420px) 1fr;
+      gap: 28px;
+      align-items: center;
+    }
+
+    .phone {
+      height: min(860px, calc(100vh - 56px));
+      min-height: 680px;
+      border: 1px solid rgba(38, 50, 47, .12);
+      border-radius: 36px;
+      background: var(--phone);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .status {
+      height: 34px;
+      padding: 10px 22px 0;
+      display: flex;
+      justify-content: space-between;
+      color: #43514e;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .signal {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+    }
+
+    .bar {
+      width: 4px;
+      border-radius: 6px;
+      background: #43514e;
+    }
+
+    .bar:nth-child(1) { height: 5px; }
+    .bar:nth-child(2) { height: 8px; }
+    .bar:nth-child(3) { height: 11px; }
+
+    .screen {
+      overflow: auto;
+      flex: 1;
+      padding: 12px 18px 92px;
+      scroll-behavior: smooth;
+    }
+
+    .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .brand {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: linear-gradient(140deg, #16796f, #8ea65d);
+      display: grid;
+      place-items: center;
+      color: white;
+      font-weight: 800;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 22px;
+      line-height: 1.25;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 4px;
+    }
+
+    .pill {
+      border: 1px solid var(--line);
+      background: #fffaf1;
+      color: #5e665f;
+      border-radius: 999px;
+      padding: 8px 10px;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #f3fbf7, #fff5ec);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+      display: grid;
+      grid-template-columns: 1fr 82px;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .hero strong {
+      display: block;
+      font-size: 17px;
+      line-height: 1.35;
+      margin-bottom: 8px;
+    }
+
+    .hero span {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .mini-art {
+      width: 82px;
+      height: 82px;
+    }
+
+    .panel {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+
+    .panel-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .panel-title h2 {
+      font-size: 15px;
+    }
+
+    .panel-title small {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      border: 1px solid #d9e7e2;
+      color: #275f59;
+      background: var(--teal-soft);
+      border-radius: 999px;
+      padding: 8px 10px;
+      cursor: pointer;
+      transition: .18s ease;
+      font-size: 13px;
+    }
+
+    .chip.active,
+    .chip:hover {
+      border-color: var(--teal);
+      background: #d6eee8;
+      transform: translateY(-1px);
+    }
+
+    .input-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .input-row input {
+      min-width: 0;
+      flex: 1;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px;
+      color: var(--ink);
+      background: #fffdf8;
+      outline: none;
+    }
+
+    .primary {
+      border: 0;
+      border-radius: 8px;
+      background: var(--teal);
+      color: white;
+      padding: 0 14px;
+      min-width: 88px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .primary:hover {
+      background: #126a61;
+    }
+
+    .progress {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      margin: 14px 0 12px;
+    }
+
+    .step {
+      height: 5px;
+      border-radius: 20px;
+      background: #eadfce;
+      overflow: hidden;
+    }
+
+    .step span {
+      display: block;
+      width: 0;
+      height: 100%;
+      background: var(--teal);
+      transition: width .45s ease;
+    }
+
+    .result-card {
+      border-radius: 8px;
+      padding: 14px;
+      margin-bottom: 10px;
+      border: 1px solid transparent;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: .35s ease;
+    }
+
+    .result-card.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .result-card h3 {
+      font-size: 15px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .result-card p,
+    .result-card li {
+      color: #42504c;
+      font-size: 13px;
+      line-height: 1.65;
+    }
+
+    .result-card ul {
+      margin: 8px 0 0;
+      padding-left: 18px;
+    }
+
+    .card-soft-teal {
+      background: var(--teal-soft);
+      border-color: #d3e7e2;
+    }
+
+    .card-soft-coral {
+      background: var(--coral-soft);
+      border-color: #f2d4ca;
+    }
+
+    .card-soft-sage {
+      background: var(--sage-soft);
+      border-color: #d8e7cf;
+    }
+
+    .card-soft-gold {
+      background: var(--gold-soft);
+      border-color: #efdfb0;
+    }
+
+    .compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .compare-box {
+      border-radius: 8px;
+      background: rgba(255, 255, 255, .58);
+      padding: 10px;
+      min-height: 94px;
+    }
+
+    .compare-box b {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .quote {
+      border-left: 3px solid var(--teal);
+      padding-left: 10px;
+      margin-top: 10px;
+      color: #38504b;
+      font-weight: 700;
+      line-height: 1.55;
+    }
+
+    .bottom-nav {
+      height: 74px;
+      padding: 8px 18px 18px;
+      border-top: 1px solid var(--line);
+      background: rgba(255, 253, 248, .92);
+      backdrop-filter: blur(14px);
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+    }
+
+    .nav-item {
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      gap: 3px;
+      cursor: pointer;
+      font-size: 11px;
+    }
+
+    .nav-item svg {
+      width: 20px;
+      height: 20px;
+      stroke-width: 2;
+    }
+
+    .nav-item.active {
+      color: var(--teal);
+      background: var(--teal-soft);
+      font-weight: 800;
+    }
+
+    .story {
+      align-self: stretch;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 18px;
+    }
+
+    .story h2 {
+      font-size: clamp(28px, 4vw, 46px);
+      line-height: 1.15;
+      letter-spacing: 0;
+    }
+
+    .story p {
+      color: #53615d;
+      line-height: 1.8;
+      max-width: 560px;
+    }
+
+    .demo-notes {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      max-width: 680px;
+    }
+
+    .note {
+      background: rgba(255, 255, 255, .66);
+      border: 1px solid rgba(230, 222, 208, .9);
+      border-radius: 8px;
+      padding: 14px;
+    }
+
+    .note b {
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .note span {
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .talk {
+      max-width: 680px;
+      border: 1px solid rgba(22, 121, 111, .22);
+      border-radius: 8px;
+      padding: 16px;
+      background: rgba(232, 244, 240, .72);
+      color: #31524d;
+      line-height: 1.7;
+    }
+
+    @media (max-width: 860px) {
+      .stage {
+        min-height: auto;
+        padding: 12px;
+        grid-template-columns: 1fr;
+      }
+
+      .phone {
+        width: min(430px, 100%);
+        margin: 0 auto;
+        height: 760px;
+        min-height: 680px;
+        border-radius: 28px;
+      }
+
+      .story {
+        order: -1;
+        padding: 10px 2px 0;
+      }
+
+      .story h2 {
+        font-size: 30px;
+      }
+
+      .demo-notes {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 430px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .mini-art {
+        display: none;
+      }
+
+      .compare {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="stage">
+    <section class="phone" aria-label="亲智聊小程序页面演示">
+      <div class="status">
+        <span>9:41</span>
+        <span class="signal" aria-hidden="true">
+          <i class="bar"></i>
+          <i class="bar"></i>
+          <i class="bar"></i>
+        </span>
+      </div>
+
+      <div class="screen" id="screen">
+        <header class="top">
+          <div class="brand">
+            <div class="mark">亲</div>
+            <div>
+              <h1>孩子行为翻译器</h1>
+              <p class="subtitle">把问题行为翻译成成长语言</p>
+            </div>
+          </div>
+          <span class="pill">P0 Demo</span>
+        </header>
+
+        <section class="hero">
+          <div>
+            <strong>先别急着定义孩子。</strong>
+            <span>输入一个让你头疼的行为，亲智聊会分四步帮你看见行为背后的信号。</span>
+          </div>
+          <svg class="mini-art" viewBox="0 0 100 100" role="img" aria-label="亲子沟通插画">
+            <rect x="10" y="18" width="80" height="64" rx="18" fill="#fffaf1" stroke="#d9cbb5" stroke-width="2"></rect>
+            <circle cx="38" cy="44" r="12" fill="#d96b55"></circle>
+            <circle cx="64" cy="40" r="10" fill="#16796f"></circle>
+            <path d="M28 68c7-12 18-12 25 0M55 66c5-9 14-9 20 0" fill="none" stroke="#7b9a6d" stroke-width="4" stroke-linecap="round"></path>
+            <path d="M31 30c6-10 18-12 29-4" fill="none" stroke="#bc8c37" stroke-width="4" stroke-linecap="round"></path>
+          </svg>
+        </section>
+
+        <section class="panel">
+          <div class="panel-title">
+            <h2>你看到了什么行为？</h2>
+            <small>快捷标签</small>
+          </div>
+          <div class="chips" id="chips">
+            <button class="chip active" data-behavior="写作业拖拉">写作业拖拉</button>
+            <button class="chip" data-behavior="顶嘴">顶嘴</button>
+            <button class="chip" data-behavior="情绪爆发">情绪爆发</button>
+            <button class="chip" data-behavior="不专注">不专注</button>
+            <button class="chip" data-behavior="沉迷手机">沉迷手机</button>
+            <button class="chip" data-behavior="一说就哭">一说就哭</button>
+            <button class="chip" data-behavior="不愿沟通">不愿沟通</button>
+            <button class="chip" data-behavior="磨蹭">磨蹭</button>
+          </div>
+          <div class="input-row">
+            <input id="behaviorInput" value="写作业拖拉" aria-label="输入孩子行为">
+            <button class="primary" id="translateBtn">翻译</button>
+          </div>
+        </section>
+
+        <div class="progress" aria-label="四段式输出进度">
+          <div class="step"><span id="p1"></span></div>
+          <div class="step"><span id="p2"></span></div>
+          <div class="step"><span id="p3"></span></div>
+          <div class="step"><span id="p4"></span></div>
+        </div>
+
+        <section id="results" aria-live="polite"></section>
+      </div>
+
+      <nav class="bottom-nav" aria-label="底部导航">
+        <button class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 11l9-8 9 8"></path><path d="M5 10v10h14V10"></path></svg>
+          首页
+        </button>
+        <button class="nav-item active">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 5h16v10H8l-4 4z"></path><path d="M8 9h8"></path><path d="M8 12h5"></path></svg>
+          翻译器
+        </button>
+        <button class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 4h12v16l-6-3-6 3z"></path></svg>
+          收藏
+        </button>
+        <button class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 19V5"></path><path d="M8 17V9"></path><path d="M12 17V7"></path><path d="M16 17v-5"></path><path d="M20 19H4"></path></svg>
+          趋势
+        </button>
+      </nav>
+    </section>
+
+    <aside class="story">
+      <div>
+        <h2>《亲智聊》2.0<br>正面解读功能演示</h2>
+        <p>这个 demo 把你的功能文档收敛成一个 P0 页面：快捷标签输入、AI 四段式流式输出、行动建议和收藏入口。展示重点是“情绪缓冲 + 认知翻译 + 行动支持”。</p>
+      </div>
+
+      <div class="demo-notes">
+        <div class="note">
+          <b>核心入口</b>
+          <span>首页或 AI 对话页一级入口，按钮文案使用“孩子行为翻译器”。</span>
+        </div>
+        <div class="note">
+          <b>P0 范围</b>
+          <span>快捷标签、输入框、四段式 AI 输出、一个当天可执行的小动作。</span>
+        </div>
+        <div class="note">
+          <b>体验节奏</b>
+          <span>分段呈现，先让家长松下来，再解释需求、优势和行动。</span>
+        </div>
+        <div class="note">
+          <b>后续留存</b>
+          <span>收藏行为卡片、每日成长翻译、孩子成长趋势报告。</span>
+        </div>
+      </div>
+
+      <div class="talk">
+        60 秒演示话术：家长输入“写作业拖拉”，系统不会立刻批评孩子，也不会教育家长，而是把拖拉翻译成压力、启动困难和害怕失败。随后给出未来优势视角，最后只给一个今晚能用的小动作。
+      </div>
+    </aside>
+  </main>
+
+  <script>
+    const translations = {
+      "写作业拖拉": {
+        seen: "孩子：不写作业，总是拖拉。",
+        reframe: "很多时候，拖拉不代表孩子懒。也可能是任务太大、压力太高，或者他不知道从哪里开始。",
+        needs: ["对任务有压力", "需要更清晰的开始步骤", "害怕做不好", "注意力已经耗尽"],
+        advantage: ["对困难更敏感", "需要找到自己的节奏", "被正确引导后更会规划"],
+        action: "今晚先不要催作业。试着问：你觉得最难开始的是哪一部分？我们只先做第一小步。"
+      },
+      "顶嘴": {
+        seen: "孩子：一说就顶嘴，像是在故意对着干。",
+        reframe: "顶嘴不一定是在攻击家长，也可能是孩子正在用不成熟的方式争取表达权。",
+        needs: ["希望被尊重", "想争取自主感", "不想总被命令", "需要练习表达不满"],
+        advantage: ["有主见", "敢表达不同意见", "未来更不容易盲从"],
+        action: "先暂停争输赢。可以说：我听出来你不愿意，我们先把你的理由说完。"
+      },
+      "情绪爆发": {
+        seen: "孩子：突然大哭或发脾气，很难讲道理。",
+        reframe: "情绪爆发往往不是孩子故意失控，而是他的情绪调节能力暂时不够用了。",
+        needs: ["需要被接住", "需要安全感", "需要有人帮他命名情绪", "需要从刺激中缓下来"],
+        advantage: ["情感感受力强", "表达直接", "未来可能更敏锐地理解他人"],
+        action: "先少讲道理。靠近一点说：我知道你现在很难受，我们先一起安静一分钟。"
+      },
+      "不专注": {
+        seen: "孩子：坐不住，注意力很快跑掉。",
+        reframe: "不专注不一定是不自觉，可能是大脑已经疲劳，或者任务缺少清晰的边界。",
+        needs: ["需要短周期任务", "需要减少干扰", "需要明确目标", "需要身体活动释放能量"],
+        advantage: ["好奇心强", "切换快", "对新鲜信息敏感"],
+        action: "把任务切成 10 分钟。只说：我们先完成第一小段，结束后休息 3 分钟。"
+      },
+      "沉迷手机": {
+        seen: "孩子：一拿手机就停不下来。",
+        reframe: "沉迷手机背后常常不只是自控差，也可能是现实中缺少成就感、陪伴或放松出口。",
+        needs: ["需要放松", "需要即时反馈", "需要同伴连接", "需要替代性的成就感"],
+        advantage: ["对互动反馈敏感", "学习新工具快", "有数字世界探索力"],
+        action: "别先抢手机。先约定一个替代动作：再玩 10 分钟后，我们一起选一个线下活动。"
+      },
+      "一说就哭": {
+        seen: "孩子：刚说两句就哭。",
+        reframe: "爱哭不是玻璃心，可能是孩子还没有足够的语言来表达委屈、害怕和压力。",
+        needs: ["需要被理解", "需要情绪词汇", "需要降低羞耻感", "需要慢一点说"],
+        advantage: ["感受力细腻", "共情力强", "对关系变化敏感"],
+        action: "先停下评价。可以说：你哭不是错，我们先说一个词，你现在是委屈、害怕，还是着急？"
+      },
+      "不愿沟通": {
+        seen: "孩子：问什么都不说。",
+        reframe: "不说话可能不是冷漠，而是他担心一开口就被否定、纠正或继续追问。",
+        needs: ["需要安全表达空间", "需要不被追问", "需要保留边界", "需要慢慢建立信任"],
+        advantage: ["有边界感", "会保护自己", "思考可能更深"],
+        action: "把问题变小。不要问为什么，可以说：你可以只告诉我，这件事有多烦，从 1 到 10 是几分？"
+      },
+      "磨蹭": {
+        seen: "孩子：出门、洗漱、收拾都很磨蹭。",
+        reframe: "磨蹭有时不是故意拖延，而是孩子缺少时间感，或者在切换任务时很困难。",
+        needs: ["需要可视化时间", "需要提前预告", "需要更少指令", "需要切换缓冲"],
+        advantage: ["节奏稳定", "不轻易被推着走", "对过程有自己的感受"],
+        action: "用一个具体提示替代催促：还有 5 分钟出门，你只需要先完成穿鞋这一件事。"
+      }
+    };
+
+    const chips = document.querySelectorAll(".chip");
+    const input = document.getElementById("behaviorInput");
+    const button = document.getElementById("translateBtn");
+    const results = document.getElementById("results");
+    const screen = document.getElementById("screen");
+    const progress = ["p1", "p2", "p3", "p4"].map(id => document.getElementById(id));
+
+    function pickBehavior(value) {
+      chips.forEach(chip => chip.classList.toggle("active", chip.dataset.behavior === value));
+      input.value = value;
+      runTranslation();
+    }
+
+    function getTranslation(value) {
+      return translations[value] || {
+        seen: `孩子：${value || "不写作业，总是拖拉"}。`,
+        reframe: "先不急着给孩子贴标签。这个行为也可能是在表达压力、需要或发展中的能力。",
+        needs: ["需要被看见", "需要更清晰的规则", "需要降低压力", "需要练习表达"],
+        advantage: ["有自己的感受", "正在发展独立性", "被正确引导后会更会表达"],
+        action: "今天先只做一个小动作：把指责换成一个开放问题。问孩子：你现在最需要我帮你的是什么？"
+      };
+    }
+
+    function cardTemplate(type, title, body) {
+      return `<article class="result-card ${type}">${title}${body}</article>`;
+    }
+
+    function renderCards(data) {
+      return [
+        cardTemplate(
+          "card-soft-teal",
+          "<h3>1. 不急着定义孩子</h3>",
+          `<p>${data.reframe}</p><div class="quote">${data.seen}</div>`
+        ),
+        cardTemplate(
+          "card-soft-coral",
+          "<h3>2. 孩子真正想表达什么</h3>",
+          `<div class="compare"><div class="compare-box"><b>表面行为</b><p>${input.value}</p></div><div class="compare-box"><b>深层需求</b><ul>${data.needs.map(item => `<li>${item}</li>`).join("")}</ul></div></div><p class="quote">孩子的问题行为，很多时候是在表达，而不是攻击。</p>`
+        ),
+        cardTemplate(
+          "card-soft-sage",
+          "<h3>3. 这个特质未来可能的优势</h3>",
+          `<p>换个角度，这个特质如果被正确引导，未来可能发展成：</p><ul>${data.advantage.map(item => `<li>${item}</li>`).join("")}</ul>`
+        ),
+        cardTemplate(
+          "card-soft-gold",
+          "<h3>4. 今天你可以这样做</h3>",
+          `<p>${data.action}</p><div class="quote">只做一个小动作，先让冲突降下来。</div>`
+        )
+      ];
+    }
+
+    function resetProgress() {
+      progress.forEach(item => item.style.width = "0");
+    }
+
+    function runTranslation() {
+      const data = getTranslation(input.value.trim());
+      const cards = renderCards(data);
+      results.innerHTML = "";
+      resetProgress();
+      button.textContent = "生成中";
+      button.disabled = true;
+
+      cards.forEach((html, index) => {
+        setTimeout(() => {
+          progress[index].style.width = "100%";
+          results.insertAdjacentHTML("beforeend", html);
+          const card = results.lastElementChild;
+          requestAnimationFrame(() => card.classList.add("show"));
+          screen.scrollTop = screen.scrollHeight;
+          if (index === cards.length - 1) {
+            button.textContent = "重新翻译";
+            button.disabled = false;
+          }
+        }, 420 + index * 760);
+      });
+    }
+
+    chips.forEach(chip => chip.addEventListener("click", () => pickBehavior(chip.dataset.behavior)));
+    button.addEventListener("click", runTranslation);
+    input.addEventListener("keydown", event => {
+      if (event.key === "Enter") runTranslation();
+    });
+
+    runTranslation();
+  </script>
+</body>
+</html>
