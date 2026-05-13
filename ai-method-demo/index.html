@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>亲智聊 AI 方法演示｜批量测试与校验</title>
+    <meta
+      name="description"
+      content="亲智聊 AI 批量测试与校验方法演示：OpenClaw + Coze + 飞书，15 个典型案例，4 轮对话，多维度评估。"
+    />
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="回到顶部">
+        <span class="brand-mark">AI</span>
+        <span>亲智聊方法演示</span>
+      </a>
+      <nav class="top-nav" aria-label="页面导航">
+        <a href="#method">方法闭环</a>
+        <a href="#evaluation">评估结果</a>
+        <a href="#cases">案例矩阵</a>
+        <a href="#evidence">真实效果</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+          <p class="eyebrow">AI 应用大赛 · 批量测试与校验</p>
+          <h1 id="hero-title">把 AI 对话质量测试，变成可复用的自动化方法</h1>
+          <p class="hero-copy">
+            从 OpenClaw 部署、飞书渠道接入、家长画像 Agent 模拟，到亲智聊 Agent
+            多轮对话评估与报告沉淀，形成一套可复制、可校验、可优化的 AI 方法演示。
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#cases">查看 15 个案例</a>
+            <a class="button ghost" href="#evidence">查看真实截图</a>
+          </div>
+          <dl class="hero-metrics" id="heroMetrics" aria-label="核心数据"></dl>
+        </div>
+      </section>
+
+      <section class="section method-section" id="method" aria-labelledby="method-title">
+        <div class="section-heading">
+          <p class="eyebrow">Method Loop</p>
+          <h2 id="method-title">从部署到报告的六步闭环</h2>
+          <p>
+            演示不是单点功能，而是一条完整链路：先让系统能跑，再让测试可复现，最后把结果沉淀为可优化的报告。
+          </p>
+        </div>
+        <div class="method-layout">
+          <div class="step-list" id="workflowSteps" aria-label="方法步骤"></div>
+          <figure class="method-preview">
+            <img id="workflowImage" src="assets/docx-media/demo_doc-001.png" alt="方法步骤截图" />
+            <figcaption id="workflowCaption">部署 OpenClaw</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="section stack-section" aria-labelledby="stack-title">
+        <div class="section-heading compact">
+          <p class="eyebrow">System Design</p>
+          <h2 id="stack-title">一个家长画像 Agent，驱动一个真实服务 Agent</h2>
+        </div>
+        <div class="stack-map" aria-label="系统链路图">
+          <div class="stack-node">
+            <span class="node-kicker">输入</span>
+            <strong>15 个家庭教育场景</strong>
+            <p>拖延、顶嘴、早恋焦虑、考试焦虑、同伴关系等高频问题。</p>
+          </div>
+          <div class="stack-arrow" aria-hidden="true"></div>
+          <div class="stack-node accent">
+            <span class="node-kicker">模拟</span>
+            <strong>家长画像 Agent</strong>
+            <p>按质疑、顾虑、追问方向生成 4 轮真实反应。</p>
+          </div>
+          <div class="stack-arrow" aria-hidden="true"></div>
+          <div class="stack-node">
+            <span class="node-kicker">调用</span>
+            <strong>亲智聊 Agent</strong>
+            <p>记录每轮输出质量、响应时间与关键话术。</p>
+          </div>
+          <div class="stack-arrow" aria-hidden="true"></div>
+          <div class="stack-node report">
+            <span class="node-kicker">沉淀</span>
+            <strong>飞书测试报告</strong>
+            <p>自动汇总评分、优势、风险与下一步优化建议。</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section evaluation-section" id="evaluation" aria-labelledby="evaluation-title">
+        <div class="section-heading">
+          <p class="eyebrow">Evaluation</p>
+          <h2 id="evaluation-title">多维度评分：优势清楚，短板也清楚</h2>
+          <p>
+            结果显示，亲智聊在准确性、场景相关性、可操作性、同理心、逻辑与专业可信度上表现稳定，下一阶段重点优化个性化程度与响应时间。
+          </p>
+        </div>
+        <div class="evaluation-grid">
+          <div class="score-panel">
+            <div class="score-orbit">
+              <span id="avgScore">4.78</span>
+              <small>综合平均分 / 5</small>
+            </div>
+            <div class="score-facts">
+              <p><strong id="caseCount">15</strong> 个测试案例</p>
+              <p><strong id="roundCount">60</strong> 条 AI 回复</p>
+              <p><strong id="avgTime">12.9s</strong> 平均推理时间</p>
+            </div>
+          </div>
+          <div class="dimension-list" id="dimensionList" aria-label="评分维度"></div>
+        </div>
+      </section>
+
+      <section class="section cases-section" id="cases" aria-labelledby="cases-title">
+        <div class="section-heading">
+          <p class="eyebrow">Case Matrix</p>
+          <h2 id="cases-title">15 个典型家庭教育场景，完整 4 轮对话校验</h2>
+          <p>
+            每个案例都带有测试目的、家长追问、AI 回复、响应时间和维度评分，既能看结果，也能追溯过程。
+          </p>
+        </div>
+        <div class="case-layout">
+          <aside class="case-list" id="caseList" aria-label="案例列表"></aside>
+          <article class="case-detail" id="caseDetail" aria-live="polite"></article>
+        </div>
+      </section>
+
+      <section class="section evidence-section" id="evidence" aria-labelledby="evidence-title">
+        <div class="section-heading">
+          <p class="eyebrow">Evidence</p>
+          <h2 id="evidence-title">从配置到报告的真实效果</h2>
+          <p>
+            页面素材来自你的演示文档截图，用来证明这套方法已经完成从部署、配置、调用到结果汇总的闭环。
+          </p>
+        </div>
+        <div class="evidence-grid" id="evidenceGrid"></div>
+      </section>
+
+      <section class="section roadmap-section" aria-labelledby="roadmap-title">
+        <div class="section-heading compact">
+          <p class="eyebrow">Next Iteration</p>
+          <h2 id="roadmap-title">优化路线已经明确</h2>
+        </div>
+        <div class="roadmap-grid" id="roadmapGrid"></div>
+        <div class="final-callout">
+          <p class="eyebrow">结论</p>
+          <h2>当前提示词整体表现优秀，优化后预期可提升到 4.9-4.95/5。</h2>
+          <p>
+            核心优势是共情能力强、育儿知识准确、建议可落地、结构清晰，并能主动邀请后续反馈。
+            下一步把个性化信息采集和首轮响应速度拉上来，方法价值会更完整。
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>亲智聊 AI 批量测试与校验 · 静态永久版页面</p>
+      <a href="https://kw9a3ctk7c9.feishu.cn/docx/D8wUdf9s3oydtWxWOuZcS4uBnCb?from=from_copylink" target="_blank" rel="noreferrer">
+        原始测试报告
+      </a>
+    </footer>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
