@@ -116,6 +116,9 @@ function escapeHtml(value) {
 }
 
 function renderHeroMetrics() {
+  const heroMetrics = $("#heroMetrics");
+  if (!heroMetrics) return;
+
   const metricItems = [
     ["综合平均分", `${data.metrics.avgScore}/5`],
     ["典型案例", `${data.metrics.caseCount} 个`],
@@ -123,7 +126,7 @@ function renderHeroMetrics() {
     ["平均推理时间", `${data.metrics.avgTime} 秒`],
   ];
 
-  $("#heroMetrics").innerHTML = metricItems
+  heroMetrics.innerHTML = metricItems
     .map(
       ([label, value]) => `
         <div>

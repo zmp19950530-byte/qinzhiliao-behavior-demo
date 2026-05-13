@@ -866,30 +866,6 @@ h3 {
   gap: 26px;
 }
 
-.operation-context {
-  display: grid;
-  gap: 24px;
-  margin-bottom: 28px;
-}
-
-.embedded-method,
-.embedded-stack {
-  padding: 24px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  background: rgba(255, 255, 255, 0.86);
-  box-shadow: 0 16px 42px rgba(23, 32, 42, 0.08);
-}
-
-.embedded-method .section-heading,
-.embedded-stack .section-heading {
-  margin-bottom: 24px;
-}
-
-.embedded-stack {
-  background: linear-gradient(90deg, #e8f3ee, #fff4ec 58%, #f4f1fb);
-}
-
 .operation-summary {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
