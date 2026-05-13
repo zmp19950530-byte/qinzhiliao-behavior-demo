@@ -41,7 +41,6 @@
             <a class="button ghost" href="#cases">结果呈现</a>
             <a class="button ghost" href="#evidence">操作演示</a>
           </div>
-          <dl class="hero-metrics" id="heroMetrics" aria-label="核心数据"></dl>
         </div>
       </section>
 
@@ -136,56 +135,57 @@
             按操作过程文档重新整理为 6 个演示步骤：每一步都说明要做什么、为什么做、看哪张截图，评委可以顺着页面完整复现这套方法。
           </p>
         </div>
+        <div class="operation-context">
+          <section class="embedded-method" id="method" aria-labelledby="method-title">
+            <div class="section-heading">
+              <p class="eyebrow">Method Loop</p>
+              <h2 id="method-title">从部署到报告的六步闭环</h2>
+              <p>
+                演示不是单点功能，而是一条完整链路：先让系统能跑，再让测试可复现，最后把结果沉淀为可优化的报告。
+              </p>
+            </div>
+            <div class="method-layout">
+              <div class="step-list" id="workflowSteps" aria-label="方法步骤"></div>
+              <figure class="method-preview">
+                <img id="workflowImage" src="assets/docx-media/demo_doc-001.png" alt="方法步骤截图" />
+                <figcaption id="workflowCaption">部署 OpenClaw</figcaption>
+              </figure>
+            </div>
+          </section>
+
+          <section class="embedded-stack" aria-labelledby="stack-title">
+            <div class="section-heading compact">
+              <p class="eyebrow">System Design</p>
+              <h2 id="stack-title">一个家长画像 Agent，驱动一个真实服务 Agent</h2>
+            </div>
+            <div class="stack-map" aria-label="系统链路图">
+              <div class="stack-node">
+                <span class="node-kicker">输入</span>
+                <strong>15 个家庭教育场景</strong>
+                <p>拖延、顶嘴、早恋焦虑、考试焦虑、同伴关系等高频问题。</p>
+              </div>
+              <div class="stack-arrow" aria-hidden="true"></div>
+              <div class="stack-node accent">
+                <span class="node-kicker">模拟</span>
+                <strong>家长画像 Agent</strong>
+                <p>按质疑、顾虑、追问方向生成 4 轮真实反应。</p>
+              </div>
+              <div class="stack-arrow" aria-hidden="true"></div>
+              <div class="stack-node">
+                <span class="node-kicker">调用</span>
+                <strong>亲智聊 Agent</strong>
+                <p>记录每轮输出质量、响应时间与关键话术。</p>
+              </div>
+              <div class="stack-arrow" aria-hidden="true"></div>
+              <div class="stack-node report">
+                <span class="node-kicker">沉淀</span>
+                <strong>飞书测试报告</strong>
+                <p>自动汇总评分、优势、风险与下一步优化建议。</p>
+              </div>
+            </div>
+          </section>
+        </div>
         <div class="operation-demo" id="operationDemo"></div>
-      </section>
-
-      <section class="section method-section" id="method" aria-labelledby="method-title">
-        <div class="section-heading">
-          <p class="eyebrow">Method Loop</p>
-          <h2 id="method-title">从部署到报告的六步闭环</h2>
-          <p>
-            演示不是单点功能，而是一条完整链路：先让系统能跑，再让测试可复现，最后把结果沉淀为可优化的报告。
-          </p>
-        </div>
-        <div class="method-layout">
-          <div class="step-list" id="workflowSteps" aria-label="方法步骤"></div>
-          <figure class="method-preview">
-            <img id="workflowImage" src="assets/docx-media/demo_doc-001.png" alt="方法步骤截图" />
-            <figcaption id="workflowCaption">部署 OpenClaw</figcaption>
-          </figure>
-        </div>
-      </section>
-
-      <section class="section stack-section" aria-labelledby="stack-title">
-        <div class="section-heading compact">
-          <p class="eyebrow">System Design</p>
-          <h2 id="stack-title">一个家长画像 Agent，驱动一个真实服务 Agent</h2>
-        </div>
-        <div class="stack-map" aria-label="系统链路图">
-          <div class="stack-node">
-            <span class="node-kicker">输入</span>
-            <strong>15 个家庭教育场景</strong>
-            <p>拖延、顶嘴、早恋焦虑、考试焦虑、同伴关系等高频问题。</p>
-          </div>
-          <div class="stack-arrow" aria-hidden="true"></div>
-          <div class="stack-node accent">
-            <span class="node-kicker">模拟</span>
-            <strong>家长画像 Agent</strong>
-            <p>按质疑、顾虑、追问方向生成 4 轮真实反应。</p>
-          </div>
-          <div class="stack-arrow" aria-hidden="true"></div>
-          <div class="stack-node">
-            <span class="node-kicker">调用</span>
-            <strong>亲智聊 Agent</strong>
-            <p>记录每轮输出质量、响应时间与关键话术。</p>
-          </div>
-          <div class="stack-arrow" aria-hidden="true"></div>
-          <div class="stack-node report">
-            <span class="node-kicker">沉淀</span>
-            <strong>飞书测试报告</strong>
-            <p>自动汇总评分、优势、风险与下一步优化建议。</p>
-          </div>
-        </div>
       </section>
 
       <section class="section roadmap-section" aria-labelledby="roadmap-title">
