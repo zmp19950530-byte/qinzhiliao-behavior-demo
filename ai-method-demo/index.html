@@ -18,11 +18,11 @@
         <span>亲智聊方法演示</span>
       </a>
       <nav class="top-nav" aria-label="页面导航">
-        <a href="#method">方法闭环</a>
-        <a href="#evaluation">评估结果</a>
         <a href="#efficiency">增效说明</a>
+        <a href="#evaluation">评估结果</a>
         <a href="#cases">结果呈现</a>
         <a href="#evidence">操作演示</a>
+        <a href="#method">方法闭环</a>
       </nav>
     </header>
 
@@ -43,6 +43,100 @@
           </div>
           <dl class="hero-metrics" id="heroMetrics" aria-label="核心数据"></dl>
         </div>
+      </section>
+
+      <section class="section efficiency-section" id="efficiency" aria-labelledby="efficiency-title">
+        <div class="section-heading">
+          <p class="eyebrow">Efficiency</p>
+          <h2 id="efficiency-title">增效说明</h2>
+          <p>
+            这套 Agent 团队系统的价值，不只是把测试做完，而是把人工重复劳动转成可规模化、可度量、可持续优化的智能流程。
+          </p>
+        </div>
+        <div class="efficiency-layout">
+          <div class="efficiency-hero">
+            <div>
+              <span class="efficiency-kicker">Measured Impact</span>
+              <strong>87.5%</strong>
+              <p>测试周期从 1 天缩短至 2 小时，批量执行显著压缩等待和重复操作时间。</p>
+            </div>
+            <div class="efficiency-mini-grid">
+              <div><strong>66.7%</strong><span>人力成本降低</span></div>
+              <div><strong>90%</strong><span>错误检测率</span></div>
+            </div>
+          </div>
+          <div class="efficiency-accordion">
+            <details open>
+              <summary>传统 AI 测试痛点</summary>
+              <p>人工逐一输入问题、等待回答、逐句核对质量，测试节奏慢；边缘问题容易漏检，例如复杂追问、家长质疑和模糊输入；大量时间消耗在重复执行和人工判读上。</p>
+            </details>
+            <details>
+              <summary>Agent 团队闭环</summary>
+              <p>测试设计 Agent 生成覆盖核心和边缘场景的测试用例；执行 Agent 批量调用亲智聊 AI 完成完整 4 轮对话；校验 Agent 围绕 10 个维度自动打分、标记问题并输出报告。</p>
+            </details>
+            <details>
+              <summary>数据化提效结果</summary>
+              <p>以 15 个典型案例测试为例，测试周期从 1 天缩短至 2 小时，协作人力从 3 人减少至 1 人，系统错误检测率提升至 90%，能更稳定发现漏检和边缘问题。</p>
+            </details>
+            <details>
+              <summary>家庭教育场景覆盖</summary>
+              <p>覆盖孩子沉迷游戏、不想上学、亲子沟通冲突、学习辅导困难、情绪管理、家长质疑、持续追问、模糊输入、个性化建议和持续指导等场景，可沉淀为可复用测试资产。</p>
+            </details>
+            <details>
+              <summary>下一步优化方向</summary>
+              <p>从“发现问题”推进到“辅助优化”：新增优化 Agent 自动调整话术，引入情感分析量化回答温度，并建设定制用例库，支撑亲智聊 AI 持续迭代。</p>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <section class="section evaluation-section" id="evaluation" aria-labelledby="evaluation-title">
+        <div class="section-heading">
+          <p class="eyebrow">Evaluation</p>
+          <h2 id="evaluation-title">多维度评分：优势清楚，短板也清楚</h2>
+          <p>
+            结果显示，亲智聊在准确性、场景相关性、可操作性、同理心、逻辑与专业可信度上表现稳定，下一阶段重点优化个性化程度与响应时间。
+          </p>
+        </div>
+        <div class="evaluation-grid">
+          <div class="score-panel">
+            <div class="score-orbit">
+              <span id="avgScore">4.78</span>
+              <small>综合平均分 / 5</small>
+            </div>
+            <div class="score-facts">
+              <p><strong id="caseCount">15</strong> 个测试案例</p>
+              <p><strong id="roundCount">60</strong> 条 AI 回复</p>
+              <p><strong id="avgTime">12.9s</strong> 平均推理时间</p>
+            </div>
+          </div>
+          <div class="dimension-list" id="dimensionList" aria-label="评分维度"></div>
+        </div>
+      </section>
+
+      <section class="section cases-section" id="cases" aria-labelledby="cases-title">
+        <div class="section-heading">
+          <p class="eyebrow">Results</p>
+          <h2 id="cases-title">结果呈现：15 个典型家庭教育场景，完整 4 轮对话校验</h2>
+          <p>
+            每个案例都带有测试目的、家长追问、AI 回复、响应时间和维度评分，既能看结果，也能追溯过程。
+          </p>
+        </div>
+        <div class="case-layout">
+          <aside class="case-list" id="caseList" aria-label="案例列表"></aside>
+          <article class="case-detail" id="caseDetail" aria-live="polite"></article>
+        </div>
+      </section>
+
+      <section class="section evidence-section" id="evidence" aria-labelledby="evidence-title">
+        <div class="section-heading">
+          <p class="eyebrow">Operation Demo</p>
+          <h2 id="evidence-title">操作演示：从配置到报告的真实效果</h2>
+          <p>
+            按操作过程文档重新整理为 6 个演示步骤：每一步都说明要做什么、为什么做、看哪张截图，评委可以顺着页面完整复现这套方法。
+          </p>
+        </div>
+        <div class="operation-demo" id="operationDemo"></div>
       </section>
 
       <section class="section method-section" id="method" aria-labelledby="method-title">
@@ -92,100 +186,6 @@
             <p>自动汇总评分、优势、风险与下一步优化建议。</p>
           </div>
         </div>
-      </section>
-
-      <section class="section evaluation-section" id="evaluation" aria-labelledby="evaluation-title">
-        <div class="section-heading">
-          <p class="eyebrow">Evaluation</p>
-          <h2 id="evaluation-title">多维度评分：优势清楚，短板也清楚</h2>
-          <p>
-            结果显示，亲智聊在准确性、场景相关性、可操作性、同理心、逻辑与专业可信度上表现稳定，下一阶段重点优化个性化程度与响应时间。
-          </p>
-        </div>
-        <div class="evaluation-grid">
-          <div class="score-panel">
-            <div class="score-orbit">
-              <span id="avgScore">4.78</span>
-              <small>综合平均分 / 5</small>
-            </div>
-            <div class="score-facts">
-              <p><strong id="caseCount">15</strong> 个测试案例</p>
-              <p><strong id="roundCount">60</strong> 条 AI 回复</p>
-              <p><strong id="avgTime">12.9s</strong> 平均推理时间</p>
-            </div>
-          </div>
-          <div class="dimension-list" id="dimensionList" aria-label="评分维度"></div>
-        </div>
-      </section>
-
-      <section class="section efficiency-section" id="efficiency" aria-labelledby="efficiency-title">
-        <div class="section-heading">
-          <p class="eyebrow">Efficiency</p>
-          <h2 id="efficiency-title">增效说明</h2>
-          <p>
-            这套 Agent 团队系统的价值，不只是把测试做完，而是把人工重复劳动转成可规模化、可度量、可持续优化的智能流程。
-          </p>
-        </div>
-        <div class="efficiency-layout">
-          <div class="efficiency-hero">
-            <div>
-              <span class="efficiency-kicker">Measured Impact</span>
-              <strong>87.5%</strong>
-              <p>测试周期从 1 天缩短至 2 小时，批量执行显著压缩等待和重复操作时间。</p>
-            </div>
-            <div class="efficiency-mini-grid">
-              <div><strong>66.7%</strong><span>人力成本降低</span></div>
-              <div><strong>90%</strong><span>错误检测率</span></div>
-            </div>
-          </div>
-          <div class="efficiency-accordion">
-            <details open>
-              <summary>传统 AI 测试痛点</summary>
-              <p>人工逐一输入问题、等待回答、逐句核对质量，测试节奏慢；边缘问题容易漏检，例如复杂追问、家长质疑和模糊输入；大量时间消耗在重复执行和人工判读上。</p>
-            </details>
-            <details>
-              <summary>Agent 团队闭环</summary>
-              <p>测试设计 Agent 生成覆盖核心和边缘场景的测试用例；执行 Agent 批量调用亲智聊 AI 完成完整 4 轮对话；校验 Agent 围绕 10 个维度自动打分、标记问题并输出报告。</p>
-            </details>
-            <details>
-              <summary>数据化提效结果</summary>
-              <p>以 15 个典型案例测试为例，测试周期从 1 天缩短至 2 小时，协作人力从 3 人减少至 1 人，系统错误检测率提升至 90%，能更稳定发现漏检和边缘问题。</p>
-            </details>
-            <details>
-              <summary>家庭教育场景覆盖</summary>
-              <p>覆盖孩子沉迷游戏、不想上学、亲子沟通冲突、学习辅导困难、情绪管理、家长质疑、持续追问、模糊输入、个性化建议和持续指导等场景，可沉淀为可复用测试资产。</p>
-            </details>
-            <details>
-              <summary>下一步优化方向</summary>
-              <p>从“发现问题”推进到“辅助优化”：新增优化 Agent 自动调整话术，引入情感分析量化回答温度，并建设定制用例库，支撑亲智聊 AI 持续迭代。</p>
-            </details>
-          </div>
-        </div>
-      </section>
-
-      <section class="section cases-section" id="cases" aria-labelledby="cases-title">
-        <div class="section-heading">
-          <p class="eyebrow">Results</p>
-          <h2 id="cases-title">结果呈现：15 个典型家庭教育场景，完整 4 轮对话校验</h2>
-          <p>
-            每个案例都带有测试目的、家长追问、AI 回复、响应时间和维度评分，既能看结果，也能追溯过程。
-          </p>
-        </div>
-        <div class="case-layout">
-          <aside class="case-list" id="caseList" aria-label="案例列表"></aside>
-          <article class="case-detail" id="caseDetail" aria-live="polite"></article>
-        </div>
-      </section>
-
-      <section class="section evidence-section" id="evidence" aria-labelledby="evidence-title">
-        <div class="section-heading">
-          <p class="eyebrow">Operation Demo</p>
-          <h2 id="evidence-title">操作演示：从配置到报告的真实效果</h2>
-          <p>
-            按操作过程文档重新整理为 6 个演示步骤：每一步都说明要做什么、为什么做、看哪张截图，评委可以顺着页面完整复现这套方法。
-          </p>
-        </div>
-        <div class="operation-demo" id="operationDemo"></div>
       </section>
 
       <section class="section roadmap-section" aria-labelledby="roadmap-title">
