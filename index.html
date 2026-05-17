@@ -1,994 +1,2175 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>亲智聊 - 孩子行为翻译器 2.0</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>亲智聊｜亲子记录 + AI亲子督导市场需求分析</title>
+  <meta name="description" content="亲智聊1.0升级版：亲子记录与AI亲子督导市场需求分析视觉报告" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@600;700;900&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #f6f3ec;
-      --phone: #fffdf8;
-      --ink: #26322f;
-      --muted: #6d7b77;
-      --line: #e6dece;
-      --teal: #15766d;
-      --teal-2: #e6f3ef;
-      --rose: #d96b55;
-      --rose-2: #fff0ea;
-      --leaf: #7b9a6d;
-      --leaf-2: #edf5e8;
-      --gold: #b88734;
-      --gold-2: #fff5d8;
-      --blue-2: #eef4ff;
-      --white: #ffffff;
-      --shadow: 0 24px 80px rgba(38, 50, 47, .18);
+      --bg: #fdfae7;
+      --paper: #fffdf1;
+      --ink: #101114;
+      --muted: #666a73;
+      --soft: #8a8f99;
+      --blue: #1e2bfa;
+      --blue-2: #5260ff;
+      --green: #0a8f68;
+      --coral: #f66f54;
+      --gold: #f2b84b;
+      --lavender: #7d70d9;
+      --line: rgba(30, 43, 250, 0.18);
+      --wash: rgba(30, 43, 250, 0.055);
+      --shadow: 0 22px 60px rgba(29, 38, 92, 0.12);
+      --radius: 8px;
     }
 
     * {
       box-sizing: border-box;
     }
 
-    body {
-      margin: 0;
-      min-height: 100vh;
-      color: var(--ink);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
-      background:
-        linear-gradient(130deg, rgba(21, 118, 109, .12), transparent 34%),
-        linear-gradient(240deg, rgba(217, 107, 85, .11), transparent 38%),
-        var(--bg);
-    }
-
-    button,
-    input,
-    textarea {
-      font: inherit;
-    }
-
-    button {
-      cursor: pointer;
-    }
-
-    .stage {
-      width: min(1180px, 100%);
-      min-height: 100vh;
-      margin: 0 auto;
-      padding: 26px;
-      display: grid;
-      grid-template-columns: minmax(340px, 430px) 1fr;
-      gap: 30px;
-      align-items: center;
-    }
-
-    .phone {
-      height: min(880px, calc(100vh - 52px));
-      min-height: 700px;
-      border: 1px solid rgba(38, 50, 47, .14);
-      border-radius: 34px;
-      background: var(--phone);
-      box-shadow: var(--shadow);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .status {
-      height: 34px;
-      padding: 10px 22px 0;
-      display: flex;
-      justify-content: space-between;
-      color: #43514e;
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .signal {
-      display: flex;
-      gap: 4px;
-      align-items: center;
-    }
-
-    .signal i {
-      width: 4px;
-      border-radius: 8px;
-      background: #43514e;
-      display: block;
-    }
-
-    .signal i:nth-child(1) { height: 5px; }
-    .signal i:nth-child(2) { height: 8px; }
-    .signal i:nth-child(3) { height: 11px; }
-
-    .screen {
-      flex: 1;
-      overflow: auto;
-      padding: 12px 18px 92px;
+    html {
       scroll-behavior: smooth;
     }
 
-    .top {
+    body {
+      margin: 0;
+      background:
+        linear-gradient(90deg, rgba(30,43,250,0.045) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(30,43,250,0.04) 1px, transparent 1px),
+        var(--bg);
+      background-size: 48px 48px;
+      color: var(--ink);
+      font-family: "Inter", "Noto Sans SC", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      letter-spacing: 0;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    p,
+    li,
+    h3,
+    span {
+      overflow-wrap: anywhere;
+    }
+
+    .mini,
+    .hero,
+    .hero-strip,
+    .hero-board,
+    .fly-step,
+    .stat-card,
+    .fly-step > div,
+    .competitor-body,
+    .source-card,
+    .mvp-card,
+    .target-panel,
+    .metric-item {
+      min-width: 0;
+      max-width: 100%;
+    }
+
+    .hero-strip .mini span,
+    .fly-step p,
+    .hero-metric span,
+    .metric-item p,
+    .decision-card p {
+      word-break: break-word;
+      overflow-wrap: anywhere;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      border-bottom: 1px solid var(--line);
+      background: rgba(253, 250, 231, 0.9);
+      backdrop-filter: blur(14px);
+    }
+
+    .nav {
+      width: min(1180px, calc(100vw - 40px));
+      margin: 0 auto;
+      height: 64px;
       display: flex;
+      align-items: center;
       justify-content: space-between;
-      align-items: flex-start;
-      gap: 12px;
-      margin-bottom: 14px;
+      gap: 24px;
     }
 
     .brand {
       display: flex;
-      gap: 10px;
       align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      color: var(--blue);
+      white-space: nowrap;
     }
 
-    .mark {
-      width: 42px;
-      height: 42px;
-      border-radius: 14px;
-      color: #fff;
-      background: linear-gradient(135deg, var(--teal), var(--leaf));
+    .brand-mark {
+      width: 32px;
+      height: 32px;
+      border: 2px solid var(--blue);
+      border-radius: 8px;
       display: grid;
       place-items: center;
-      font-weight: 800;
+      font-size: 14px;
+      background: var(--paper);
     }
 
-    h1,
-    h2,
-    h3,
-    p {
-      margin: 0;
-      letter-spacing: 0;
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav-links a {
+      padding: 8px 10px;
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .nav-links a:hover {
+      background: var(--wash);
+      color: var(--blue);
+    }
+
+    .container {
+      width: min(1180px, calc(100vw - 40px));
+      margin: 0 auto;
+    }
+
+    .hero {
+      min-height: calc(100vh - 64px);
+      display: grid;
+      grid-template-columns: 1.12fr 0.88fr;
+      gap: 42px;
+      align-items: center;
+      padding: 72px 0 58px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--blue);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 42px;
+      height: 3px;
+      background: var(--blue);
+      border-radius: 999px;
     }
 
     h1 {
-      font-size: 22px;
-      line-height: 1.25;
+      font-size: clamp(44px, 6vw, 88px);
+      line-height: 0.96;
+      margin: 0 0 22px;
+      font-weight: 900;
+      letter-spacing: 0;
     }
 
-    .subtitle {
-      margin-top: 4px;
+    .hero h1 span {
+      color: var(--blue);
+    }
+
+    .lead {
+      max-width: 760px;
       color: var(--muted);
-      font-size: 13px;
+      font-size: clamp(17px, 2vw, 22px);
+      line-height: 1.65;
+      margin: 0 0 30px;
     }
 
-    .pill {
-      border: 1px solid var(--line);
-      background: #fff8e7;
-      color: #656058;
-      border-radius: 999px;
-      padding: 7px 10px;
-      font-size: 12px;
-      white-space: nowrap;
-    }
-
-    .daily {
-      border: 1px solid #d8e9e4;
-      background: linear-gradient(135deg, #eaf7f2, #fff8ec);
-      border-radius: 8px;
-      padding: 14px;
-      margin-bottom: 12px;
-      display: grid;
-      grid-template-columns: 1fr 56px;
-      gap: 12px;
-      align-items: center;
-    }
-
-    .daily small {
-      display: block;
-      color: var(--teal);
-      font-weight: 800;
-      margin-bottom: 6px;
-      font-size: 12px;
-    }
-
-    .daily p {
-      font-size: 16px;
-      line-height: 1.45;
-      font-weight: 750;
-    }
-
-    .sun {
-      width: 56px;
-      height: 56px;
-    }
-
-    .panel {
-      background: var(--white);
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      padding: 14px;
-      margin-bottom: 12px;
-    }
-
-    .panel-title {
+    .hero-actions {
       display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 36px;
+    }
+
+    .btn {
+      display: inline-flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-
-    .panel-title h2 {
-      font-size: 15px;
-      line-height: 1.35;
-    }
-
-    .panel-title small {
-      color: var(--muted);
-      font-size: 12px;
-      white-space: nowrap;
-    }
-
-    .emotion-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 8px;
-    }
-
-    .emotion,
-    .scene-card {
-      border: 1px solid #eadfce;
-      border-radius: 8px;
-      background: #fffbf3;
-      color: #44504d;
-      text-align: left;
-      transition: .18s ease;
-    }
-
-    .emotion {
+      justify-content: center;
       min-height: 44px;
-      padding: 9px 10px;
-      font-size: 13px;
-    }
-
-    .emotion.active,
-    .scene-card.active,
-    .emotion:hover,
-    .scene-card:hover {
-      border-color: var(--teal);
-      background: var(--teal-2);
-      color: #245e58;
-      transform: translateY(-1px);
-    }
-
-    .regret {
-      margin-top: 10px;
-      border: 1px solid #f0cfc4;
-      background: var(--rose-2);
-      border-radius: 8px;
-      padding: 12px;
-      display: grid;
-      gap: 8px;
-    }
-
-    .regret b {
+      padding: 0 18px;
+      border-radius: 999px;
+      border: 1px solid var(--blue);
+      font-weight: 800;
       font-size: 14px;
     }
 
-    .regret span {
-      color: #72534c;
+    .btn.primary {
+      background: var(--blue);
+      color: var(--bg);
+      box-shadow: 0 16px 34px rgba(30, 43, 250, 0.22);
+    }
+
+    .btn.ghost {
+      background: var(--paper);
+      color: var(--blue);
+    }
+
+    .hero-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border: 1px solid var(--line);
+      background: rgba(255, 253, 241, 0.72);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .hero-strip .mini {
+      padding: 18px;
+      border-right: 1px solid var(--line);
+    }
+
+    .hero-strip .mini:last-child {
+      border-right: 0;
+    }
+
+    .mini strong {
+      display: block;
+      color: var(--blue);
+      font-size: 24px;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .mini span {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .hero-board {
+      position: relative;
+      border: 1px solid var(--line);
+      background: var(--paper);
+      border-radius: 8px;
+      padding: 22px;
+      box-shadow: var(--shadow);
+    }
+
+    .board-title {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .board-title h2 {
+      font-size: 20px;
+      margin: 0;
+    }
+
+    .status-pill {
+      color: var(--green);
+      background: rgba(10, 143, 104, 0.09);
+      border: 1px solid rgba(10, 143, 104, 0.22);
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .flywheel {
+      display: grid;
+      gap: 10px;
+    }
+
+    .fly-step {
+      display: grid;
+      grid-template-columns: 38px 1fr;
+      align-items: start;
+      gap: 12px;
+      padding: 14px;
+      border-radius: 8px;
+      background: var(--wash);
+      border: 1px solid var(--line);
+    }
+
+    .fly-num {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      background: var(--blue);
+      color: var(--bg);
+      font-weight: 900;
+      font-size: 15px;
+    }
+
+    .fly-step h3 {
+      margin: 0 0 4px;
+      font-size: 16px;
+    }
+
+    .fly-step p {
+      margin: 0;
+      color: var(--muted);
       font-size: 13px;
       line-height: 1.55;
     }
 
-    .link-btn {
-      justify-self: start;
-      border: 0;
-      color: var(--rose);
-      background: transparent;
-      padding: 0;
-      font-weight: 800;
-      font-size: 13px;
+    section {
+      padding: 76px 0;
     }
 
-    .scenes {
+    .section-head {
       display: grid;
-      grid-auto-flow: column;
-      grid-auto-columns: minmax(150px, 74%);
-      gap: 10px;
-      overflow-x: auto;
-      padding-bottom: 4px;
-      scroll-snap-type: x mandatory;
+      grid-template-columns: 0.72fr 1fr;
+      gap: 44px;
+      align-items: end;
+      margin-bottom: 30px;
+      border-top: 2px solid var(--blue);
+      padding-top: 22px;
     }
 
-    .scene-card {
-      padding: 12px;
-      min-height: 88px;
-      scroll-snap-align: start;
-    }
-
-    .scene-card b {
-      display: block;
-      font-size: 14px;
-      line-height: 1.4;
-      margin-bottom: 8px;
-    }
-
-    .scene-card span {
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.45;
-    }
-
-    .input-row {
-      display: flex;
-      gap: 8px;
-      margin-top: 12px;
-    }
-
-    .input-row input {
-      min-width: 0;
-      flex: 1;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: #fffdf8;
-      color: var(--ink);
-      outline: none;
-      padding: 12px;
-    }
-
-    .primary {
-      border: 0;
-      border-radius: 8px;
-      min-width: 86px;
-      padding: 0 14px;
-      background: var(--teal);
-      color: white;
-      font-weight: 800;
-    }
-
-    .primary:hover {
-      background: #12675f;
-    }
-
-    .mode {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 6px;
-      border: 1px solid var(--line);
-      background: #faf4e8;
-      border-radius: 8px;
-      padding: 4px;
-      margin-bottom: 12px;
-    }
-
-    .mode button {
-      border: 0;
-      border-radius: 7px;
-      background: transparent;
-      color: var(--muted);
-      padding: 9px;
-      font-weight: 800;
+    .section-kicker {
+      color: var(--blue);
       font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
     }
 
-    .mode button.active {
-      background: white;
-      color: var(--teal);
-      box-shadow: 0 4px 16px rgba(38, 50, 47, .08);
-    }
-
-    .progress {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 5px;
-      margin: 12px 0;
-    }
-
-    .step {
-      height: 5px;
-      border-radius: 30px;
-      background: #eadfce;
-      overflow: hidden;
-    }
-
-    .step span {
-      width: 0;
-      height: 100%;
-      display: block;
-      background: var(--teal);
-      transition: width .45s ease;
-    }
-
-    .share-card,
-    .result-card {
-      border-radius: 8px;
-      padding: 14px;
-      margin-bottom: 10px;
-      border: 1px solid transparent;
-      opacity: 0;
-      transform: translateY(8px);
-      transition: .35s ease;
-    }
-
-    .share-card.show,
-    .result-card.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .share-card {
-      background: linear-gradient(135deg, #f2fbf7, #fff3e8);
-      border-color: #d8e9e4;
-    }
-
-    .share-card small {
-      color: var(--teal);
-      font-weight: 800;
-      font-size: 12px;
-    }
-
-    .share-card h3 {
-      margin: 8px 0 10px;
-      font-size: 21px;
-      line-height: 1.35;
-    }
-
-    .actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .ghost {
-      border: 1px solid #d9e7e2;
-      background: rgba(255, 255, 255, .7);
-      color: #2d625c;
-      border-radius: 999px;
-      padding: 7px 10px;
-      font-size: 12px;
-      font-weight: 800;
-    }
-
-    .result-card h3 {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 15px;
-      margin-bottom: 8px;
-    }
-
-    .result-card p,
-    .result-card li {
-      color: #42504c;
-      font-size: 13px;
-      line-height: 1.7;
-    }
-
-    .result-card ul {
+    .section-head h2 {
+      font-size: clamp(30px, 4vw, 54px);
+      line-height: 1.04;
       margin: 8px 0 0;
-      padding-left: 18px;
+      letter-spacing: 0;
     }
 
-    .soft-teal { background: var(--teal-2); border-color: #d3e7e2; }
-    .soft-rose { background: var(--rose-2); border-color: #f2d4ca; }
-    .soft-leaf { background: var(--leaf-2); border-color: #d8e7cf; }
-    .soft-gold { background: var(--gold-2); border-color: #efdfb0; }
-    .soft-blue { background: var(--blue-2); border-color: #d9e4f5; }
-
-    .quote {
-      border-left: 3px solid var(--teal);
-      padding-left: 10px;
-      margin-top: 10px;
-      color: #38504b;
-      font-weight: 800;
-      line-height: 1.6;
-    }
-
-    .deep-only {
-      display: none;
-    }
-
-    body.deep-mode .deep-only {
-      display: block;
-    }
-
-    .toast {
-      position: fixed;
-      left: 50%;
-      bottom: 28px;
-      transform: translateX(-50%) translateY(20px);
-      opacity: 0;
-      pointer-events: none;
-      color: white;
-      background: rgba(38, 50, 47, .9);
-      border-radius: 999px;
-      padding: 10px 14px;
-      font-size: 13px;
-      transition: .25s ease;
-      z-index: 20;
-    }
-
-    .toast.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
-
-    .bottom-nav {
-      height: 74px;
-      padding: 8px 18px 18px;
-      border-top: 1px solid var(--line);
-      background: rgba(255, 253, 248, .94);
-      backdrop-filter: blur(14px);
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 6px;
-    }
-
-    .nav-item {
-      border: 0;
-      border-radius: 8px;
-      background: transparent;
+    .section-head p {
+      margin: 0;
       color: var(--muted);
+      line-height: 1.75;
+      font-size: 16px;
+    }
+
+    .grid {
       display: grid;
-      place-items: center;
-      gap: 3px;
-      font-size: 11px;
+      gap: 16px;
     }
 
-    .nav-item svg {
-      width: 20px;
-      height: 20px;
-      stroke-width: 2;
+    .stats-grid {
+      grid-template-columns: repeat(4, 1fr);
     }
 
-    .nav-item.active {
-      background: var(--teal-2);
-      color: var(--teal);
-      font-weight: 800;
+    .dashboard-lede {
+      display: grid;
+      grid-template-columns: 1.35fr 0.65fr;
+      gap: 16px;
+      align-items: stretch;
+      margin-bottom: 16px;
     }
 
-    .story {
-      align-self: stretch;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 18px;
+    .dashboard-thesis {
+      padding: 24px;
+      border-radius: var(--radius);
+      background: var(--blue);
+      color: var(--bg);
+      box-shadow: var(--shadow);
     }
 
-    .story h2 {
-      font-size: clamp(30px, 4vw, 48px);
+    .dashboard-thesis h3 {
+      margin: 0 0 10px;
+      font-size: clamp(22px, 3vw, 34px);
       line-height: 1.12;
     }
 
-    .story p {
-      max-width: 660px;
-      color: #53615d;
-      line-height: 1.78;
+    .dashboard-thesis p {
+      margin: 0;
+      color: rgba(253, 250, 231, 0.82);
+      font-size: 15px;
+      line-height: 1.75;
     }
 
-    .cards {
-      max-width: 760px;
+    .evidence-index {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper);
+      box-shadow: 0 12px 40px rgba(29, 38, 92, 0.08);
+    }
+
+    .index-row {
+      display: grid;
+      grid-template-columns: 68px 1fr;
+      gap: 10px;
+      align-items: center;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .index-row:last-child {
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
+
+    .index-row strong {
+      color: var(--blue);
+      font-size: 22px;
+      line-height: 1;
+      font-weight: 900;
+    }
+
+    .index-row span {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .target-dashboard {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      align-items: start;
+    }
+
+    .target-panel {
+      position: relative;
+      overflow: hidden;
+      min-height: 610px;
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255, 253, 241, 0.9);
+      box-shadow: var(--shadow);
+    }
+
+    .target-panel::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto;
+      height: 5px;
+      background: var(--blue);
+    }
+
+    .target-panel.green::before {
+      background: var(--green);
+    }
+
+    .panel-label {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      padding: 0 10px;
+      border-radius: 999px;
+      color: var(--blue);
+      background: var(--wash);
+      border: 1px solid var(--line);
+      font-size: 12px;
+      font-weight: 900;
+      margin-bottom: 12px;
+    }
+
+    .target-panel.green .panel-label {
+      color: var(--green);
+      background: rgba(10, 143, 104, 0.08);
+      border-color: rgba(10, 143, 104, 0.22);
+    }
+
+    .target-panel h3 {
+      margin: 0 0 12px;
+      font-size: clamp(24px, 3vw, 34px);
+      line-height: 1.12;
+    }
+
+    .hero-metric {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 16px;
+      align-items: end;
+      padding: 18px;
+      margin: 18px 0;
+      border-radius: var(--radius);
+      background: var(--wash);
+      border: 1px solid var(--line);
+    }
+
+    .target-panel.green .hero-metric {
+      background: rgba(10, 143, 104, 0.08);
+      border-color: rgba(10, 143, 104, 0.22);
+    }
+
+    .hero-metric strong {
+      display: block;
+      color: var(--blue);
+      font-size: clamp(42px, 6vw, 74px);
+      line-height: 0.88;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .target-panel.green .hero-metric strong {
+      color: var(--green);
+    }
+
+    .hero-metric span {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+      font-weight: 700;
+    }
+
+    .metric-cards {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .metric-item {
+      min-height: 126px;
+      padding: 14px;
+      border-radius: var(--radius);
+      background: rgba(255, 253, 241, 0.72);
+      border: 1px solid var(--line);
+    }
+
+    .metric-item b {
+      display: block;
+      color: var(--blue);
+      font-size: 27px;
+      line-height: 1;
+      margin-bottom: 10px;
+    }
+
+    .target-panel.green .metric-item b {
+      color: var(--green);
+    }
+
+    .metric-item h4 {
+      margin: 0 0 6px;
+      font-size: 14px;
+      line-height: 1.35;
+      color: var(--ink);
+    }
+
+    .metric-item p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .evidence-source {
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid var(--line);
+      color: var(--soft);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .decision-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .decision-card {
+      padding: 16px;
+      border-radius: var(--radius);
+      background: var(--paper);
+      border: 1px solid var(--line);
+      box-shadow: 0 10px 30px rgba(29, 38, 92, 0.07);
+    }
+
+    .decision-card small {
+      display: block;
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 900;
+      margin-bottom: 8px;
+    }
+
+    .decision-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .chain-grid {
+      grid-template-columns: repeat(3, 1fr);
+      margin-top: 18px;
+    }
+
+    .chain-card {
+      padding: 22px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .chain-card h3 {
+      margin: 0 0 8px;
+      font-size: 22px;
+      line-height: 1.25;
+    }
+
+    .chain-card .claim {
+      margin: 0 0 16px;
+      color: var(--blue);
+      font-size: 13px;
+      line-height: 1.6;
+      font-weight: 900;
+    }
+
+    .compact-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    .compact-table td {
+      border-top: 1px solid var(--line);
+      padding: 12px 0;
+      vertical-align: top;
+      font-size: 13px;
+      line-height: 1.55;
+      color: var(--muted);
+    }
+
+    .compact-table td:first-child {
+      width: 82px;
+      color: var(--ink);
+      font-weight: 900;
+      font-size: 15px;
+    }
+
+    .data-note {
+      margin-top: 18px;
+      padding: 16px 18px;
+      border-radius: var(--radius);
+      background: rgba(10, 143, 104, 0.08);
+      border: 1px solid rgba(10, 143, 104, 0.22);
+      color: #16634f;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .stat-card,
+    .insight-card,
+    .competitor-card,
+    .mvp-card,
+    .source-card {
+      background: rgba(255, 253, 241, 0.84);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: 0 12px 40px rgba(29, 38, 92, 0.08);
+    }
+
+    .stat-card {
+      min-height: 160px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .stat-number {
+      color: var(--blue);
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .stat-card h3 {
+      margin: 14px 0 8px;
+      font-size: 16px;
+      line-height: 1.35;
+    }
+
+    .stat-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .proof-grid {
+      grid-template-columns: repeat(3, 1fr);
+      margin-top: 18px;
+    }
+
+    .insight-card {
+      padding: 24px;
+      min-height: 260px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .insight-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: var(--blue);
+    }
+
+    .insight-card.green::before { background: var(--green); }
+    .insight-card.coral::before { background: var(--coral); }
+    .insight-card.gold::before { background: var(--gold); }
+
+    .insight-card h3 {
+      margin: 0 0 14px;
+      font-size: 24px;
+      line-height: 1.2;
+    }
+
+    .insight-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 15px;
+    }
+
+    .tagline {
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid var(--line);
+      color: var(--blue);
+      font-weight: 900;
+      font-size: 14px;
+    }
+
+    .evidence-layout {
+      display: grid;
+      grid-template-columns: 0.92fr 1.08fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .phone-stack {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      position: sticky;
+      top: 92px;
+    }
+
+    .phone-shot {
+      background: #111;
+      padding: 8px;
+      border-radius: 26px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .phone-shot img {
+      width: 100%;
+      aspect-ratio: 9 / 16;
+      object-fit: cover;
+      border-radius: 20px;
+    }
+
+    .competitor-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .competitor-card {
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 118px 1fr;
+      min-height: 178px;
+    }
+
+    .competitor-card figure {
+      margin: 0;
+      background: var(--wash);
+      border-right: 1px solid var(--line);
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .competitor-card figure img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .competitor-body {
+      padding: 18px;
+    }
+
+    .competitor-body small {
+      display: inline-flex;
+      color: var(--blue);
+      font-weight: 900;
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+
+    .competitor-body h3 {
+      margin: 0 0 8px;
+      font-size: 18px;
+    }
+
+    .competitor-body p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.65;
+    }
+
+    .matrix {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      border-radius: var(--radius);
+      background: var(--paper);
+      box-shadow: var(--shadow);
+    }
+
+    .matrix th,
+    .matrix td {
+      border: 1px solid var(--line);
+      padding: 15px 14px;
+      text-align: left;
+      vertical-align: top;
+      line-height: 1.55;
+      font-size: 14px;
+    }
+
+    .matrix th {
+      color: var(--blue);
+      background: var(--wash);
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .matrix td:first-child {
+      font-weight: 800;
+      color: var(--ink);
+      width: 16%;
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .flow-step {
+      position: relative;
+      padding: 18px 14px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      min-height: 148px;
+    }
+
+    .flow-step:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      right: -12px;
+      top: 50%;
+      width: 12px;
+      height: 2px;
+      background: var(--blue);
+      opacity: 0.55;
+    }
+
+    .flow-step span {
+      display: inline-flex;
+      width: 28px;
+      height: 28px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      background: var(--blue);
+      color: var(--bg);
+      font-size: 12px;
+      font-weight: 900;
+      margin-bottom: 14px;
+    }
+
+    .flow-step h3 {
+      margin: 0 0 8px;
+      font-size: 16px;
+    }
+
+    .flow-step p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .mvp-grid {
+      grid-template-columns: 1fr 1fr;
+      align-items: start;
+    }
+
+    .mvp-card {
+      padding: 24px;
+    }
+
+    .mvp-card h3 {
+      margin: 0 0 18px;
+      font-size: 24px;
+    }
+
+    .check-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
       gap: 12px;
     }
 
-    .note {
-      background: rgba(255, 255, 255, .68);
-      border: 1px solid rgba(230, 222, 208, .95);
-      border-radius: 8px;
-      padding: 14px;
-    }
-
-    .note b {
-      display: block;
-      margin-bottom: 6px;
-    }
-
-    .note span {
+    .check-list li {
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      gap: 12px;
+      align-items: start;
       color: var(--muted);
       line-height: 1.6;
       font-size: 14px;
     }
 
-    .trigger {
-      max-width: 760px;
-      border: 1px solid rgba(21, 118, 109, .22);
-      border-radius: 8px;
-      background: rgba(230, 243, 239, .72);
-      padding: 16px;
+    .check-list li::before {
+      content: "";
+      width: 18px;
+      height: 18px;
+      margin-top: 3px;
+      border-radius: 5px;
+      border: 2px solid var(--blue);
+      background: linear-gradient(135deg, var(--blue) 0 49%, transparent 50%);
+    }
+
+    .check-list.no li::before {
+      border-color: var(--coral);
+      background: linear-gradient(135deg, var(--coral) 0 49%, transparent 50%);
+    }
+
+    .cards-row {
       display: grid;
+      grid-template-columns: repeat(8, minmax(120px, 1fr));
       gap: 10px;
+      margin-top: 18px;
     }
 
-    .trigger textarea {
-      width: 100%;
-      min-height: 80px;
-      resize: vertical;
-      border: 1px solid #cadfd9;
+    .ai-card {
+      min-height: 116px;
       border-radius: 8px;
-      background: rgba(255, 255, 255, .76);
-      padding: 12px;
-      color: var(--ink);
-      outline: none;
-      line-height: 1.6;
-    }
-
-    .trigger-row {
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, var(--paper), rgba(30,43,250,0.06));
+      padding: 14px;
       display: flex;
-      align-items: center;
+      flex-direction: column;
       justify-content: space-between;
-      gap: 10px;
     }
 
-    .trigger-row span {
-      color: #42615b;
+    .ai-card.hidden-card {
+      border-color: rgba(242,184,75,0.55);
+      background: linear-gradient(180deg, #fff7d6, #f6edff);
+    }
+
+    .ai-card b {
+      color: var(--ink);
+      font-size: 15px;
+    }
+
+    .ai-card span {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .sources {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .source-card {
+      padding: 16px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .source-card strong {
+      display: block;
+      color: var(--blue);
+      margin-bottom: 4px;
+      font-size: 14px;
+    }
+
+    .footer {
+      padding: 40px 0 62px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
       font-size: 13px;
     }
 
-    @media (max-width: 900px) {
-      .stage {
+    @media (max-width: 980px) {
+      .nav {
+        height: auto;
+        padding: 12px 0;
+        align-items: flex-start;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .hero,
+      .section-head,
+      .dashboard-lede,
+      .target-dashboard,
+      .evidence-layout,
+      .mvp-grid {
         grid-template-columns: 1fr;
+      }
+
+      .hero {
         min-height: auto;
-        padding: 12px;
+        padding-top: 54px;
       }
 
-      .story {
-        order: -1;
-        padding: 8px 2px 0;
-      }
-
-      .story h2 {
-        font-size: 30px;
-      }
-
-      .phone {
-        width: min(430px, 100%);
-        margin: 0 auto;
-        min-height: 700px;
-        height: 790px;
-        border-radius: 28px;
-      }
-
-      .cards {
+      .hero-strip,
+      .stats-grid,
+      .chain-grid,
+      .proof-grid,
+      .competitor-grid,
+      .sources,
+      .decision-strip {
         grid-template-columns: 1fr;
+      }
+
+      .target-panel {
+        min-height: auto;
+      }
+
+      .phone-stack {
+        position: static;
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .flow {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .flow-step::after {
+        display: none;
+      }
+
+      .cards-row {
+        grid-template-columns: repeat(2, 1fr);
       }
     }
 
-    @media (max-width: 430px) {
-      .emotion-grid {
+    @media (max-width: 640px) {
+      .container {
+        width: calc(100vw - 28px);
+        max-width: calc(100vw - 28px);
+      }
+
+      .nav {
+        width: calc(100vw - 28px);
+        max-width: calc(100vw - 28px);
+      }
+
+      p,
+      span,
+      h3 {
+        word-break: break-all;
+      }
+
+      h1 {
+        font-size: clamp(42px, 13vw, 52px);
+        line-height: 0.98;
+        overflow-wrap: anywhere;
+        word-break: break-all;
+      }
+
+      .hero h1 span {
+        display: block;
+      }
+
+      .hero {
+        gap: 28px;
+      }
+
+      .hero > div,
+      .hero > aside {
+        width: 100%;
+        min-width: 0;
+      }
+
+      .lead {
+        font-size: 16px;
+        line-height: 1.7;
+      }
+
+      .fly-step {
+        grid-template-columns: 36px minmax(0, 1fr);
+      }
+
+      .board-title {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .hero-strip .mini {
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .hero-strip .mini:last-child {
+        border-bottom: 0;
+      }
+
+      .phone-stack,
+      .flow,
+      .cards-row,
+      .metric-cards,
+      .hero-metric {
         grid-template-columns: 1fr;
       }
 
-      .daily {
-        grid-template-columns: 1fr;
+      .hero-metric strong {
+        white-space: normal;
       }
 
-      .sun {
-        display: none;
+      .competitor-card {
+        grid-template-columns: 96px 1fr;
+      }
+
+      .matrix {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+      }
+
+      section {
+        padding: 54px 0;
+      }
+    }
+
+    /* Leadership report refresh: adapted from the Beautiful HTML Templates editorial systems. */
+    :root {
+      --bg: #f4f1ea;
+      --paper: #ffffff;
+      --ink: #17212b;
+      --muted: #65717d;
+      --soft: #8b949e;
+      --blue: #173b57;
+      --blue-2: #2f6175;
+      --green: #0f766e;
+      --coral: #8f2f45;
+      --gold: #d59b2d;
+      --lavender: #6f5d8f;
+      --line: rgba(23, 33, 43, 0.14);
+      --wash: rgba(15, 118, 110, 0.09);
+      --shadow: 0 22px 70px rgba(23, 33, 43, 0.09);
+      --radius: 8px;
+      --dark: #15252d;
+      --warm: #f2e7d5;
+      --sage: #e6f0ea;
+      --rose: #f3e0e4;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+    }
+
+    .topbar {
+      border-bottom: 1px solid rgba(23, 33, 43, 0.12);
+      background: rgba(255, 255, 255, 0.86);
+    }
+
+    .brand {
+      color: var(--ink);
+    }
+
+    .brand-mark {
+      border-color: var(--ink);
+      background: var(--ink);
+      color: #fff;
+    }
+
+    .nav-links a {
+      color: #4d5965;
+    }
+
+    .nav-links a:hover {
+      background: rgba(15, 118, 110, 0.1);
+      color: var(--green);
+    }
+
+    h1,
+    .section-head h2,
+    .dashboard-thesis h3 {
+      font-family: "Noto Serif SC", "Noto Sans SC", serif;
+      letter-spacing: 0;
+    }
+
+    .hero {
+      min-height: calc(100vh - 64px);
+      padding: 74px 0 64px;
+      gap: 54px;
+    }
+
+    .eyebrow,
+    .section-kicker {
+      color: var(--coral);
+      letter-spacing: 0.12em;
+    }
+
+    .eyebrow::before {
+      background: var(--coral);
+    }
+
+    h1 {
+      max-width: 850px;
+      color: var(--ink);
+      font-size: clamp(48px, 6.4vw, 92px);
+      line-height: 1.03;
+    }
+
+    .hero h1 span {
+      color: var(--green);
+    }
+
+    .lead {
+      color: #4e5b66;
+      font-size: clamp(18px, 2vw, 23px);
+    }
+
+    .btn {
+      border-color: var(--ink);
+      border-radius: 8px;
+    }
+
+    .btn.primary {
+      background: var(--ink);
+      color: #fff;
+      box-shadow: 0 16px 34px rgba(23, 33, 43, 0.18);
+    }
+
+    .btn.ghost {
+      background: transparent;
+      color: var(--ink);
+    }
+
+    .hero-strip {
+      border: 0;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero-strip .mini {
+      padding: 20px;
+      border-color: rgba(23, 33, 43, 0.12);
+    }
+
+    .mini strong {
+      color: var(--coral);
+      font-size: 30px;
+    }
+
+    .mini span {
+      color: #56626d;
+    }
+
+    .hero-board {
+      border: 0;
+      background: var(--dark);
+      color: #fff;
+      box-shadow: var(--shadow);
+    }
+
+    .hero-board h2,
+    .hero-board h3 {
+      color: #fff;
+    }
+
+    .status-pill {
+      color: #dff8ef;
+      background: rgba(15, 118, 110, 0.34);
+      border-color: rgba(255, 255, 255, 0.18);
+    }
+
+    .fly-step {
+      background: rgba(255, 255, 255, 0.07);
+      border-color: rgba(255, 255, 255, 0.12);
+    }
+
+    .fly-num {
+      background: var(--gold);
+      color: var(--ink);
+    }
+
+    .fly-step p {
+      color: rgba(255, 255, 255, 0.72);
+    }
+
+    section {
+      padding: 86px 0;
+    }
+
+    section:not(.hero) {
+      position: relative;
+    }
+
+    #data {
+      background: var(--sage);
+    }
+
+    #proof-chain {
+      background: var(--dark);
+      color: #fff;
+    }
+
+    #need {
+      background: #fff;
+    }
+
+    #evidence {
+      background: #f8f6f0;
+    }
+
+    #matrix {
+      background: #fff;
+    }
+
+    #path {
+      background: #eef4f6;
+    }
+
+    #mvp {
+      background: var(--warm);
+    }
+
+    #sources {
+      background: #fff;
+    }
+
+    .section-head {
+      border-top: 0;
+      padding-top: 0;
+      margin-bottom: 34px;
+    }
+
+    .section-head h2 {
+      font-size: clamp(34px, 4vw, 58px);
+      line-height: 1.12;
+    }
+
+    .section-head p {
+      color: var(--muted);
+      font-size: 17px;
+    }
+
+    #proof-chain .section-kicker,
+    #proof-chain .section-head p,
+    #proof-chain .chain-card .claim,
+    #proof-chain .compact-table td {
+      color: rgba(255, 255, 255, 0.72);
+    }
+
+    #proof-chain .section-head h2,
+    #proof-chain .chain-card h3 {
+      color: #fff;
+    }
+
+    .dashboard-thesis {
+      background: var(--ink);
+      color: #fff;
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .dashboard-thesis p {
+      color: rgba(255, 255, 255, 0.74);
+    }
+
+    .evidence-index,
+    .target-panel,
+    .decision-card,
+    .insight-card,
+    .competitor-card,
+    .mvp-card,
+    .source-card {
+      background: #fff;
+      border: 1px solid rgba(23, 33, 43, 0.1);
+      box-shadow: 0 14px 40px rgba(23, 33, 43, 0.06);
+    }
+
+    .index-row strong,
+    .metric-item b,
+    .target-panel.green .metric-item b,
+    .target-panel.green .hero-metric strong,
+    .hero-metric strong {
+      color: var(--coral);
+    }
+
+    .target-panel::before,
+    .target-panel.green::before,
+    .insight-card::before,
+    .insight-card.green::before,
+    .insight-card.coral::before,
+    .insight-card.gold::before {
+      background: var(--coral);
+    }
+
+    .panel-label,
+    .target-panel.green .panel-label {
+      color: var(--green);
+      background: rgba(15, 118, 110, 0.1);
+      border-color: rgba(15, 118, 110, 0.18);
+    }
+
+    .hero-metric,
+    .target-panel.green .hero-metric,
+    .metric-item {
+      background: #f7f6f2;
+      border-color: rgba(23, 33, 43, 0.1);
+    }
+
+    .decision-card {
+      border-top: 5px solid var(--green);
+    }
+
+    .decision-card small,
+    .tagline,
+    .source-card strong,
+    .competitor-body small {
+      color: var(--green);
+    }
+
+    .chain-card {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.15);
+      box-shadow: none;
+    }
+
+    .compact-table td {
+      border-color: rgba(255, 255, 255, 0.14);
+    }
+
+    .compact-table td:first-child {
+      color: #fff;
+    }
+
+    .data-note {
+      background: rgba(213, 155, 45, 0.12);
+      border-color: rgba(213, 155, 45, 0.36);
+      color: rgba(255, 255, 255, 0.82);
+    }
+
+    .phone-shot {
+      background: #fff;
+      border-color: rgba(23, 33, 43, 0.12);
+      box-shadow: 0 12px 34px rgba(23, 33, 43, 0.08);
+    }
+
+    .matrix {
+      border: 1px solid rgba(23, 33, 43, 0.12);
+      box-shadow: 0 18px 50px rgba(23, 33, 43, 0.06);
+    }
+
+    .matrix th {
+      background: var(--ink);
+      color: #fff;
+    }
+
+    .flow-step {
+      background: #fff;
+      border-color: rgba(23, 33, 43, 0.11);
+    }
+
+    .flow-step span {
+      color: var(--coral);
+    }
+
+    .flow-step::after {
+      background: var(--green);
+    }
+
+    .ai-card {
+      background: #fff;
+      border-color: rgba(23, 33, 43, 0.12);
+    }
+
+    .ai-card.hidden-card {
+      background: var(--dark);
+      color: #fff;
+      border-color: var(--dark);
+    }
+
+    .ai-card.hidden-card span {
+      color: rgba(255, 255, 255, 0.72);
+    }
+
+    .check-list li::before {
+      background: var(--green);
+    }
+
+    .check-list.no li::before {
+      background: var(--coral);
+    }
+
+    .footer {
+      background: var(--dark);
+      color: rgba(255, 255, 255, 0.7);
+      border-top: 0;
+    }
+
+    @media (max-width: 980px) {
+      .section-head {
+        gap: 18px;
+      }
+
+      .hero {
+        gap: 28px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      h1 {
+        font-size: clamp(38px, 12vw, 50px);
+      }
+
+      .hero {
+        padding-top: 52px;
+      }
+
+      .section-head h2 {
+        font-size: 32px;
+      }
+
+      .target-panel,
+      .dashboard-thesis,
+      .hero-board {
+        padding: 18px;
       }
     }
   </style>
 </head>
 <body>
-  <main class="stage">
-    <section class="phone" aria-label="亲智聊 2.0 小程序页面演示">
-      <div class="status">
-        <span>9:41</span>
-        <span class="signal" aria-hidden="true"><i></i><i></i><i></i></span>
+  <header class="topbar">
+    <nav class="nav">
+      <a class="brand" href="#">
+        <span class="brand-mark">QZL</span>
+        <span>亲智聊市场需求分析</span>
+      </a>
+      <div class="nav-links">
+        <a href="#data">数据看板</a>
+        <a href="#proof-chain">决策依据</a>
+        <a href="#evidence">竞品证据</a>
+        <a href="#matrix">功能对标</a>
+        <a href="#path">产品路径</a>
+        <a href="#mvp">版本建议</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero container">
+      <div>
+        <div class="eyebrow">Market Demand Analysis</div>
+        <h1>亲子记录 + <span>AI亲子督导</span></h1>
+        <p class="lead">这不是给亲智聊加两个工具，而是把家长的真实亲子片段，转化为可复盘、可指导、可服务承接的家庭成长系统。</p>
+        <div class="hero-actions">
+          <a class="btn primary" href="#data">查看核心结论</a>
+          <a class="btn ghost" href="#mvp">查看第一版建议</a>
+        </div>
+        <div class="hero-strip">
+          <div class="mini">
+            <strong>51.1%</strong>
+            <span>亲宝宝14天活跃留存率，显示成长记录具备长期粘性</span>
+          </div>
+          <div class="mini">
+            <strong>66.5%</strong>
+            <span>家长参加过家庭教育指导讲座，显示指导服务已有参与基础</span>
+          </div>
+          <div class="mini">
+            <strong>20万+</strong>
+            <span>家长糖AI官方宣称家庭咨询经验，说明AI家庭指导需求已显性化</span>
+          </div>
+        </div>
       </div>
 
-      <div class="screen" id="screen">
-        <header class="top">
-          <div class="brand">
-            <div class="mark">亲</div>
+      <aside class="hero-board" aria-label="亲智聊产品飞轮">
+        <div class="board-title">
+            <h2>增长闭环</h2>
+          <span class="status-pill">记录驱动督导</span>
+        </div>
+        <div class="flywheel">
+          <div class="fly-step">
+            <div class="fly-num">01</div>
             <div>
-              <h1>孩子行为翻译器</h1>
-              <p class="subtitle">情绪上头时，重新看懂孩子</p>
+              <h3>记录真实发生</h3>
+              <p>照片、视频、语音、微信聊天记录和家长感受，沉淀为亲子时间轴。</p>
             </div>
           </div>
-          <span class="pill">2.0</span>
-        </header>
-
-        <section class="daily">
-          <div>
-            <small>每日成长翻译</small>
-            <p>孩子今天“不听话”，也可能是在试着成为自己。</p>
+          <div class="fly-step">
+            <div class="fly-num">02</div>
+            <div>
+              <h3>AI生成三张卡片</h3>
+              <p>根据场景匹配夸夸卡、解读卡、镜子卡、话术卡、任务卡和隐藏卡。</p>
+            </div>
           </div>
-          <svg class="sun" viewBox="0 0 100 100" role="img" aria-label="温和陪伴插画">
-            <circle cx="50" cy="50" r="25" fill="#ffd37d"></circle>
-            <path d="M50 8v14M50 78v14M8 50h14M78 50h14M20 20l10 10M70 70l10 10M80 20L70 30M30 70L20 80" stroke="#b88734" stroke-width="5" stroke-linecap="round"></path>
-            <path d="M39 50c4 5 18 5 22 0" stroke="#8b6228" stroke-width="4" fill="none" stroke-linecap="round"></path>
-          </svg>
-        </section>
-
-        <section class="panel">
-          <div class="panel-title">
-            <h2>你现在是什么状态？</h2>
-            <small>先接住你</small>
+          <div class="fly-step">
+            <div class="fly-num">03</div>
+            <div>
+              <h3>从洞察走向行动</h3>
+              <p>家长获得当下怎么说、不要怎么说，以及一个可执行的小任务。</p>
+            </div>
           </div>
-          <div class="emotion-grid" id="emotions">
-            <button class="emotion active" data-emotion="我快被气炸了">我快被气炸了</button>
-            <button class="emotion" data-emotion="我刚吼完孩子">我刚吼完孩子</button>
-            <button class="emotion" data-emotion="我很焦虑">我很焦虑</button>
-            <button class="emotion" data-emotion="我不知道怎么办">我不知道怎么办</button>
-            <button class="emotion" data-emotion="我开始怀疑孩子">我开始怀疑孩子</button>
-            <button class="emotion" data-emotion="我后悔刚刚的话">我后悔刚刚的话</button>
+          <div class="fly-step">
+            <div class="fly-num">04</div>
+            <div>
+              <h3>承接课程与导师</h3>
+              <p>当反复问题出现，AI督导可以自然导向导师入驻、课程和线下服务。</p>
+            </div>
           </div>
-          <div class="regret">
-            <b>后悔时刻入口</b>
-            <span>如果你刚刚吼了孩子、说了重话，可以先重新理解刚刚发生了什么。</span>
-            <button class="link-btn" id="regretBtn">重新理解刚刚发生了什么</button>
-          </div>
-        </section>
-
-        <section class="panel">
-          <div class="panel-title">
-            <h2>这次发生了什么？</h2>
-            <small>场景标签</small>
-          </div>
-          <div class="scenes" id="scenes">
-            <button class="scene-card active" data-scene="一催作业就发火"><b>一催作业就发火</b><span>一提醒学习，家里气氛马上变紧。</span></button>
-            <button class="scene-card" data-scene="越提醒越不听"><b>越提醒越不听</b><span>说得越多，孩子越像听不见。</span></button>
-            <button class="scene-card" data-scene="一到睡觉就磨蹭"><b>一到睡觉就磨蹭</b><span>洗漱、上床、关灯都要拉扯。</span></button>
-            <button class="scene-card" data-scene="说两句就哭"><b>说两句就哭</b><span>还没开始沟通，孩子已经崩了。</span></button>
-            <button class="scene-card" data-scene="在家脾气很差"><b>在家脾气很差</b><span>外面很乖，回家却像换了一个人。</span></button>
-            <button class="scene-card" data-scene="不愿意和父母沟通"><b>不愿意和父母沟通</b><span>问什么都不说，越问越沉默。</span></button>
-          </div>
-          <div class="input-row">
-            <input id="sceneInput" value="一催作业就发火" aria-label="输入真实家庭场景">
-            <button class="primary" id="translateBtn">翻译</button>
-          </div>
-        </section>
-
-        <div class="mode" aria-label="阅读模式">
-          <button class="active" id="lightMode">轻模式 10秒看懂</button>
-          <button id="deepMode">深模式 展开理解</button>
         </div>
-
-        <div class="progress" aria-label="AI 流式输出进度">
-          <div class="step"><span id="p0"></span></div>
-          <div class="step"><span id="p1"></span></div>
-          <div class="step"><span id="p2"></span></div>
-          <div class="step"><span id="p3"></span></div>
-          <div class="step"><span id="p4"></span></div>
-        </div>
-
-        <section id="results" aria-live="polite"></section>
-      </div>
-
-      <nav class="bottom-nav" aria-label="底部导航">
-        <button class="nav-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 11l9-8 9 8"></path><path d="M5 10v10h14V10"></path></svg>
-          首页
-        </button>
-        <button class="nav-item active">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 5h16v10H8l-4 4z"></path><path d="M8 9h8"></path><path d="M8 12h5"></path></svg>
-          翻译器
-        </button>
-        <button class="nav-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 4h12v16l-6-3-6 3z"></path></svg>
-          收藏
-        </button>
-        <button class="nav-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 19V5"></path><path d="M8 17V9"></path><path d="M12 17V7"></path><path d="M16 17v-5"></path><path d="M20 19H4"></path></svg>
-          趋势
-        </button>
-      </nav>
+      </aside>
     </section>
 
-    <aside class="story">
-      <div>
-        <h2>从行为分析工具<br>升级为情绪陪伴产品</h2>
-        <p>新版把流程前移到“家长情绪承接”：先回应我快被气炸了、我刚吼完孩子、我很焦虑，再进入孩子行为翻译。默认轻模式适合高频打开，深模式保留专业解释和长期陪伴价值。</p>
-      </div>
-
-      <div class="cards">
-        <div class="note"><b>P0 页面升级</b><span>情绪状态入口、场景化标签、一句话翻译结果、后悔时刻入口。</span></div>
-        <div class="note"><b>P0 交互升级</b><span>模拟 AI 流式输出，支持轻模式和深模式，让阅读压力更低。</span></div>
-        <div class="note"><b>P0 AI 结构</b><span>情绪承接、去标签化、需求翻译、优势重构、行动建议。</span></div>
-        <div class="note"><b>P1 留存方向</b><span>每日成长翻译、行为收藏夹、成长趋势分析，形成长期陪伴。</span></div>
-      </div>
-
-      <section class="trigger">
-        <b>AI 主动触发演示</b>
-        <textarea id="chatText">我真的崩溃了，孩子为什么这么不听话？</textarea>
-        <div class="trigger-row">
-          <span id="triggerHint">检测到高情绪表达，可开启行为翻译。</span>
-          <button class="primary" id="triggerBtn">开启行为翻译</button>
+    <section id="data">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">01 / 数据看板</div>
+            <h2>直接看亲子记录与家庭指导</h2>
+          </div>
+          <p>本页聚焦两个与版本升级直接相关的市场信号：家长已经在持续记录孩子成长，且对可落地的家庭教育指导存在明确需求。</p>
         </div>
-      </section>
-    </aside>
+
+        <div class="dashboard-lede">
+          <article class="dashboard-thesis">
+            <h3>建议将亲智聊升级为“记录驱动的家庭指导系统”。</h3>
+            <p>亲子记录沉淀真实场景，AI亲子督导将场景转化为理解、话术和任务。两者打通后，亲智聊将从聊天工具升级为家庭成长服务入口。</p>
+          </article>
+          <aside class="evidence-index">
+            <div class="index-row">
+              <strong>记录</strong>
+              <span>看留存、启动频次、家庭共享和成长时间轴。</span>
+            </div>
+            <div class="index-row">
+              <strong>指导</strong>
+              <span>看家庭教育指导参与率、焦虑下降和AI沟通分析。</span>
+            </div>
+            <div class="index-row">
+              <strong>闭环</strong>
+              <span>记录越真实，AI越能给到具体指导。</span>
+            </div>
+          </aside>
+        </div>
+
+        <div class="target-dashboard">
+          <article class="target-panel">
+            <span class="panel-label">亲子记录直接证据</span>
+            <h3>家长不是偶尔拍照，而是在长期沉淀孩子成长</h3>
+            <div class="hero-metric">
+              <strong>51.1%</strong>
+              <span>亲宝宝14天活跃留存率。成长记录不是一次性工具，而是能持续拉回用户的家庭资产入口。</span>
+            </div>
+            <div class="metric-cards">
+              <div class="metric-item">
+                <b>3.8次</b>
+                <h4>亲宝宝单日人均启动</h4>
+                <p>记录、查看、分享、育儿管理共同构成日常打开理由。</p>
+              </div>
+              <div class="metric-item">
+                <b>62%</b>
+                <h4>亲宝宝中重度用户占比</h4>
+                <p>说明成长记录平台具有长期、重复、家庭协作使用特征。</p>
+              </div>
+              <div class="metric-item">
+                <b>53.5%</b>
+                <h4>亲宝宝用户独占率</h4>
+                <p>记录型平台具备独立价值，用户不会只把它当内容资讯工具。</p>
+              </div>
+              <div class="metric-item">
+                <b>50.8万</b>
+                <h4>妈妈网孕育App Store评价量</h4>
+                <p>其官方描述强调相册时间轴、点赞评论、邀请亲友一起记录。</p>
+              </div>
+            </div>
+            <div class="evidence-source">来源：月狐数据《2024移动互联网亲子行业研究报告》公开摘要、TOM资讯转载摘要、App Store公开元数据与官方功能描述。</div>
+          </article>
+
+          <article class="target-panel green">
+            <span class="panel-label">家庭指导直接证据</span>
+            <h3>家长不只要知识，更需要被指导如何回应孩子</h3>
+            <div class="hero-metric">
+              <strong>66.5%</strong>
+              <span>中国儿童中心调研显示，家长参加过“家庭教育指导讲座”的比例为66.5%。家庭指导本身已有明确参与基础。</span>
+            </div>
+            <div class="metric-cards">
+              <div class="metric-item">
+                <b>-9.9%</b>
+                <h4>学业焦虑下降</h4>
+                <p>参加家庭教育指导讲座的家长，学业焦虑比例比未参加者低9.9个百分点。</p>
+              </div>
+              <div class="metric-item">
+                <b>-8.7%</b>
+                <h4>升学焦虑下降</h4>
+                <p>同一调研显示，升学焦虑比例低8.7个百分点，说明指导能缓解高压养育。</p>
+              </div>
+              <div class="metric-item">
+                <b>20万+</b>
+                <h4>家长糖AI家庭经验</h4>
+                <p>官方宣称基于20万家庭咨询经验，提供成长日记解读和亲子对话分析。</p>
+              </div>
+              <div class="metric-item">
+                <b>311.9万</b>
+                <h4>小猿AI评价量</h4>
+                <p>官方描述直接提到帮助家长从焦虑陪读到科学监督，降低亲子冲突。</p>
+              </div>
+            </div>
+            <div class="evidence-source">来源：中国儿童中心《儿童校外生活状况报告：家庭教育》、家长糖AI公开页面、小猿AI App Store官方描述。</div>
+          </article>
+        </div>
+
+        <div class="decision-strip">
+          <article class="decision-card">
+            <small>落地建议 01</small>
+            <p>亲子记录首页必须突出时间轴、照片/视频/文字/语音和家庭成员共享。</p>
+          </article>
+          <article class="decision-card">
+            <small>落地建议 02</small>
+            <p>上传时保留情感标签：日常瞬间、闪光瞬间、崩溃瞬间，服务后续AI判断。</p>
+          </article>
+          <article class="decision-card">
+            <small>落地建议 03</small>
+            <p>AI亲子督导优先覆盖作业辅导、手机短视频、亲子沟通对抗等高压场景。</p>
+          </article>
+          <article class="decision-card">
+            <small>落地建议 04</small>
+            <p>输出不要长报告，先用三张卡片完成“看见、解释、行动”的最小闭环。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="proof-chain">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">02 / 决策依据</div>
+            <h2>从市场信号到版本决策</h2>
+          </div>
+          <p>以下信息用于支持本轮升级优先级：亲子记录承担高频留存，AI亲子督导承担高价值服务，导师与课程承接承担后续转化。</p>
+        </div>
+
+        <div class="grid chain-grid">
+          <article class="chain-card">
+            <h3>1. 亲子记录是高频刚需</h3>
+            <p class="claim">管理层结论：成长记录是头部产品长期经营的核心入口，适合作为亲智聊1.0升级的高频基础能力。</p>
+            <table class="compact-table">
+              <tbody>
+                <tr>
+                  <td>行业盘</td>
+                  <td>母婴亲子行业月活稳定在3500万+，2024年2月人均单月启动80.5次。说明育儿工具不是低频内容消费，而是日常打开场景。</td>
+                </tr>
+                <tr>
+                  <td>头部表现</td>
+                  <td>亲宝宝单日人均启动3.8次、14天活跃留存51.1%、中重度用户占比62%、用户独占率53.5%。说明成长记录能形成长期粘性和独立使用价值。</td>
+                </tr>
+                <tr>
+                  <td>功能信号</td>
+                  <td>亲宝宝、妈妈网孕育、宝宝树孕育都把相册时间轴、成长记录、亲友共享作为核心能力。亲智聊第一版必须有轻量时间轴和家庭成员上传分享。</td>
+                </tr>
+              </tbody>
+            </table>
+          </article>
+
+          <article class="chain-card">
+            <h3>2. AI督导是高价值刚需</h3>
+            <p class="claim">管理层结论：家庭指导需求已从知识学习进入场景化指导阶段，AI督导可成为更低门槛的即时服务入口。</p>
+            <table class="compact-table">
+              <tbody>
+                <tr>
+                  <td>指导盘</td>
+                  <td>中国儿童中心调研显示，66.5%的家长参加过家庭教育指导讲座；参加者在学业、升学、职业选择方面的焦虑比例分别低9.9、8.7、9.0个百分点。</td>
+                </tr>
+                <tr>
+                  <td>冲突场</td>
+                  <td>CNNIC报告显示未成年网民1.93亿、互联网普及率97.2%，经常看短视频比例从2018年的40.5%升至2022年的54.1%。手机和短视频已经成为亲子沟通高压场景。</td>
+                </tr>
+                <tr>
+                  <td>AI接受</td>
+                  <td>家长糖AI宣称基于20万家庭咨询经验，提供成长日记解读和亲子对话分析；小猿AI官方表达“降低亲子冲突”。亲智聊不做题库，而是做冲突后的关系复盘。</td>
+                </tr>
+              </tbody>
+            </table>
+          </article>
+
+          <article class="chain-card">
+            <h3>3. 打通后才有商业必要性</h3>
+            <p class="claim">管理层结论：记录提供真实输入，督导提供即时价值，导师/课程承接高价值问题，三者具备打通必要。</p>
+            <table class="compact-table">
+              <tbody>
+                <tr>
+                  <td>新需求</td>
+                  <td>家长糖AI以“上传对话录音/截图，分析孩子情绪与需求”为卖点，并宣称20万+家庭咨询经验。说明用户已接受把真实沟通交给AI分析。</td>
+                </tr>
+                <tr>
+                  <td>服务承接</td>
+                  <td>孩子王官方描述显示近7000名育儿顾问、500+门店、180+城市、数十万场亲子活动。家庭教育和亲子服务存在从线上到线下的承接空间。</td>
+                </tr>
+                <tr>
+                  <td>版本建议</td>
+                  <td>亲智聊应把“记录 -> 三张卡 -> AI对话 -> 小任务 -> 周/月总结 -> 导师/课程”设计成闭环，而不是把亲子记录和AI对话分散成两个入口。</td>
+                </tr>
+              </tbody>
+            </table>
+          </article>
+        </div>
+
+        <div class="data-note">
+          <strong>汇报结论：</strong>亲智聊不宜进入重型相册或泛AI问答竞争，而应围绕真实亲子记录建立AI亲子教练系统。第一版只要跑通轻上传、时间轴、三张卡、深度对话和一个可执行任务，就具备测试留存与转化的最小闭环。
+        </div>
+      </div>
+    </section>
+
+    <section id="need">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">03 / 需求判断</div>
+            <h2>两个功能，各自独立，又必须打通</h2>
+          </div>
+          <p>单独做亲子记录，容易变成相册；单独做AI督导，容易变成泛问答。亲智聊的产品价值在于把真实记录变成教练输入，再把AI建议变成亲子关系行动。</p>
+        </div>
+
+        <div class="grid proof-grid">
+          <article class="insight-card">
+            <div>
+              <h3>亲子记录是高频入口</h3>
+              <p>它承接家长“看见孩子、保存孩子、分享孩子、回看孩子”的天然动机。低龄是照片视频，小学后是作业冲突、聊天记录和家长感受。</p>
+            </div>
+            <div class="tagline">高频留存 / 家庭协作 / 情感资产</div>
+          </article>
+          <article class="insight-card green">
+            <div>
+              <h3>AI督导是高价值服务</h3>
+              <p>家长最大的痛点不是不知道理论，而是具体场景里不知道怎么做。AI督导要提供理解、解释、话术和小任务。</p>
+            </div>
+            <div class="tagline">专业信任 / 具体话术 / 服务转化</div>
+          </article>
+          <article class="insight-card coral">
+            <div>
+              <h3>打通后形成产品飞轮</h3>
+              <p>越记录，AI越懂孩子和家庭；越懂，督导越具体；越具体，家长越愿意尝试；新的尝试又会产生新的记录。</p>
+            </div>
+            <div class="tagline">记录 -> 督导 -> 行动 -> 再记录</div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="evidence">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">04 / 竞品截图</div>
+            <h2>竞品已经把需求教育出来了</h2>
+          </div>
+          <p>亲宝宝代表成长记录入口，家长糖代表AI亲子沟通分析，作业帮和小猿AI代表作业辅导焦虑，掌通家园代表多角色记录，孩子王代表服务承接。</p>
+        </div>
+
+        <div class="evidence-layout">
+          <div class="phone-stack">
+            <div class="phone-shot"><img src="assets/qbb_record.jpg" alt="亲宝宝记录成长截图"></div>
+            <div class="phone-shot"><img src="assets/jzt_home.png" alt="家长糖AI首页截图"></div>
+            <div class="phone-shot"><img src="assets/zyb_ai.jpg" alt="作业帮AI作业辅导截图"></div>
+            <div class="phone-shot"><img src="assets/zt_home.jpg" alt="掌通家园家园共育截图"></div>
+          </div>
+
+          <div class="grid competitor-grid">
+            <article class="competitor-card">
+              <figure><img src="assets/qbb_album.jpg" alt="亲宝宝智能云相册"></figure>
+              <div class="competitor-body">
+                <small>成长记录标杆</small>
+                <h3>亲宝宝</h3>
+                <p>官方描述强调成长记录云空间、一人上传全家共享、安全私密、照片视频智能上传，说明亲子记录具备长期入口价值。</p>
+              </div>
+            </article>
+            <article class="competitor-card">
+              <figure><img src="assets/mama_record.jpg" alt="妈妈网孕育"></figure>
+              <div class="competitor-body">
+                <small>家庭轻互动</small>
+                <h3>妈妈网孕育</h3>
+                <p>育儿记录支持相册时间轴、点赞评论、邀请亲友一起记录，说明家庭共同照见是记录场景的重要价值。</p>
+              </div>
+            </article>
+            <article class="competitor-card">
+              <figure><img src="assets/jzt_detail.png" alt="家长糖AI"></figure>
+              <div class="competitor-body">
+                <small>AI亲子沟通</small>
+                <h3>家长糖AI</h3>
+                <p>支持上传对话录音或截图，分析孩子话语背后的情绪与需求，显示AI亲子督导已有明确用户心智。</p>
+              </div>
+            </article>
+            <article class="competitor-card">
+              <figure><img src="assets/xy_ai.jpg" alt="小猿AI"></figure>
+              <div class="competitor-body">
+                <small>作业辅导焦虑</small>
+                <h3>小猿AI</h3>
+                <p>官方表达“从焦虑陪读到科学监督，降低亲子冲突”。亲智聊不做题库，做作业场景的关系复盘。</p>
+              </div>
+            </article>
+            <article class="competitor-card">
+              <figure><img src="assets/xes_parent.jpg" alt="学而思亲子"></figure>
+              <div class="competitor-body">
+                <small>设备与学习管理</small>
+                <h3>学而思亲子</h3>
+                <p>家长可管控设备使用时段、查看学习动态。亲智聊可把管控转为更低冲突的家庭约定与任务卡。</p>
+              </div>
+            </article>
+            <article class="competitor-card">
+              <figure><img src="assets/haiziwang.jpg" alt="孩子王"></figure>
+              <div class="competitor-body">
+                <small>服务承接</small>
+                <h3>孩子王</h3>
+                <p>育儿顾问、门店、亲子活动和本地服务，显示亲子家庭场景具备线上到线下的高价值承接空间。</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="matrix">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">05 / 功能对标</div>
+            <h2>亲智聊的差异化位置</h2>
+          </div>
+          <p>亲智聊不是重新做一个亲宝宝，也不是重新做一个家长糖。它要成为“基于真实记录的亲子教练系统”。</p>
+        </div>
+
+        <table class="matrix">
+          <thead>
+            <tr>
+              <th>产品类型</th>
+              <th>代表产品</th>
+              <th>市场已有需求</th>
+              <th>亲智聊机会</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>成长记录</td>
+              <td>亲宝宝、妈妈网孕育、宝宝树孕育</td>
+              <td>照片视频、相册时间轴、家庭共享、成长曲线</td>
+              <td>把记录做成AI可理解的亲子关系素材，而不是普通相册</td>
+            </tr>
+            <tr>
+              <td>家园共育</td>
+              <td>掌通家园、掌心宝贝、一起长大</td>
+              <td>老师、家长、多角色共同记录孩子在园在家状态</td>
+              <td>第一版先做家庭成员上传分享，未来扩展导师/老师观察</td>
+            </tr>
+            <tr>
+              <td>AI家庭教育</td>
+              <td>家长糖AI、谷积养育模拟</td>
+              <td>上传对话录音/截图、AI分析情绪需求、养育预演</td>
+              <td>围绕单条亲子记录生成卡片，再进入深度AI对话</td>
+            </tr>
+            <tr>
+              <td>作业辅导</td>
+              <td>作业帮、小猿AI</td>
+              <td>AI批改、答疑、错题解析，降低家长辅导负担</td>
+              <td>不做题目解析，做辅导作业崩溃后的互动复盘</td>
+            </tr>
+            <tr>
+              <td>服务承接</td>
+              <td>孩子王、亲子周末、线下导师</td>
+              <td>育儿顾问、亲子活动、本地服务、高客单课程</td>
+              <td>AI发现反复问题后，推荐导师、课程或家庭活动</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="path">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">06 / 用户路径</div>
+            <h2>从一条记录，到一次真正的督导</h2>
+          </div>
+          <p>第一版链路必须短，像发朋友圈一样上传，像抽卡一样获得洞察，像和教练聊天一样深入，最后落到一个可执行任务。</p>
+        </div>
+
+        <div class="flow">
+          <div class="flow-step">
+            <span>01</span>
+            <h3>进入亲子记录</h3>
+            <p>看到孩子成长时间轴，家庭成员共同上传与互动。</p>
+          </div>
+          <div class="flow-step">
+            <span>02</span>
+            <h3>上传素材</h3>
+            <p>图片、音视频、对话文本、微信聊天提取都可作为记录材料。</p>
+          </div>
+          <div class="flow-step">
+            <span>03</span>
+            <h3>添加标签</h3>
+            <p>选择日常、闪光、崩溃瞬间，以及事件标签和可见范围。</p>
+          </div>
+          <div class="flow-step">
+            <span>04</span>
+            <h3>生成AI卡片</h3>
+            <p>系统按场景弹出三张卡，可能出现温度卡、游戏卡或奖励卡。</p>
+          </div>
+          <div class="flow-step">
+            <span>05</span>
+            <h3>查看卡片内容</h3>
+            <p>获得解读、镜子、话术、任务等具体输出。</p>
+          </div>
+          <div class="flow-step">
+            <span>06</span>
+            <h3>和督导师聊聊</h3>
+            <p>进入AI亲子督导对话页，继续追问并形成下一步行动。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="mvp">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">07 / 版本建议</div>
+            <h2>第一版要轻，但必须有新感觉</h2>
+          </div>
+          <p>重点不是堆功能，而是让用户第一次感到：我记录的不只是孩子的照片，AI真的从这一刻里看见了孩子，也看见了我。</p>
+        </div>
+
+        <div class="grid mvp-grid">
+          <article class="mvp-card">
+            <h3>第一版必须做</h3>
+            <ul class="check-list">
+              <li>亲子记录首页：时间轴、图/音视频/文字显示、情感标签、AI督导入口、上传入口。</li>
+              <li>上传记录页：选择素材、微信聊天提取、文字感受、情感标签、事件标签、谁可以看。</li>
+              <li>AI督导触发：选择单条或多条记录，弹出三张卡片，主卡在上，两张副卡在下。</li>
+              <li>AI督导对话页：上传资料、文字/语音输入、三个滑动卡片、推荐话题一行展示。</li>
+              <li>隐藏卡：温度卡、游戏卡、奖励卡按需随机出现，强化惊喜感。</li>
+            </ul>
+          </article>
+          <article class="mvp-card">
+            <h3>第一版不做重</h3>
+            <ul class="check-list no">
+              <li>不做重型云盘和复杂相册管理，避免与亲宝宝正面竞争存储能力。</li>
+              <li>不做完整心理测评体系，测评卡可作为隐藏福利，不放主链路。</li>
+              <li>不做大课程学习体系，先测试“记录 -> 卡片 -> 对话”的闭环。</li>
+              <li>不做泛社区内容，避免稀释亲子记录和AI督导主线。</li>
+              <li>不做医学或心理诊断，只做日常陪伴、家庭教育指导和关系复盘。</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="cards-row" aria-label="AI督导卡片体系">
+          <div class="ai-card"><b>夸夸卡</b><span>发现孩子优势，夸到点上</span></div>
+          <div class="ai-card"><b>解读卡</b><span>解释孩子行为背后的需求</span></div>
+          <div class="ai-card"><b>话术卡</b><span>当下怎么说，不该怎么说</span></div>
+          <div class="ai-card"><b>镜子卡</b><span>看见家长的互动模式</span></div>
+          <div class="ai-card"><b>任务卡</b><span>把建议变成一个小行动</span></div>
+          <div class="ai-card hidden-card"><b>温度卡</b><span>家庭升温与关系修复</span></div>
+          <div class="ai-card hidden-card"><b>游戏卡</b><span>给亲子关系一个轻任务</span></div>
+          <div class="ai-card hidden-card"><b>奖励卡</b><span>产品内奖励与惊喜体验</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="sources">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">08 / 参考来源</div>
+            <h2>主要数据与竞品来源</h2>
+          </div>
+          <p>网页中的数据来自公开报告摘要、App Store公开元数据和用户已有调研材料。部分行业传播数据建议在正式对外融资材料中继续二次核验。</p>
+        </div>
+        <div class="sources">
+          <a class="source-card" href="https://moonfox.cn/insight/report/1415" target="_blank" rel="noreferrer"><strong>月狐数据</strong>2024移动互联网亲子行业研究报告公开摘要</a>
+          <a class="source-card" href="https://news.tom.com/202404/4750264864.html" target="_blank" rel="noreferrer"><strong>TOM资讯转载摘要</strong>月狐亲子行业报告关键数据</a>
+          <a class="source-card" href="https://www.cnnic.cn/n4/2023/1225/c116-10908.html" target="_blank" rel="noreferrer"><strong>CNNIC</strong>第5次全国未成年人互联网使用情况调查报告</a>
+          <a class="source-card" href="https://www.cnnic.net.cn/NMediaFile/2023/1225/MAIN1703484375296SPBHV29S0V.pdf" target="_blank" rel="noreferrer"><strong>CNNIC PDF</strong>未成年人互联网使用调查报告原文</a>
+          <a class="source-card" href="https://www.ccc.org.cn/art/2024/7/9/art_52_224477.html" target="_blank" rel="noreferrer"><strong>中国儿童中心</strong>儿童校外生活状况报告：家庭教育</a>
+          <a class="source-card" href="https://www.cbbr.com.cn/contents/533/91310.html" target="_blank" rel="noreferrer"><strong>中国出版传媒商报</strong>家庭教育蓝皮书（2024）发布会报道</a>
+          <a class="source-card" href="https://www.moe.gov.cn/jyb_sjzl/sjzl_zcfg/zcfg_qtxgfl/202110/t20211025_574749.html" target="_blank" rel="noreferrer"><strong>教育部</strong>中华人民共和国家庭教育促进法</a>
+          <a class="source-card" href="https://apps.apple.com/cn/app/id672984826" target="_blank" rel="noreferrer"><strong>亲宝宝</strong>App Store公开功能描述与截图</a>
+          <a class="source-card" href="https://apps.apple.com/cn/app/id1325419855" target="_blank" rel="noreferrer"><strong>小猿AI</strong>App Store公开功能描述与评价数据</a>
+          <a class="source-card" href="https://apps.apple.com/cn/app/id974534776" target="_blank" rel="noreferrer"><strong>孩子王</strong>App Store公开功能描述与服务数据</a>
+          <a class="source-card" href="https://app.guixian.cn/" target="_blank" rel="noreferrer"><strong>家长糖AI</strong>公开产品页与功能描述</a>
+          <a class="source-card" href="https://apps.apple.com/cn/app/id6740526380" target="_blank" rel="noreferrer"><strong>家长糖AI</strong>App Store公开功能描述与截图</a>
+          <a class="source-card" href="https://apps.apple.com/cn/app/id6754871044" target="_blank" rel="noreferrer"><strong>谷积养育模拟</strong>App Store公开功能描述</a>
+        </div>
+      </div>
+    </section>
   </main>
 
-  <div class="toast" id="toast">已模拟保存</div>
-
-  <script>
-    const sceneData = {
-      "一催作业就发火": {
-        short: "孩子现在的“发火”，可能是在表达：我压力太大，不知道怎么开始。",
-        emotion: "你现在可能已经很累了。催作业催到最后，常常不是作业本身让人崩溃，而是那种“怎么又来了”的无力感。",
-        detag: "这不一定是孩子故意对抗你。很多时候，发火是在用很笨拙的方式说：我卡住了，我不想再被推着走。",
-        needs: ["需要任务被拆小", "需要先恢复一点掌控感", "害怕做不好", "需要你先帮他开始第一步"],
-        advantage: ["对压力有感知", "有自己的边界", "被正确引导后更容易学会规划"],
-        action: "今晚先不说“快点写”。只问一句：你觉得最难开始的是哪一题？我们只先看第一小步。"
-      },
-      "越提醒越不听": {
-        short: "孩子现在的“不听”，可能是在练习：我想自己决定。",
-        emotion: "你可能已经提醒到很烦了。一直重复同一句话，会让家长觉得自己像坏人，也让孩子越来越想躲。",
-        detag: "这不一定是孩子不尊重你。提醒越多，孩子越容易只听见命令，而听不见关心。",
-        needs: ["需要自主感", "需要更少指令", "需要选择空间", "需要被当成可以商量的人"],
-        advantage: ["有主见", "不轻易被推着走", "未来更可能独立判断"],
-        action: "把命令换成选择：你想先洗漱，还是先收拾书包？两个都可以，你来定。"
-      },
-      "一到睡觉就磨蹭": {
-        short: "孩子现在的“磨蹭”，可能是在表达：我还不想结束今天。",
-        emotion: "到晚上你已经消耗很多了。睡前拉扯最容易让人失控，因为你也真的需要休息。",
-        detag: "磨蹭不一定是故意拖延。有些孩子很难从玩、陪伴或兴奋状态切换到睡觉。",
-        needs: ["需要提前预告", "需要稳定仪式", "需要和父母再连接一下", "需要可视化时间"],
-        advantage: ["重视陪伴", "对转换敏感", "建立节奏后会很稳定"],
-        action: "睡前给一个固定仪式：还有十分钟，我们抱一下，然后选一本书，读完就关灯。"
-      },
-      "说两句就哭": {
-        short: "孩子现在的“哭”，可能是在说：我还不会好好表达委屈。",
-        emotion: "你可能会觉得自己还没说重话，孩子怎么就哭了。这个瞬间很容易让大人也委屈。",
-        detag: "哭不一定是玻璃心。它可能是孩子的语言还没跟上情绪，只能先用眼泪表达。",
-        needs: ["需要被命名情绪", "需要降低羞耻感", "需要慢一点说", "需要知道哭也不会失去爱"],
-        advantage: ["感受力细腻", "共情力强", "对关系变化敏感"],
-        action: "先停十秒。轻声问：你现在是委屈、害怕，还是着急？你可以只选一个词。"
-      },
-      "在家脾气很差": {
-        short: "孩子在家“脾气差”，可能是在最安全的地方释放压力。",
-        emotion: "看到孩子把坏脾气都给家里，你会很受伤。你不是不够好，你只是承接了他最松的一面。",
-        detag: "这不一定代表孩子不爱家人。很多孩子在外面努力控制，回家后才把疲惫放出来。",
-        needs: ["需要安全释放", "需要安静过渡", "需要被允许先缓一会儿", "需要家里不是第二个战场"],
-        advantage: ["信任家庭", "对外部规则有适应力", "需要学会更好的释放方式"],
-        action: "放学回家先别问表现。给他十分钟空白时间，再问：今天哪一刻最累？"
-      },
-      "不愿意和父母沟通": {
-        short: "孩子现在的“沉默”，可能是在保护自己不被否定。",
-        emotion: "孩子什么都不说时，家长会特别慌，好像你正在被推远。这个感觉很难受。",
-        detag: "沉默不一定是冷漠。有时孩子害怕一开口，就会被追问、纠正或讲道理。",
-        needs: ["需要安全表达空间", "需要少一点追问", "需要被允许保留边界", "需要重新建立信任"],
-        advantage: ["有边界感", "会保护自己", "可能思考更深"],
-        action: "别问“为什么不说”。试试：你不用解释，只要告诉我这件事烦不烦，从 1 到 10 是几分？"
-      }
-    };
-
-    const emotions = document.querySelectorAll(".emotion");
-    const scenes = document.querySelectorAll(".scene-card");
-    const input = document.getElementById("sceneInput");
-    const button = document.getElementById("translateBtn");
-    const results = document.getElementById("results");
-    const screen = document.getElementById("screen");
-    const lightMode = document.getElementById("lightMode");
-    const deepMode = document.getElementById("deepMode");
-    const regretBtn = document.getElementById("regretBtn");
-    const triggerBtn = document.getElementById("triggerBtn");
-    const chatText = document.getElementById("chatText");
-    const toast = document.getElementById("toast");
-    const progress = ["p0", "p1", "p2", "p3", "p4"].map(id => document.getElementById(id));
-    let currentEmotion = "我快被气炸了";
-
-    function setActive(list, value, key) {
-      list.forEach(item => item.classList.toggle("active", item.dataset[key] === value));
-    }
-
-    function getData(value) {
-      return sceneData[value] || {
-        short: `孩子现在的“${value || "这个行为"}”，可能是在表达一个还说不清的需要。`,
-        emotion: "你现在可能已经很累了。先不用急着把这件事处理好，先让自己缓一下。",
-        detag: "这不一定是孩子故意和你作对。行为背后常常藏着压力、需要或还没发展好的能力。",
-        needs: ["需要被理解", "需要更清晰的边界", "需要降低压力", "需要练习表达"],
-        advantage: ["有自己的感受", "正在发展独立性", "被正确引导后更会表达"],
-        action: "今天先只做一个小动作：把指责换成一个开放问题，问孩子：你现在最需要我帮你的是什么？"
-      };
-    }
-
-    function setMode(mode) {
-      const isDeep = mode === "deep";
-      document.body.classList.toggle("deep-mode", isDeep);
-      lightMode.classList.toggle("active", !isDeep);
-      deepMode.classList.toggle("active", isDeep);
-    }
-
-    function showToast(text) {
-      toast.textContent = text;
-      toast.classList.add("show");
-      setTimeout(() => toast.classList.remove("show"), 1300);
-    }
-
-    function shareCard(data, scene) {
-      return `
-        <article class="share-card">
-          <small>一句话翻译结果</small>
-          <h3>${data.short}</h3>
-          <div class="actions">
-            <button class="ghost" data-toast="已模拟保存图片">保存图片</button>
-            <button class="ghost" data-toast="已加入理解库">收藏</button>
-            <button class="ghost" data-toast="已模拟分享">分享</button>
-          </div>
-        </article>
-      `;
-    }
-
-    function resultCards(data) {
-      return [
-        `<article class="result-card soft-blue"><h3>1. 情绪承接</h3><p>${currentEmotion}，这不是小事。${data.emotion}</p></article>`,
-        `<article class="result-card soft-teal"><h3>2. 去标签化</h3><p>${data.detag}</p><div class="quote">先让冲突降下来，再看见孩子真正想表达什么。</div></article>`,
-        `<article class="result-card soft-rose"><h3>3. 孩子真正想表达什么</h3><p>这个场景背后，孩子可能在表达：</p><ul>${data.needs.slice(0, document.body.classList.contains("deep-mode") ? 4 : 2).map(item => `<li>${item}</li>`).join("")}</ul><div class="deep-only quote">深模式：这里不是替孩子找借口，而是找到更有效的沟通入口。</div></article>`,
-        `<article class="result-card soft-leaf deep-only"><h3>4. 这个特质未来可能的优势</h3><p>如果被正确引导，它未来可能变成：</p><ul>${data.advantage.map(item => `<li>${item}</li>`).join("")}</ul></article>`,
-        `<article class="result-card soft-gold"><h3>5. 今晚你可以先这样做</h3><p>${data.action}</p><div class="quote">只给一个小动作，当天就能用。</div></article>`
-      ];
-    }
-
-    function resetProgress() {
-      progress.forEach(item => item.style.width = "0");
-    }
-
-    function renderFlow() {
-      const scene = input.value.trim();
-      const data = getData(scene);
-      const cards = [shareCard(data, scene), ...resultCards(data)];
-      results.innerHTML = "";
-      resetProgress();
-      button.textContent = "生成中";
-      button.disabled = true;
-
-      cards.forEach((html, index) => {
-        setTimeout(() => {
-          if (index > 0 && progress[index - 1]) progress[index - 1].style.width = "100%";
-          results.insertAdjacentHTML("beforeend", html);
-          const el = results.lastElementChild;
-          requestAnimationFrame(() => el.classList.add("show"));
-          screen.scrollTop = screen.scrollHeight;
-          if (index === cards.length - 1) {
-            button.textContent = "重新翻译";
-            button.disabled = false;
-          }
-        }, 260 + index * 620);
-      });
-    }
-
-    emotions.forEach(item => {
-      item.addEventListener("click", () => {
-        currentEmotion = item.dataset.emotion;
-        setActive(emotions, currentEmotion, "emotion");
-      });
-    });
-
-    scenes.forEach(item => {
-      item.addEventListener("click", () => {
-        input.value = item.dataset.scene;
-        setActive(scenes, item.dataset.scene, "scene");
-        renderFlow();
-      });
-    });
-
-    input.addEventListener("input", () => setActive(scenes, input.value.trim(), "scene"));
-    input.addEventListener("keydown", event => {
-      if (event.key === "Enter") renderFlow();
-    });
-    button.addEventListener("click", renderFlow);
-    lightMode.addEventListener("click", () => {
-      setMode("light");
-      renderFlow();
-    });
-    deepMode.addEventListener("click", () => {
-      setMode("deep");
-      renderFlow();
-    });
-    regretBtn.addEventListener("click", () => {
-      currentEmotion = "我刚吼完孩子";
-      input.value = "说两句就哭";
-      setActive(emotions, currentEmotion, "emotion");
-      setActive(scenes, input.value, "scene");
-      renderFlow();
-    });
-    triggerBtn.addEventListener("click", () => {
-      currentEmotion = chatText.value.includes("崩溃") ? "我不知道怎么办" : "我很焦虑";
-      input.value = "越提醒越不听";
-      setActive(emotions, currentEmotion, "emotion");
-      setActive(scenes, input.value, "scene");
-      renderFlow();
-      screen.scrollTop = 0;
-    });
-    results.addEventListener("click", event => {
-      const target = event.target.closest("[data-toast]");
-      if (target) showToast(target.dataset.toast);
-    });
-
-    renderFlow();
-  </script>
+  <footer class="footer">
+    <div class="container footer-inner">
+      <span>亲智聊 1.0 升级版市场需求分析网页</span>
+      <span>生成日期：2026-05-16</span>
+    </div>
+  </footer>
 </body>
 </html>
