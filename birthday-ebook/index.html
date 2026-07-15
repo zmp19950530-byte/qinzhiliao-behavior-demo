@@ -1,0 +1,1320 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>黄总，生日快乐</title>
+  <meta name="description" content="一份翻页式生日电子书，关于我们和小宝贝。" />
+  <style>
+    :root {
+      --paper: #f2eedf;
+      --paper-deep: #e8dec8;
+      --ink: #271f18;
+      --ink-soft: #66594a;
+      --film: #11100d;
+      --film-2: #1d1914;
+      --white: #fffaf0;
+      --rose: #d99cb8;
+      --sage: #aebf9f;
+      --lemon: #d7dc6c;
+      --blush: #e7c3ac;
+      --line: rgba(39, 31, 24, 0.18);
+      --shadow: 0 32px 90px rgba(0, 0, 0, 0.42);
+      --paper-shadow: 0 22px 48px rgba(39, 31, 24, 0.24);
+      --serif: "Noto Serif SC", "Source Han Serif SC", "Songti SC", SimSun, serif;
+      --sans: "Noto Sans SC", "Microsoft YaHei", "PingFang SC", Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      width: 100%;
+      min-height: 100%;
+      margin: 0;
+      background: var(--film);
+      color: var(--ink);
+      font-family: var(--sans);
+      overflow: hidden;
+      text-rendering: optimizeLegibility;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        linear-gradient(120deg, rgba(215, 220, 108, 0.12), transparent 38%),
+        radial-gradient(circle at 18% 20%, rgba(217, 156, 184, 0.18), transparent 26%),
+        radial-gradient(circle at 82% 76%, rgba(174, 191, 159, 0.18), transparent 28%),
+        linear-gradient(180deg, #1b1712, #080807);
+      pointer-events: none;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255, 250, 240, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 250, 240, 0.03) 1px, transparent 1px);
+      background-size: 42px 42px;
+      opacity: 0.42;
+      pointer-events: none;
+      mix-blend-mode: screen;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .app {
+      position: relative;
+      z-index: 1;
+      height: 100svh;
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr) auto;
+      padding: 18px 28px 18px;
+    }
+
+    .topbar {
+      width: min(1220px, 100%);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      color: rgba(255, 250, 240, 0.78);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      border: 1px solid rgba(255, 250, 240, 0.46);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-family: var(--serif);
+      font-size: 18px;
+      color: var(--lemon);
+    }
+
+    .brand-text {
+      min-width: 0;
+    }
+
+    .brand-title {
+      margin: 0;
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.3;
+      color: var(--white);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .brand-subtitle {
+      margin: 2px 0 0;
+      font-size: 12px;
+      color: rgba(255, 250, 240, 0.62);
+    }
+
+    .progress {
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      color: rgba(255, 250, 240, 0.7);
+    }
+
+    .progress-track {
+      width: 170px;
+      height: 2px;
+      background: rgba(255, 250, 240, 0.22);
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      width: 0%;
+      height: 100%;
+      background: var(--lemon);
+      transition: width 260ms ease;
+    }
+
+    .reader {
+      position: relative;
+      min-height: 0;
+      display: grid;
+      place-items: center;
+      perspective: 1800px;
+    }
+
+    .book-frame {
+      width: min(1220px, 100%);
+      height: min(82svh, 780px);
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      border-radius: 7px;
+      box-shadow: var(--shadow);
+      transform-style: preserve-3d;
+      transition: transform 260ms ease, opacity 260ms ease;
+    }
+
+    .book-frame.turning-forward {
+      transform: translateX(-8px) rotateY(-2deg) scale(0.992);
+      opacity: 0.78;
+    }
+
+    .book-frame.turning-back {
+      transform: translateX(8px) rotateY(2deg) scale(0.992);
+      opacity: 0.78;
+    }
+
+    .book-page {
+      min-width: 0;
+      min-height: 0;
+      position: relative;
+      overflow: hidden;
+      background:
+        linear-gradient(90deg, rgba(255, 255, 255, 0.38), transparent 16%, transparent 84%, rgba(39, 31, 24, 0.08)),
+        var(--paper);
+      border: 1px solid rgba(255, 250, 240, 0.26);
+    }
+
+    .book-page.left {
+      border-radius: 7px 0 0 7px;
+      border-right: 1px solid rgba(39, 31, 24, 0.22);
+      box-shadow: inset -22px 0 32px rgba(39, 31, 24, 0.12);
+    }
+
+    .book-page.right {
+      border-radius: 0 7px 7px 0;
+      box-shadow: inset 22px 0 32px rgba(39, 31, 24, 0.09);
+    }
+
+    .book-page.blank {
+      background: linear-gradient(135deg, #efe6d0, #d9cbb0);
+    }
+
+    .page-inner {
+      height: 100%;
+      overflow-y: auto;
+      padding: 46px 46px 40px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(39, 31, 24, 0.28) transparent;
+    }
+
+    .page-inner::-webkit-scrollbar { width: 8px; }
+    .page-inner::-webkit-scrollbar-thumb { background: rgba(39, 31, 24, 0.26); border-radius: 8px; }
+
+    .page-cover {
+      color: var(--white);
+      background:
+        linear-gradient(180deg, rgba(17, 16, 13, 0.08), rgba(17, 16, 13, 0.88)),
+        url("assets/photos/photo-23.jpg") center 38% / cover no-repeat;
+    }
+
+    .page-cover .page-inner,
+    .page-photo-full .page-inner {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      overflow: hidden;
+      padding: 52px;
+    }
+
+    .page-photo-full {
+      color: var(--white);
+      background:
+        linear-gradient(180deg, rgba(17, 16, 13, 0.02), rgba(17, 16, 13, 0.78)),
+        var(--cover-image) center / cover no-repeat;
+    }
+
+    .page-dark {
+      color: var(--white);
+      background:
+        linear-gradient(120deg, rgba(217, 156, 184, 0.10), transparent 44%),
+        linear-gradient(180deg, #1d1914, #11100d);
+      border-color: rgba(255, 250, 240, 0.14);
+    }
+
+    .page-soft {
+      background:
+        linear-gradient(145deg, rgba(174, 191, 159, 0.32), transparent 42%),
+        var(--paper);
+    }
+
+    .page-blush {
+      background:
+        linear-gradient(145deg, rgba(231, 195, 172, 0.42), transparent 46%),
+        var(--paper);
+    }
+
+    .kicker {
+      margin: 0 0 14px;
+      font-size: 11px;
+      line-height: 1.4;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--ink-soft);
+    }
+
+    .page-dark .kicker,
+    .page-cover .kicker,
+    .page-photo-full .kicker {
+      color: rgba(255, 250, 240, 0.72);
+    }
+
+    h1, h2, h3, p, figure {
+      margin: 0;
+    }
+
+    h1, h2, h3, .serif {
+      font-family: var(--serif);
+      font-weight: 500;
+      letter-spacing: 0;
+    }
+
+    h1 {
+      max-width: 10em;
+      font-size: 58px;
+      line-height: 1.05;
+    }
+
+    h2 {
+      font-size: 38px;
+      line-height: 1.2;
+    }
+
+    h3 {
+      font-size: 25px;
+      line-height: 1.25;
+    }
+
+    .lead {
+      margin-top: 18px;
+      font-size: 15px;
+      line-height: 1.92;
+      color: var(--ink-soft);
+    }
+
+    .page-dark .lead,
+    .page-cover .lead,
+    .page-photo-full .lead {
+      color: rgba(255, 250, 240, 0.82);
+    }
+
+    .body-copy {
+      margin-top: 22px;
+      display: grid;
+      gap: 13px;
+      font-size: 14px;
+      line-height: 1.9;
+      color: var(--ink-soft);
+    }
+
+    .page-dark .body-copy {
+      color: rgba(255, 250, 240, 0.76);
+    }
+
+    .chapter-line {
+      width: 62px;
+      height: 2px;
+      margin: 22px 0 24px;
+      background: var(--rose);
+    }
+
+    .page-dark .chapter-line,
+    .page-cover .chapter-line,
+    .page-photo-full .chapter-line {
+      background: var(--lemon);
+    }
+
+    .meta-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 26px;
+    }
+
+    .meta-list span {
+      border: 1px solid rgba(39, 31, 24, 0.18);
+      border-radius: 6px;
+      padding: 7px 9px;
+      font-size: 11px;
+      color: var(--ink-soft);
+      background: rgba(255, 250, 240, 0.48);
+    }
+
+    .page-cover .meta-list span,
+    .page-dark .meta-list span,
+    .page-photo-full .meta-list span {
+      border-color: rgba(255, 250, 240, 0.34);
+      color: rgba(255, 250, 240, 0.82);
+      background: rgba(255, 250, 240, 0.08);
+    }
+
+    .media-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .media {
+      position: relative;
+      min-height: 142px;
+      overflow: hidden;
+      border-radius: 6px;
+      background: var(--film);
+      box-shadow: var(--paper-shadow);
+    }
+
+    .media.span-2 { grid-column: span 2; }
+    .media.span-3 { grid-column: span 3; }
+    .media.span-4 { grid-column: span 4; }
+    .media.span-6 { grid-column: span 6; }
+    .media.tall { min-height: 292px; }
+    .media.mid { min-height: 210px; }
+
+    .media img,
+    .media video {
+      display: block;
+      width: 100%;
+      height: 100%;
+      min-height: inherit;
+      object-fit: cover;
+      background: var(--film);
+    }
+
+    .media video {
+      object-fit: contain;
+    }
+
+    .media figcaption {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 30px 10px 10px;
+      color: rgba(255, 250, 240, 0.9);
+      font-size: 11px;
+      line-height: 1.4;
+      background: linear-gradient(180deg, transparent, rgba(17, 16, 13, 0.82));
+      pointer-events: none;
+    }
+
+    .video-card {
+      margin-top: 18px;
+      overflow: hidden;
+      border-radius: 6px;
+      background: var(--film);
+      box-shadow: var(--paper-shadow);
+    }
+
+    .video-card video {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      object-fit: contain;
+      background: var(--film);
+    }
+
+    .video-card figcaption {
+      padding: 10px 12px 12px;
+      color: var(--white);
+      font-size: 12px;
+      line-height: 1.55;
+      background: #211f18;
+    }
+
+    .video-row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .video-row .video-card {
+      margin-top: 0;
+    }
+
+    .note-field {
+      display: grid;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .note-field.two {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: start;
+    }
+
+    .note {
+      border: 1px solid rgba(39, 31, 24, 0.14);
+      border-radius: 6px;
+      padding: 16px 16px 17px;
+      background: rgba(255, 250, 240, 0.62);
+      box-shadow: 0 12px 28px rgba(39, 31, 24, 0.12);
+    }
+
+    .note.wife {
+      background: rgba(225, 164, 194, 0.28);
+    }
+
+    .note.baby {
+      margin-top: 18px;
+      background: rgba(183, 199, 168, 0.34);
+    }
+
+    .page-dark .note {
+      border-color: rgba(255, 250, 240, 0.18);
+      background: rgba(255, 250, 240, 0.08);
+      box-shadow: none;
+    }
+
+    .note strong {
+      display: block;
+      margin-bottom: 9px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--ink);
+    }
+
+    .page-dark .note strong {
+      color: var(--white);
+    }
+
+    .note p {
+      font-size: 13px;
+      line-height: 1.82;
+      color: var(--ink-soft);
+    }
+
+    .page-dark .note p {
+      color: rgba(255, 250, 240, 0.78);
+    }
+
+    .note.offset {
+      transform: translateX(18px);
+    }
+
+    .note.reverse {
+      transform: translateX(-12px);
+    }
+
+    .toc {
+      margin-top: 26px;
+      display: grid;
+      gap: 9px;
+    }
+
+    .toc button {
+      display: grid;
+      grid-template-columns: 42px 1fr;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      padding: 11px 12px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      color: var(--ink);
+      background: rgba(255, 250, 240, 0.44);
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .toc button:hover,
+    .toc button:focus-visible {
+      background: var(--lemon);
+      outline: none;
+    }
+
+    .toc .toc-num {
+      font-family: var(--serif);
+      font-size: 22px;
+      color: var(--rose);
+    }
+
+    .toc .toc-title {
+      font-size: 13px;
+      line-height: 1.45;
+      color: var(--ink-soft);
+    }
+
+    .page-number {
+      position: absolute;
+      left: 42px;
+      right: 42px;
+      bottom: 19px;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      color: rgba(39, 31, 24, 0.42);
+      font-family: var(--serif);
+      font-size: 13px;
+      pointer-events: none;
+    }
+
+    .page-dark .page-number,
+    .page-cover .page-number,
+    .page-photo-full .page-number {
+      color: rgba(255, 250, 240, 0.45);
+    }
+
+    .controls {
+      width: min(1220px, 100%);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 48px 1fr 48px;
+      align-items: center;
+      gap: 14px;
+      padding-top: 14px;
+    }
+
+    .nav-btn {
+      width: 48px;
+      height: 48px;
+      border: 1px solid rgba(255, 250, 240, 0.36);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: var(--white);
+      background: rgba(255, 250, 240, 0.08);
+      font-size: 30px;
+      line-height: 1;
+      cursor: pointer;
+      transition: transform 180ms ease, background 180ms ease, color 180ms ease;
+    }
+
+    .nav-btn:hover,
+    .nav-btn:focus-visible {
+      transform: translateY(-1px);
+      color: var(--film);
+      background: var(--lemon);
+      outline: none;
+    }
+
+    .nav-btn:disabled {
+      opacity: 0.34;
+      cursor: default;
+      transform: none;
+      color: rgba(255, 250, 240, 0.72);
+      background: rgba(255, 250, 240, 0.05);
+    }
+
+    .chapter-caption {
+      text-align: center;
+      color: rgba(255, 250, 240, 0.72);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 60;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 22px;
+      background: rgba(17, 16, 13, 0.94);
+    }
+
+    .lightbox.open {
+      display: flex;
+    }
+
+    .lightbox img {
+      max-width: 96vw;
+      max-height: 90svh;
+      border-radius: 6px;
+      box-shadow: 0 30px 90px rgba(0, 0, 0, 0.54);
+    }
+
+    .lightbox button {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      width: 42px;
+      height: 42px;
+      border: 1px solid rgba(255, 250, 240, 0.42);
+      border-radius: 50%;
+      color: var(--white);
+      background: rgba(255, 250, 240, 0.08);
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    [data-lightbox] {
+      cursor: zoom-in;
+    }
+
+    @media (max-width: 920px) {
+      .app {
+        padding: 12px 12px 14px;
+      }
+
+      .book-frame {
+        height: min(81svh, 780px);
+      }
+
+      .page-inner {
+        padding: 34px 30px 36px;
+      }
+
+      h1 { font-size: 46px; }
+      h2 { font-size: 32px; }
+      .media { min-height: 126px; }
+      .media.tall { min-height: 248px; }
+      .media.mid { min-height: 180px; }
+      .progress-track { width: 110px; }
+    }
+
+    @media (max-width: 760px) {
+      html, body {
+        overflow: hidden;
+      }
+
+      .app {
+        grid-template-rows: auto minmax(0, 1fr) auto;
+      }
+
+      .brand-subtitle {
+        display: none;
+      }
+
+      .progress-track {
+        width: 74px;
+      }
+
+      .book-frame {
+        width: min(480px, 100%);
+        height: min(80svh, 720px);
+        grid-template-columns: 1fr;
+      }
+
+      .book-page.left,
+      .book-page.right {
+        border-radius: 7px;
+        box-shadow: var(--paper-shadow);
+      }
+
+      .book-page.right {
+        display: none;
+      }
+
+      .page-cover .page-inner,
+      .page-photo-full .page-inner {
+        padding: 34px;
+      }
+
+      h1 { font-size: 39px; }
+      h2 { font-size: 30px; }
+      h3 { font-size: 22px; }
+
+      .lead,
+      .body-copy {
+        font-size: 13px;
+        line-height: 1.82;
+      }
+
+      .media-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .media.span-2,
+      .media.span-3,
+      .media.span-4,
+      .media.span-6 {
+        grid-column: span 1;
+      }
+
+      .media.mobile-wide {
+        grid-column: span 2;
+      }
+
+      .media {
+        min-height: 150px;
+      }
+
+      .media.tall,
+      .media.mid {
+        min-height: 210px;
+      }
+
+      .video-row,
+      .note-field.two {
+        grid-template-columns: 1fr;
+      }
+
+      .note.offset,
+      .note.reverse {
+        transform: none;
+      }
+
+      .controls {
+        grid-template-columns: 44px 1fr 44px;
+        gap: 10px;
+      }
+
+      .nav-btn {
+        width: 44px;
+        height: 44px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark">M</div>
+        <div class="brand-text">
+          <p class="brand-title">黄总，生日快乐</p>
+          <p class="brand-subtitle">一本关于我们和小宝贝的生日电子书</p>
+        </div>
+      </div>
+      <div class="progress" aria-label="阅读进度">
+        <span id="pageText">第 1 页</span>
+        <div class="progress-track" aria-hidden="true"><div class="progress-bar" id="progressBar"></div></div>
+      </div>
+    </header>
+
+    <main class="reader" aria-live="polite">
+      <div class="book-frame" id="bookFrame">
+        <article class="book-page left" id="leftPage"></article>
+        <article class="book-page right" id="rightPage"></article>
+      </div>
+    </main>
+
+    <footer class="controls">
+      <button class="nav-btn" id="prevBtn" type="button" aria-label="上一页">‹</button>
+      <div class="chapter-caption" id="chapterCaption">2009 - 2026</div>
+      <button class="nav-btn" id="nextBtn" type="button" aria-label="下一页">›</button>
+    </footer>
+  </div>
+
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <button type="button" aria-label="关闭预览">×</button>
+    <img alt="" />
+  </div>
+
+  <script>
+    const asset = {
+      p01: "assets/photos/photo-01.jpg",
+      p02: "assets/photos/photo-02.jpg",
+      p03: "assets/photos/photo-03.jpg",
+      p04: "assets/photos/photo-04.jpg",
+      p05: "assets/photos/photo-05.jpg",
+      p06: "assets/photos/photo-06.jpg",
+      p07: "assets/photos/photo-07.jpg",
+      p08: "assets/photos/photo-08.jpg",
+      p09: "assets/photos/photo-09.jpg",
+      p10: "assets/photos/photo-10.jpg",
+      p11: "assets/photos/photo-11.jpg",
+      p12: "assets/photos/photo-12.jpg",
+      p13: "assets/photos/photo-13.jpg",
+      p14: "assets/photos/photo-14.jpg",
+      p15: "assets/photos/photo-15.jpg",
+      p16: "assets/photos/photo-16.jpg",
+      p17: "assets/photos/photo-17.jpg",
+      p18: "assets/photos/photo-18.jpg",
+      p19: "assets/photos/photo-19.jpg",
+      p20: "assets/photos/photo-20.jpg",
+      p21: "assets/photos/photo-21.jpg",
+      p22: "assets/photos/photo-22.jpg",
+      p23: "assets/photos/photo-23.jpg",
+      p24: "assets/photos/photo-24.jpg",
+      p25: "assets/photos/photo-25.jpg",
+      p26: "assets/photos/photo-26.jpg",
+      p27: "assets/photos/photo-27.jpg",
+      p28: "assets/photos/photo-28.jpg",
+      p29: "assets/photos/photo-29.jpg",
+      v01: "assets/videos/video-01.mp4",
+      v02: "assets/videos/video-02.mp4",
+      v03: "assets/videos/video-03.mp4",
+      v04: "assets/videos/video-04.mp4",
+      v05: "assets/videos/video-05.mp4",
+      v06: "assets/videos/video-06.mp4",
+      v07: "assets/videos/video-07.mp4",
+      v08: "assets/videos/video-08.mp4",
+      v09: "assets/videos/video-09.mp4",
+      v10: "assets/videos/video-10.mp4",
+      s01: "assets/posters/video-01.jpg",
+      s02: "assets/posters/video-02.jpg",
+      s03: "assets/posters/video-03.jpg",
+      s04: "assets/posters/video-04.jpg",
+      s05: "assets/posters/video-05.jpg",
+      s06: "assets/posters/video-06.jpg",
+      s07: "assets/posters/video-07.jpg",
+      s08: "assets/posters/video-08.jpg",
+      s09: "assets/posters/video-09.jpg",
+      s10: "assets/posters/video-10.jpg"
+    };
+
+    const img = (key, caption, size = "span-3", alt = caption) => `
+      <figure class="media ${size}">
+        <img src="${asset[key]}" alt="${alt}" loading="lazy" decoding="async" data-lightbox />
+        <figcaption>${caption}</figcaption>
+      </figure>`;
+
+    const vid = (key, poster, caption) => `
+      <figure class="video-card">
+        <video src="${asset[key]}" poster="${asset[poster]}" controls preload="metadata" playsinline></video>
+        <figcaption>${caption}</figcaption>
+      </figure>`;
+
+    const note = (type, title, text, extra = "") => `
+      <div class="note ${type} ${extra}">
+        <strong>${title}</strong>
+        <p>${text}</p>
+      </div>`;
+
+    const pages = [
+      {
+        title: "封面",
+        theme: "page-cover",
+        html: `
+          <p class="kicker">Birthday Book / 2009 - 2026</p>
+          <h1>黄总，生日快乐。</h1>
+          <div class="chapter-line"></div>
+          <p class="lead">这不是一份很会说漂亮话的礼物。它更像一本迟到很多年的家庭相册，里面有我们走散过的时间，有我去上海找你的那一天，也有小宝贝终于来到我们身边的这一年。</p>
+          <div class="meta-list"><span>2009 高中</span><span>2021 上海</span><span>2026 广州</span><span>我们都在这里</span></div>`
+      },
+      {
+        title: "序",
+        theme: "page-soft",
+        html: `
+          <p class="kicker">Foreword</p>
+          <h2>如果人生是一份很长的年报，我想把这一页写得真实一点。</h2>
+          <div class="chapter-line"></div>
+          <div class="body-copy">
+            <p>我以前总觉得，爱一个人需要很多解释。需要确认，需要复盘，需要在漫长的时间里，反复证明它不是幻觉。</p>
+            <p>后来我才知道，有些答案不是被说出来的。它们会藏在一个人从上海回到广州的决定里，藏在周末做好的饭里，藏在你第一次小心翼翼抱着女儿的手里。</p>
+            <p>所以今天，我不想把你写成一个完美的人。也不想把我们写成一段完美的故事。我只想把我们真实走过的路，按时间慢慢放好。</p>
+          </div>
+          <div class="toc">
+            <button type="button" data-jump="2"><span class="toc-num">01</span><span class="toc-title">2009，最早的我们</span></button>
+            <button type="button" data-jump="4"><span class="toc-num">02</span><span class="toc-title">2021.10.4，我去上海找你</span></button>
+            <button type="button" data-jump="6"><span class="toc-num">03</span><span class="toc-title">你回广州，我们重新在一起</span></button>
+            <button type="button" data-jump="8"><span class="toc-num">04</span><span class="toc-title">孕期，那个慢慢变大的肚子</span></button>
+            <button type="button" data-jump="14"><span class="toc-num">05</span><span class="toc-title">生产那天，和你抱着女儿的时候</span></button>
+          </div>`
+      },
+      {
+        title: "2009",
+        theme: "page-blush",
+        html: `
+          <p class="kicker">Chapter 01 / The beginning</p>
+          <h2>最早的我们。</h2>
+          <div class="chapter-line"></div>
+          <div class="body-copy">
+            <p>黄总，我想过很多次，如果把人生往回倒带，倒回 2009 年，我们会不会还是那样开始。</p>
+            <p>那时候我们都太年轻了。年轻到不懂得怎样好好爱一个人，也不懂得，原来有些人在你生命里出现，并不是为了停留在某一个阶段，而是会在很久很久以后，重新成为你理解自己的一把钥匙。</p>
+            <p>后来大学异地，我们分开。我曾经以为那是结局。可是现在回头看，它更像是一场漫长的伏笔。</p>
+          </div>
+          <div class="note-field">
+            ${note("wife", "我想对你说", "我一边希望你飞得更远，一边又希望你不要真的离我太远。现在想起来，那不是矛盾，那只是年轻时的我，还不知道怎样把爱安稳地放在另一个人身上。", "offset")}
+            ${note("baby", "宝宝想对爸爸说", "爸爸，那时候还没有我。但妈妈和你在很早很早以前就认识了。早到我还只是一种可能，藏在未来很远的地方。", "reverse")}
+          </div>`
+      },
+      {
+        title: "异地",
+        theme: "page-dark",
+        html: `
+          <p class="kicker">Distance / Review</p>
+          <h2>分开，和很多年没有答案的时间。</h2>
+          <div class="chapter-line"></div>
+          <div class="body-copy">
+            <p>异地的那几年，我其实没有自己以为的那么成熟。</p>
+            <p>我总是在寻找确认。确认你是不是还爱我，确认你是不是会留下，确认我是不是那个足够重要的人。可那时候的我们都没有能力，把爱变成一种稳定的东西。</p>
+            <p>你去追你的梦想。我责怪过，也骄傲过。很矛盾，但这很像我。</p>
+            <p>现在想起来，分开的那些年不是空白。它们只是用很残忍的方式，让我慢慢懂得，爱和拥有不是一回事，爱和理解也不是一回事。</p>
+          </div>
+          <div class="meta-list"><span>异地</span><span>分开</span><span>复盘</span><span>仍然记得</span></div>`
+      },
+      {
+        title: "2021.10.4",
+        theme: "page-photo-full",
+        style: `--cover-image: url("${asset.p01}")`,
+        html: `
+          <p class="kicker">Chapter 02 / Shanghai</p>
+          <h2>我去上海找你。</h2>
+          <div class="chapter-line"></div>
+          <p class="lead">我说不清那一天到底算什么。它不像奔赴，也不像告别。更像是我终于决定亲自去看一眼，那个在我心里存在了很多年的人，到底过得好不好。</p>`
+      },
+      {
+        title: "上海",
+        theme: "page-dark",
+        html: `
+          <p class="kicker">2021.10.4</p>
+          <h2>陌生，又熟悉。</h2>
+          <div class="media-grid">
+            ${img("p02", "看着你陌生又熟悉", "span-3 tall mobile-wide")}
+            ${img("p03", "见面的晚上", "span-3 tall mobile-wide")}
+          </div>
+          <div class="body-copy">
+            <p>我没有很大的把握。甚至可以说，我已经预设了很多冷淡、尴尬和不被回应。可是我还是去了。</p>
+            <p>在机场的那张照片里，我只拍到了自己的脚。现在看，很像那一天的我：不确定，不体面，也没有任何胜算。只是一步一步地，往你所在的城市走去。</p>
+          </div>
+          <div class="note-field two">
+            ${note("wife", "我想对你说", "我不是去要一个确定答案。我只是想知道，那个我曾经很爱、也一直很惦记的人，在东方那个城市里，过得好不好。")}
+            ${note("baby", "宝宝想对爸爸说", "爸爸，那一天妈妈去找你。她可能只是想看看你，可是命运大概比她想得更贪心。它想让你们重新开始。")}
+          </div>`
+      },
+      {
+        title: "回广州",
+        theme: "page-soft",
+        html: `
+          <p class="kicker">Chapter 03 / Guangzhou</p>
+          <h2>你回广州，我们重新在一起。</h2>
+          <div class="chapter-line"></div>
+          <div class="body-copy">
+            <p>后来你回广州了。</p>
+            <p>这件事到现在想起来，还是有一种不真实。一个在我记忆里走远了很多年的人，竟然真的又回到了我的生活里。没有小说里那种盛大的场面。只是日子一点点重新接上，像一条断了很久的线，被人耐心地重新穿回针孔里。</p>
+            <p>你是学金融的，你相信理性，相信长期，相信一切都应该有逻辑、有路径、有风险评估。而我总是不太在这些设定里。</p>
+          </div>
+          ${note("wife", "我想对你说", "谢谢你回来。也谢谢你没有把过去只看成一笔坏账。我们不是从此没有风险，只是终于学会，在风险里认真相爱。", "offset")}
+          ${note("baby", "宝宝想对爸爸说", "爸爸，谢谢你回广州。不然妈妈后来很多平凡的日子，都不会变得那么具体。不会有饭桌，不会有等待，不会有我。", "reverse")}`
+      },
+      {
+        title: "重新持有",
+        theme: "page-blush",
+        html: `
+          <p class="kicker">Long term</p>
+          <h2>爱不是每一次都要赢。</h2>
+          <div class="chapter-line"></div>
+          <div class="body-copy">
+            <p>这一次，好像正因为我们都走过了很长的路，反而比年轻时更懂得：爱不是每一次都要赢。</p>
+            <p>爱有时候只是，经历过很多波动以后，还愿意继续持有。</p>
+          </div>
+          <div class="media-grid">
+            ${img("p04", "2026.2，等待小宝贝", "span-3 tall mobile-wide")}
+            ${img("p05", "认真，又有一点可爱", "span-3 tall mobile-wide")}
+          </div>`
+      },
+      {
+        title: "孕期",
+        theme: "page-soft",
+        html: `
+          <p class="kicker">Chapter 04 / Pregnancy</p>
+          <h2>那个慢慢变大的肚子。</h2>
+          <div class="body-copy">
+            <p>怀孕以后，我常常觉得很神奇。我的身体里住着一个小小的人。而你站在旁边，有时候笨拙，有时候认真，有时候又开始进入你熟悉的规划模式。</p>
+            <p>我有时候会觉得你好理性。但后来我也慢慢明白，那是你表达爱的方式。</p>
+          </div>
+          <div class="media-grid">
+            ${img("p06", "两个大人，等一个小人", "span-2 mid")}
+            ${img("p07", "温柔地等她来", "span-2 mid")}
+            ${img("p08", "新的章节", "span-2 mid")}
+            ${img("p09", "孕期照", "span-3 tall mobile-wide")}
+            ${img("p10", "她还没来，我们已经在想她", "span-3 tall mobile-wide")}
+          </div>`
+      },
+      {
+        title: "烟火与胎动",
+        theme: "page-dark",
+        html: `
+          <p class="kicker">New year / First signs</p>
+          <h2>烟火很短，胎动很轻，但我记得。</h2>
+          <div class="video-row">
+            ${vid("v01", "s01", "2026 年新年的烟火")}
+            ${vid("v02", "s02", "4 个月的小宝贝")}
+          </div>
+          <div class="note-field two">
+            ${note("wife", "我想对你说", "那些日子不是每天都浪漫，更多时候是检查、疲惫、等待，还有你周末做的一桌饭。后来我才发现，这些小事是最稳定的复利。")}
+            ${note("baby", "宝宝想对爸爸说", "爸爸，我在妈妈肚子里的时候，你已经开始想我的未来了。可是我最早需要的未来，其实很简单：妈妈累的时候，你在。")}
+          </div>`
+      },
+      {
+        title: "爸爸的方式",
+        theme: "page-blush",
+        html: `
+          <p class="kicker">Chapter 05 / His way</p>
+          <h2>你表达爱的方式。</h2>
+          <div class="body-copy">
+            <p>你不是那种会把爱说得很满的人。你更像是把它放进周末做好的饭里，放进一次次陪伴里，放进你以为很实际、却其实很温柔的安排里。</p>
+            <p>你很早就开始想教育、资源、路径和未来。有时候我会觉得你想得太远，可我知道，那是你的爱。你不是不感性，你只是习惯把爱翻译成计划。</p>
+          </div>
+          <div class="media-grid">
+            ${img("p12", "每周末做好的饭", "span-3 mid mobile-wide")}
+            ${img("p13", "妈妈带宝贝上课啦", "span-3 mid mobile-wide")}
+          </div>
+          ${vid("v03", "s03", "爸爸给小金墩的教育规划")}`
+      },
+      {
+        title: "肚子里的她",
+        theme: "page-soft",
+        html: `
+          <p class="kicker">Inside</p>
+          <h2>她在一点一点告诉我们：我来了。</h2>
+          <div class="media-grid">
+            ${img("p11", "孕期日常", "span-3 mid mobile-wide")}
+            ${img("p14", "肚子越来越大啦", "span-3 mid mobile-wide")}
+            ${img("p15", "妈妈捉到一个小脚脚", "span-3 mid mobile-wide")}
+            ${img("p24", "快到终点", "span-3 mid mobile-wide")}
+          </div>
+          <div class="video-row">
+            ${vid("v04", "s04", "宝贝在肚子里动来动去")}
+            ${vid("v05", "s05", "宝贝在妈妈肚子里干嘛")}
+          </div>`
+      },
+      {
+        title: "38周",
+        theme: "page-photo-full",
+        style: `--cover-image: url("${asset.p22}")`,
+        html: `
+          <p class="kicker">Chapter 06 / 38 weeks</p>
+          <h2>我们快要见到她。</h2>
+          <div class="chapter-line"></div>
+          <p class="lead">照片里的我们看起来平静，甚至有一点好笑，像是两个还没有完全准备好的人，硬是被生活推到了一个新的入口。</p>`
+      },
+      {
+        title: "一家三口",
+        theme: "page-soft",
+        html: `
+          <p class="kicker">38 weeks / Album</p>
+          <h2>两个大人，一个小宝贝。</h2>
+          <div class="media-grid">
+            ${img("p16", "38周的一家三口", "span-2 mid")}
+            ${img("p17", "快要见面", "span-2 mid")}
+            ${img("p18", "两个大人", "span-2 mid")}
+            ${img("p19", "一个小宝贝", "span-2 mid")}
+            ${img("p20", "她在来的路上", "span-2 mid")}
+            ${img("p21", "等她出生", "span-2 mid")}
+            ${img("p23", "一家三口", "span-3 mid mobile-wide")}
+            ${img("p25", "肚子越来越大", "span-3 mid mobile-wide")}
+          </div>
+          ${vid("v06", "s06", "六月，快要见到她")}`
+      },
+      {
+        title: "生产那天",
+        theme: "page-dark",
+        html: `
+          <p class="kicker">Chapter 07 / Birth day</p>
+          <h2>去生产的路上，我其实是害怕的。</h2>
+          <div class="body-copy">
+            <p>这种害怕没有办法被完全表达。它不是简单的疼，也不是简单的紧张。它更像是一个人站在命运的门口，知道自己马上要穿过去，却不知道门后面会发生什么。</p>
+            <p>你在我身边。这句话听起来很普通，可是在那一天，它很重要。</p>
+          </div>
+          <div class="video-row">
+            ${vid("v07", "s07", "去生产的路上")}
+            ${vid("v08", "s08", "生完的那一刻")}
+          </div>
+          ${note("wife", "我想对你说", "我疼的时候，你在那里；我害怕的时候，你没有走开。有些爱在那一天变得非常简单，也非常重要。")}`
+      },
+      {
+        title: "她来了",
+        theme: "page-soft",
+        html: `
+          <p class="kicker">She arrived</p>
+          <h2>她那么小，却改变了一切。</h2>
+          <div class="media-grid">
+            ${img("p27", "宝贝", "span-3 tall mobile-wide")}
+            ${img("p29", "人类的幼崽怎么那么小啊", "span-3 tall mobile-wide")}
+          </div>
+          ${vid("v09", "s09", "刚出生的宝贝在打嗝")}
+          ${note("baby", "宝宝想对爸爸说", "爸爸，那一天我终于出生了。我很小很小，但你们看我的眼神，好像我已经是你们世界里很重要的人。", "offset")}`
+      },
+      {
+        title: "父女",
+        theme: "page-photo-full",
+        style: `--cover-image: url("${asset.p26}")`,
+        html: `
+          <p class="kicker">Chapter 08 / Daughter</p>
+          <h2>你抱着女儿的时候。</h2>
+          <div class="chapter-line"></div>
+          <p class="lead">你平时那么理性，讲事情喜欢讲逻辑，讲规划，讲投入产出。可是你抱着她的时候，整个人都会变得很轻。</p>`
+      },
+      {
+        title: "爸爸和女儿",
+        theme: "page-blush",
+        html: `
+          <p class="kicker">Father and daughter</p>
+          <h2>你的手很大，她很小。</h2>
+          <div class="media-grid">
+            ${img("p28", "爸爸手里的宝贝好小啊", "span-3 tall mobile-wide")}
+            ${img("p29", "她来到世界不久", "span-3 tall mobile-wide")}
+          </div>
+          ${vid("v10", "s10", "爸爸和女儿的温馨时光")}
+          <div class="note-field two">
+            ${note("wife", "我想对你说", "我想，我不是终于等到了一个完美的答案。我只是终于看见，时间没有白白经过我们。")}
+            ${note("baby", "宝宝想对爸爸说", "爸爸，我现在还很小。我不会说话，也不知道你的生日意味着什么。但我知道，你抱我的时候很轻。以后我会慢慢长大，你也可以慢慢学着当爸爸。")}
+          </div>`
+      },
+      {
+        title: "尾页",
+        theme: "page-dark",
+        html: `
+          <p class="kicker">Happy Birthday</p>
+          <h2>我不只是还在这里。</h2>
+          <div class="chapter-line"></div>
+          <div class="body-copy">
+            <p>我曾经在很久以前写过，我还在广州，我还在这里。</p>
+            <p>现在我想改一改。</p>
+            <p>你也回来了。她也来了。我们都在这里。</p>
+            <p>黄总，生日快乐。谢谢你回来。谢谢你留下。谢谢你成为我们的家。</p>
+          </div>
+          <div class="meta-list"><span>29 张照片</span><span>10 段视频</span><span>2009 - 2026</span><span>我们和小宝贝</span></div>`
+      }
+    ];
+
+    const leftPage = document.getElementById("leftPage");
+    const rightPage = document.getElementById("rightPage");
+    const bookFrame = document.getElementById("bookFrame");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const pageText = document.getElementById("pageText");
+    const progressBar = document.getElementById("progressBar");
+    const chapterCaption = document.getElementById("chapterCaption");
+
+    let current = 0;
+    let perView = getPerView();
+
+    function getPerView() {
+      return window.matchMedia("(max-width: 760px)").matches ? 1 : 2;
+    }
+
+    function pageMarkup(page, index, side) {
+      if (!page) {
+        return `<div class="page-inner"></div><div class="page-number"><span></span><span></span></div>`;
+      }
+      const style = page.style ? `style='${page.style}'` : "";
+      return `
+        <div class="page-inner">
+          ${page.html}
+        </div>
+        <div class="page-number"><span>${side === "left" ? "生日电子书" : page.title}</span><span>${index + 1}</span></div>`;
+    }
+
+    function setPage(el, page, index, side) {
+      el.className = `book-page ${side} ${page ? page.theme : "blank"}`;
+      if (page?.style) el.setAttribute("style", page.style);
+      else el.removeAttribute("style");
+      el.innerHTML = pageMarkup(page, index, side);
+    }
+
+    function normalizeIndex(value) {
+      if (perView === 2) return Math.max(0, Math.min(pages.length - 1, value - (value % 2)));
+      return Math.max(0, Math.min(pages.length - 1, value));
+    }
+
+    function render(direction = "none") {
+      current = normalizeIndex(current);
+      const left = pages[current];
+      const right = perView === 2 ? pages[current + 1] : null;
+      setPage(leftPage, left, current, "left");
+      setPage(rightPage, right, current + 1, "right");
+      rightPage.style.display = perView === 2 ? "" : "none";
+
+      prevBtn.disabled = current === 0;
+      nextBtn.disabled = current + perView >= pages.length;
+
+      const end = Math.min(current + perView, pages.length);
+      pageText.textContent = perView === 2 ? `第 ${current + 1}-${end} 页` : `第 ${current + 1} 页`;
+      progressBar.style.width = `${Math.round((end / pages.length) * 100)}%`;
+      chapterCaption.textContent = left?.title || "生日电子书";
+
+      document.querySelectorAll("[data-jump]").forEach((button) => {
+        button.addEventListener("click", () => goTo(Number(button.dataset.jump)));
+      });
+
+      bindLightbox();
+    }
+
+    function turn(delta) {
+      const target = current + delta * perView;
+      if (target < 0 || target >= pages.length) return;
+      bookFrame.classList.add(delta > 0 ? "turning-forward" : "turning-back");
+      window.setTimeout(() => {
+        current = target;
+        render(delta > 0 ? "forward" : "back");
+        window.setTimeout(() => bookFrame.classList.remove("turning-forward", "turning-back"), 90);
+      }, 150);
+    }
+
+    function goTo(pageIndex) {
+      bookFrame.classList.add("turning-forward");
+      window.setTimeout(() => {
+        current = pageIndex;
+        render("forward");
+        window.setTimeout(() => bookFrame.classList.remove("turning-forward", "turning-back"), 90);
+      }, 120);
+    }
+
+    prevBtn.addEventListener("click", () => turn(-1));
+    nextBtn.addEventListener("click", () => turn(1));
+
+    window.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowRight" || event.key === "PageDown" || event.key === " ") {
+        event.preventDefault();
+        turn(1);
+      }
+      if (event.key === "ArrowLeft" || event.key === "PageUp") {
+        event.preventDefault();
+        turn(-1);
+      }
+      if (event.key === "Home") {
+        event.preventDefault();
+        goTo(0);
+      }
+      if (event.key === "End") {
+        event.preventDefault();
+        goTo(pages.length - 1);
+      }
+    });
+
+    window.addEventListener("resize", () => {
+      const next = getPerView();
+      if (next !== perView) {
+        perView = next;
+        current = normalizeIndex(current);
+        render();
+      }
+    });
+
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImage = lightbox.querySelector("img");
+
+    function bindLightbox() {
+      document.querySelectorAll("[data-lightbox]").forEach((image) => {
+        if (image.dataset.bound) return;
+        image.dataset.bound = "true";
+        image.addEventListener("click", () => {
+          lightboxImage.src = image.currentSrc || image.src;
+          lightboxImage.alt = image.alt || "";
+          lightbox.classList.add("open");
+          lightbox.setAttribute("aria-hidden", "false");
+        });
+      });
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove("open");
+      lightbox.setAttribute("aria-hidden", "true");
+      lightboxImage.removeAttribute("src");
+    }
+
+    lightbox.addEventListener("click", (event) => {
+      if (event.target === lightbox || event.target.tagName === "BUTTON") closeLightbox();
+    });
+
+    window.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") closeLightbox();
+    });
+
+    render();
+  </script>
+</body>
+</html>
